@@ -86,6 +86,7 @@ The owning role is $owner; accountable maintenance remains with RedjiJB until a 
 ## References
 
 - [Ecosystem documentation quality standard](https://github.com/Post-Secondary-Digital-Commons/psdc-architecture/blob/main/docs/standards/Ecosystem-Documentation-Quality-Standard.md)
+- [AI documentation review rubric](./docs/standards/AI-Documentation-Review-Rubric.md)
 - [Repository governance](https://github.com/Post-Secondary-Digital-Commons/psdc-architecture/blob/main/docs/governance/GitHub-Repository-Governance.md)
 
 ## Contribution and change control
