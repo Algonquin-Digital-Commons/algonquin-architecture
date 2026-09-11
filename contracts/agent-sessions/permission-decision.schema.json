@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://commons.example/contracts/agent-sessions/permission-decision.schema.json",
+  "title": "Agent Permission Decision",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["contractVersion", "decisionId", "requestId", "sessionId", "actionDigest", "decision", "actorId", "deviceId", "decidedAt", "expiresAt", "signature"],
+  "properties": {
+    "contractVersion": { "const": "0.1-draft" },
+    "decisionId": { "type": "string", "format": "uuid" },
+    "requestId": { "type": "string", "format": "uuid" },
+    "sessionId": { "type": "string", "format": "uuid" },
+    "actionDigest": { "type": "string", "pattern": "^[a-fA-F0-9]{64}$" },
+    "decision": { "enum": ["allow_once", "deny"] },
+    "actorId": { "type": "string", "minLength": 1 },
+    "deviceId": { "type": "string", "format": "uuid" },
+    "decidedAt": { "type": "string", "format": "date-time" },
+    "expiresAt": { "type": "string", "format": "date-time" },
+    "reason": { "type": "string", "maxLength": 1000 },
+    "signature": { "type": "string", "contentEncoding": "base64" }
+  }
+}
+

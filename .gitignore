@@ -1,0 +1,14 @@
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+node_modules/
+.venv/
+dist/
+build/
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+*.log

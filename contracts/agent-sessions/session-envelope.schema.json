@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://commons.example/contracts/agent-sessions/session-envelope.schema.json",
+  "title": "Agent Session Encrypted Envelope",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["contractVersion", "envelopeId", "sessionId", "senderDeviceId", "sequence", "createdAt", "expiresAt", "cipherSuite", "nonce", "ciphertext"],
+  "properties": {
+    "contractVersion": { "const": "0.1-draft" },
+    "envelopeId": { "type": "string", "format": "uuid" },
+    "sessionId": { "type": "string", "format": "uuid" },
+    "senderDeviceId": { "type": "string", "format": "uuid" },
+    "recipientDeviceId": { "type": "string", "format": "uuid" },
+    "sequence": { "type": "integer", "minimum": 0 },
+    "previousEnvelopeId": { "type": "string", "format": "uuid" },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "expiresAt": { "type": "string", "format": "date-time" },
+    "eventClass": { "enum": ["state", "attention", "command", "decision", "control", "receipt"] },
+    "cipherSuite": { "type": "string", "minLength": 1 },
+    "keyId": { "type": "string", "minLength": 1 },
+    "nonce": { "type": "string", "contentEncoding": "base64" },
+    "ciphertext": { "type": "string", "contentEncoding": "base64" },
+    "signature": { "type": "string", "contentEncoding": "base64" }
+  }
+}
+

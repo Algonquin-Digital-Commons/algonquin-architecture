@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://commons.example/contracts/deployment/deployment-manifest.schema.json",
+  "title": "Institution Deployment Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["contractVersion", "deploymentId", "sequence", "issuedAt", "expiresAt", "branding", "endpoints", "oidc", "trust"],
+  "properties": {
+    "contractVersion": { "const": "0.1-draft" },
+    "deploymentId": { "type": "string", "pattern": "^[a-z0-9][a-z0-9.-]{2,127}$" },
+    "sequence": { "type": "integer", "minimum": 1 },
+    "issuedAt": { "type": "string", "format": "date-time" },
+    "expiresAt": { "type": "string", "format": "date-time" },
+    "branding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["institutionName", "productName", "supportUrl", "privacyUrl"],
+      "properties": {
+        "institutionName": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "productName": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "logoUrl": { "type": "string", "format": "uri" },
+        "themeId": { "type": "string", "maxLength": 100 },
+        "supportUrl": { "type": "string", "format": "uri" },
+        "privacyUrl": { "type": "string", "format": "uri" },
+        "termsUrl": { "type": "string", "format": "uri" },
+        "incidentUrl": { "type": "string", "format": "uri" }
+      }
+    },
+    "endpoints": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["portal", "aiGateway", "sessionRelay", "updateManifest"],
+      "properties": {
+        "portal": { "type": "string", "format": "uri" },
+        "aiGateway": { "type": "string", "format": "uri" },
+        "sessionRelay": { "type": "string", "format": "uri" },
+        "updateManifest": { "type": "string", "format": "uri" },
+        "social": { "type": "string", "format": "uri" },
+        "documentation": { "type": "string", "format": "uri" }
+      }
+    },
+    "oidc": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["issuer", "authorizationFlow", "desktopClientId", "mobileClientId", "scopes"],
+      "properties": {
+        "issuer": { "type": "string", "format": "uri" },
+        "authorizationFlow": { "const": "authorization_code_pkce" },
+        "desktopClientId": { "type": "string", "minLength": 1 },
+        "mobileClientId": { "type": "string", "minLength": 1 },
+        "scopes": { "type": "array", "minItems": 2, "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
+        "desktopRedirectUris": { "type": "array", "uniqueItems": true, "items": { "type": "string", "format": "uri" } },
+        "mobileRedirectUris": { "type": "array", "uniqueItems": true, "items": { "type": "string", "format": "uri" } }
+      }
+    },
+    "features": {
+      "type": "object",
+      "additionalProperties": { "type": "boolean" }
+    },
+    "federationProfile": { "type": "string", "maxLength": 200 },
+    "residencyRegion": { "type": "string", "maxLength": 100 },
+    "push": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode"],
+      "properties": {
+        "mode": { "enum": ["none", "ntfy", "unifiedpush", "apns", "fcm"] },
+        "endpoint": { "type": "string", "format": "uri" },
+        "contentPolicy": { "const": "opaque_wake_only" }
+      }
+    },
+    "trust": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["manifestSigningKeyId", "minimumClientVersion"],
+      "properties": {
+        "manifestSigningKeyId": { "type": "string", "minLength": 1 },
+        "minimumClientVersion": { "type": "string", "minLength": 1 },
+        "maximumRollbackSequence": { "type": "integer", "minimum": 0 }
+      }
+    }
+  }
+}

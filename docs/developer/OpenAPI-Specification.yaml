@@ -1,0 +1,23 @@
+openapi: 3.1.0
+info:
+  title: Algonquin Digital Platform API
+  version: 0.0.0-placeholder
+  description: >-
+    Decision-seeded placeholder. Public REST interfaces use OpenAPI, institutional
+    identity uses OIDC/OAuth, AI compatibility is defined separately from native
+    AC capabilities, and internal implementations remain replaceable.
+paths: {}
+components: {}
+x-document-status: decision-seeded-placeholder
+x-architecture-decisions:
+  - ADR-0001-standards-first-buy-borrow-build
+  - ADR-0002-institutional-identity-root
+  - ADR-0003-openai-compatible-ai-boundary
+  - ADR-0005-standard-platform-primitives
+x-required-conventions:
+  versioning: TBD
+  errors: TBD
+  pagination: TBD
+  idempotency: TBD
+  trace-context: OpenTelemetry-compatible
+  security-schemes: OIDC/OAuth definitions pending institutional approval
