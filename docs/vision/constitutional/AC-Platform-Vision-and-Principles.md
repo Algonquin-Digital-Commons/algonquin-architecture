@@ -1,4 +1,4 @@
-# Federated Post-Secondary Digital Commons Vision and Principles
+# Post-Secondary Digital Commons Vision and Principles
 
 > Status: Accepted baseline; implementation and institutional ratification incomplete  
 > Domain: vision  
@@ -8,7 +8,7 @@
 ## Purpose
 
 Define the constitutional purpose and non-negotiable design posture of the
-tenant-neutral Federated Post-Secondary Digital Commons and its first Algonquin deployment.
+tenant-neutral Post-Secondary Digital Commons and its first Algonquin deployment.
 
 ## Scope
 
@@ -79,11 +79,11 @@ depending on any single student or proprietary protocol.
 - ADR-0001: Standards-First / Buy-Borrow-Build
 - ADR-0005: Standard Platform Primitives
 - ADR-0008: Open-Source, Self-Hosted Core
-- ADR-0012: Tenant-Neutral Federated Post-Secondary Digital Commons
+- ADR-0012: Tenant-Neutral Post-Secondary Digital Commons
 - ADR-0013: Institution-First Federation Locality
 - ADR-0016: Accepted Project Defaults
 - ADR-0017: OpenTofu Default Infrastructure-as-Code Toolchain
-- ADR-0020: Federated Post-Secondary Digital Commons Is the Shared Platform Name
+- ADR-0020: Post-Secondary Digital Commons Is the Shared Platform Name
 
 ## Decisions and open questions
 
@@ -93,5 +93,5 @@ depending on any single student or proprietary protocol.
 
 ## References
 
-- [Federated Post-Secondary Digital Commons Architecture](Post-Secondary-Digital-Commons-Architecture.md)
+- [Post-Secondary Digital Commons Architecture](Post-Secondary-Digital-Commons-Architecture.md)
 - [Technology Defaults and Alternatives](../13-Technology-Defaults-and-Alternatives.md)

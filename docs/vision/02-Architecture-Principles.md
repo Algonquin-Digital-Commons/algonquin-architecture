@@ -14,7 +14,7 @@ exceptions, and keep the complete platform interoperable and maintainable.
 
 - In scope: all repositories, services, clients, integrations, infrastructure,
   protocols, extensions, forks, and research prototypes intended to become part of
-  the Federated Post-Secondary Digital Commons.
+  the Post-Secondary Digital Commons.
 - Out of scope: pinning an exact release or site value before requirements,
   measurements and institutional constraints are known.
 - Constraint: production identity, College data, infrastructure, and policy require
@@ -122,11 +122,11 @@ never silently become a core dependency.
 - ADR-0001: Standards-First / Buy-Borrow-Build
 - ADR-0005: Standard Platform Primitives
 - ADR-0008: Open-Source, Self-Hosted Core
-- ADR-0012: Tenant-Neutral Federated Post-Secondary Digital Commons
+- ADR-0012: Tenant-Neutral Post-Secondary Digital Commons
 - ADR-0013: Institution-First Federation Locality
 - ADR-0016: Accepted Project Defaults
 - ADR-0017: OpenTofu Default Infrastructure-as-Code Toolchain
-- ADR-0020: Federated Post-Secondary Digital Commons Is the Shared Platform Name
+- ADR-0020: Post-Secondary Digital Commons Is the Shared Platform Name
 
 ## Decisions and open questions
 
@@ -137,4 +137,4 @@ never silently become a core dependency.
 ## References
 
 - [Technology Defaults and Alternatives](13-Technology-Defaults-and-Alternatives.md)
-- [Federated Post-Secondary Digital Commons Architecture](constitutional/Post-Secondary-Digital-Commons-Architecture.md)
+- [Post-Secondary Digital Commons Architecture](constitutional/Post-Secondary-Digital-Commons-Architecture.md)

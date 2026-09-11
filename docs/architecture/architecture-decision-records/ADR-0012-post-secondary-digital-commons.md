@@ -1,4 +1,4 @@
-# ADR-0012: Build a Tenant-Neutral Federated Post-Secondary Digital Commons
+# ADR-0012: Build a Tenant-Neutral Post-Secondary Digital Commons
 
 > Status: Accepted  
 > Date: 2026-09-10  
@@ -13,7 +13,7 @@ resource types, or core business logic would make a second deployment a fork.
 
 ## Decision
 
-The reusable architecture is a **Federated Post-Secondary Digital Commons**. Algonquin is
+The reusable architecture is a **Post-Secondary Digital Commons**. Algonquin is
 the first reference deployment and proving ground, not the identity of the core.
 
 The logical architecture has three layers:
@@ -41,6 +41,6 @@ remains the validation gate for tenant neutrality.
 - Every resource and event needs an institution/tenant boundary.
 - Cross-tenant access is denied unless an explicit federation contract permits it.
 - White-labelling is configuration and extension, not a core fork.
-- Shared repositories use neutral `fpsdc-*` names. Algonquin naming is confined to
-  `algonquin-fpsdc-deployment` and Algonquin-operated release channels.
+- Shared repositories use neutral `psdc-*` names. Algonquin naming is confined to
+  `algonquin-psdc-deployment` and Algonquin-operated release channels.
 - Not all fabrics federate the same data or trust level.

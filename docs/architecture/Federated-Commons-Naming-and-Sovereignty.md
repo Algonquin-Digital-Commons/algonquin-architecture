@@ -7,7 +7,7 @@
 
 | Shared/Federated concept | Canonical name | Algonquin deployment name |
 |---|---|---|
-| Complete framework | Federated Post-Secondary Digital Commons (FPSDC) | Algonquin Digital Platform |
+| Complete framework | Post-Secondary Digital Commons (PSDC) | Algonquin Digital Platform |
 | Shared service foundation | Commons Cloud Fabric | AC Cloud |
 | Compute orchestration | Commons Compute Fabric | ACF Campus Compute Fabric |
 | AI and agent services | Commons AI Fabric | AC AI |

@@ -1,4 +1,4 @@
-# Federated Post-Secondary Digital Commons — Consolidated Architecture
+# Post-Secondary Digital Commons — Consolidated Architecture
 
 > Status: Accepted architecture; implementation incomplete  
 > Owner: Platform architecture  
@@ -7,7 +7,7 @@
 ## Commons system model
 
 ```text
-       FEDERATED POST-SECONDARY DIGITAL COMMONS
+       Post-Secondary Digital Commons
  institution experience | reusable neutral core | federation
                               |
         Algonquin reference deployment and future peers
@@ -28,7 +28,7 @@
                     ActivityPub federation
 ```
 
-The platform is the tenant-neutral Federated Post-Secondary Digital Commons. Algonquin is the
+The platform is the tenant-neutral Post-Secondary Digital Commons. Algonquin is the
 first sovereign reference deployment; institution-specific identity, LMS,
 branding, data and policy live in its deployment overlay. The umbrella repository owns constitutional architecture, shared contracts,
 cross-system dependency rules, decision records, and the human decision register.

@@ -1,7 +1,7 @@
 # Ecosystem Gap Analysis — 2026-09-10
 
 > Status: Current-state baseline  
-> Scope: Full Federated Post-Secondary Digital Commons architecture and all five ecosystem repositories
+> Scope: Full Post-Secondary Digital Commons architecture and all five ecosystem repositories
 
 ## Executive finding
 

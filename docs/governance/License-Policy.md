@@ -5,7 +5,7 @@
 
 ## Default
 
-New FPSDC-authored code, configuration and documentation use Apache-2.0. Imported
+New PSDC-authored code, configuration and documentation use Apache-2.0. Imported
 or derived material retains its original approved license and attribution. A
 repository must not claim that Apache-2.0 relicenses upstream MIT, BSD, MPL, GPL,
 AGPL or other third-party content.
@@ -21,7 +21,7 @@ Every repository release includes:
 ## Contribution reciprocity
 
 Apache-2.0 is permissive. It does not require a university or business to send
-private modifications back. FPSDC uses upstream-first fork governance and a
+private modifications back. PSDC uses upstream-first fork governance and a
 separate participation agreement for organizations seeking official consortium,
 certification, shared-release, trademark or support benefits.
 

@@ -2,7 +2,7 @@
 
 > Status: Accepted  
 > Date: 2026-09-10  
-> Scope: FPSDC mobile client and cross-device agent supervision  
+> Scope: PSDC mobile client and cross-device agent supervision  
 > Decision owner: Project founder; exact-source import requires legal and security review
 
 ## Context
@@ -15,7 +15,7 @@ Claude Code, while the platform requires provider-neutral, self-hosted operation
 
 ## Decision
 
-`fpsdc-happy-mobile` will use an immutable, verified MIT-licensed Happy
+`psdc-mobile` will use an immutable, verified MIT-licensed Happy
 baseline as its mobile scaffold. React Native through Expo replaces Flutter as
 the accepted mobile implementation default for this client.
 

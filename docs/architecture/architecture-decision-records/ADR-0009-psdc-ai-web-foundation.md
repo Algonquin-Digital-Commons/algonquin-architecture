@@ -18,7 +18,7 @@ Work, Code, Campus, course, agent, notification, and student-service experiences
 
 ## Decision
 
-The architectural component is `fpsdc-ai/apps/web`, named for its role rather
+The architectural component is `psdc-ai/apps/web`, named for its role rather
 than an upstream implementation.
 
 Its preferred bootstrap foundation is the BSD-3-Clause Open WebUI v0.6.5 source.

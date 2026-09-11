@@ -8,7 +8,7 @@
 
 No known unresolved conflict remains between the current normative documents.
 The corpus consistently selects OpenTofu plus Ansible, the tenant-neutral
-Federated Post-Secondary Digital Commons, sovereign institutional deployments,
+Post-Secondary Digital Commons, sovereign institutional deployments,
 institution-first federation, ActivityPub for the Social Fabric, the accepted
 technology catalog, OpenWork's eligible MIT core as the desktop foundation,
 Happy's MIT Expo app with a self-hosted E2EE relay as the mobile foundation, and
@@ -53,7 +53,7 @@ presented as completed decisions.
 | Vault location | Nested and root Obsidian locations were ambiguous | Root `.obsidian/` is canonical; the historical nested location is superseded |
 | Desktop foundation | Generic Tauri default did not reflect the selected client | ADR-0018 selects a gated OpenWork MIT-core downstream; its current React/Electron shell is implementation-specific, `ee/` and hosted services are excluded, and Tauri is the replacement path |
 | Mobile foundation | Generic Flutter default did not reflect the selected client | ADR-0019 selects the Happy MIT Expo/React Native baseline, an institution-controlled content-blind E2EE relay, and provider-neutral sessions |
-| Shared platform name | Generic specifications and navigation still used Algonquin as the platform name | ADR-0020 selects Federated Post-Secondary Digital Commons; Algonquin is now an explicitly labelled reference deployment |
+| Shared platform name | Generic specifications and navigation still used Algonquin as the platform name | ADR-0020 selects Post-Secondary Digital Commons; Algonquin is now an explicitly labelled reference deployment |
 | Client access | White-labelling had no canonical distribution/authentication flow | ADR-0021 defines signed deployment manifests/builds, institution OIDC and institution-owned endpoints without upstream-vendor accounts |
 | Repository topology | The documentation treated one checkout as a permanent grand monorepo | ADR-0022 establishes independent product repositories plus a source-free workspace/vault coordinator |
 | Social federation policy | ActivityPub ownership existed without a consolidated operating policy | Commons Social Fabric now has optional local-only operation, allowlist-first federation, local moderation, peer trust, user protection and readiness gates |

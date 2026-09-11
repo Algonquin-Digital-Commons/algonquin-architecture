@@ -1,4 +1,4 @@
-# ADR-0020: Federated Post-Secondary Digital Commons Is the Shared Platform Name
+# ADR-0020: Post-Secondary Digital Commons Is the Shared Platform Name
 
 > Status: Accepted  
 > Date: 2026-09-10  
@@ -12,15 +12,16 @@ institutions. Naming shared software or architecture after Algonquin incorrectly
 implies that Algonquin is a central operator, tenant host, identity authority or
 owner of peer deployments.
 
-The shared name must communicate both the post-secondary commons and its
-federated, sovereign operating model.
+The shared name must communicate the post-secondary commons without implying a
+central federation operator. Federation remains a capability and operating
+model, not part of the product name.
 
 ## Decision
 
-The canonical shared platform name is **Federated Post-Secondary Digital
-Commons**, abbreviated **FPSDC** where an acronym is useful.
+The canonical shared platform name is **Post-Secondary Digital Commons**,
+abbreviated **PSDC** where an acronym is useful.
 
-- FPSDC names shared architecture, protocols, contracts, schemas, reference
+- PSDC names shared architecture, protocols, contracts, schemas, reference
   software, conformance tests and federation profiles.
 - Each post-secondary institution operates a complete standalone **institution
   deployment** under its own authority, branding and technology selections.
@@ -28,9 +29,8 @@ Commons**, abbreviated **FPSDC** where an acronym is useful.
   Algonquin reference deployment and its deployment overlay.
 - Shared component names are Commons Cloud Fabric, Commons Compute Fabric,
   Commons AI Fabric, Commons Media and Spatial Fabric, and Commons Social Fabric.
-- Current `algonquin-*` repository paths are working implementation locations,
-  not canonical names for shared protocols. Repository migration is a deliberate
-  release task because renaming paths affects links, automation and provenance.
+- Shared repositories use the neutral `psdc-*` prefix. `algonquin-*` names are
+  reserved for Algonquin's institution-owned forks and deployment overlay.
 - Federation is optional, explicitly trusted, revocable and incapable of
   becoming a peer's local identity, policy, data or infrastructure authority.
 
@@ -46,9 +46,8 @@ service continuity and risk acceptance.
 
 ## Consequences
 
-- Documentation must use FPSDC for shared material and reserve Algonquin naming
+- Documentation must use PSDC for shared material and reserve Algonquin naming
   for an explicitly labelled deployment example or overlay.
 - Institution branding and component choice can differ without breaking
   federation, provided the selected protocol profiles pass conformance tests.
 - A disconnected institution continues operating its local platform.
-

@@ -13,7 +13,7 @@ current task are imported as project decisions.
 | Decision | Canonical record |
 |---|---|
 | Terraform was briefly selected, then explicitly superseded by the OpenTofu + Ansible default | ADR-0011, ADR-0017 |
-| The reusable core is a tenant-neutral Federated Post-Secondary Digital Commons | ADR-0012 |
+| The reusable core is a tenant-neutral Post-Secondary Digital Commons | ADR-0012 |
 | Algonquin is the first reference deployment, not a hard-coded tenant | ADR-0012 |
 | Each institution keeps sovereign branding, identity, academics, policy, data, models, apps, compute and operations | ADR-0012 |
 | Compute and other eligible capabilities federate institution-first, Ontario/Canada next, commercial/global last | ADR-0013 |

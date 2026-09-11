@@ -88,7 +88,7 @@ distributed serving → experimental heterogeneous sharding.
 - ADR-0001: Standards-First / Buy-Borrow-Build
 - ADR-0005: Standard Platform Primitives
 - ADR-0004: ACF Runtime Adapter Architecture
-- ADR-0012: Tenant-Neutral Federated Post-Secondary Digital Commons
+- ADR-0012: Tenant-Neutral Post-Secondary Digital Commons
 - ADR-0013: Institution-First Federation Locality
 - ADR-0016: Accepted Project Defaults
 - ADR-0017: OpenTofu Default Infrastructure-as-Code Toolchain
@@ -102,5 +102,5 @@ distributed serving → experimental heterogeneous sharding.
 
 ## References
 
-- [Federated Post-Secondary Digital Commons Architecture](Post-Secondary-Digital-Commons-Architecture.md)
+- [Post-Secondary Digital Commons Architecture](Post-Secondary-Digital-Commons-Architecture.md)
 - [Ecosystem Gap Analysis](../../roadmap/Ecosystem-Gap-Analysis-2026-09-10.md)

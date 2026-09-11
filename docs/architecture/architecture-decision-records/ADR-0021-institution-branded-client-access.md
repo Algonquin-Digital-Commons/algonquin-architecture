@@ -18,7 +18,7 @@ deployment manifest and signed build containing its branding and public endpoint
 configuration. Users enter through their institution's portal and authenticate
 using Authorization Code + PKCE against the institution deployment's OIDC broker.
 
-- No OpenWork, Happy, Algonquin or global FPSDC account is required.
+- No OpenWork, Happy, Algonquin or global PSDC account is required.
 - Gateway, relay, update, support, privacy and optional social endpoints come from
   the signed deployment manifest.
 - The manifest contains no privileged secret and has expiry, signature and

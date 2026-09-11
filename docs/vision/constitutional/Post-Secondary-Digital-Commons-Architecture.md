@@ -1,4 +1,4 @@
-# Federated Post-Secondary Digital Commons Architecture
+# Post-Secondary Digital Commons Architecture
 
 > Status: Accepted constitutional direction  
 > Date: 2026-09-10  
@@ -6,7 +6,7 @@
 
 ## Purpose
 
-The platform is the reusable, institution-neutral Federated Post-Secondary Digital Commons.
+The platform is the reusable, institution-neutral Post-Secondary Digital Commons.
 Algonquin College is its first reference deployment, not a tenant hard-coded into
 the core. Each participating institution operates a sovereign deployment with its
 own branding, identity, academic adapters, policy, data, models, applications,
@@ -28,11 +28,11 @@ social graph, or super-administrator for every institution.
 
 | Fabric | Primary responsibilities | Current repository home |
 |---|---|---|
-| Cloud and service fabric | Identity broker, policy, APIs, events, data services, storage, secrets, observability, delivery platform | `fpsdc-cloud` |
-| Compute fabric | Dedicated and opportunistic resource enrollment, trust, capability discovery, scheduling, preemption and accounting | `fpsdc-compute` |
-| AI and agent fabric | Gateway, models, routing, RAG, evaluations, agent tools and AI clients | `fpsdc-ai` |
-| Media and spatial fabric | Image, audio, video, 3D, 4DGS, spatial assets, provenance, transformation and delivery | `fpsdc-media` |
-| Social fabric | Fediverse actors, social, photos, video, communities, blogs, moderation and ActivityPub federation | `fpsdc-social` |
+| Cloud and service fabric | Identity broker, policy, APIs, events, data services, storage, secrets, observability, delivery platform | `psdc-cloud` |
+| Compute fabric | Dedicated and opportunistic resource enrollment, trust, capability discovery, scheduling, preemption and accounting | `psdc-compute` |
+| AI and agent fabric | Gateway, models, routing, RAG, evaluations, agent tools and AI clients | `psdc-ai` |
+| Media and spatial fabric | Image, audio, video, 3D, 4DGS, spatial assets, provenance, transformation and delivery | `psdc-media` |
+| Social fabric | Fediverse actors, social, photos, video, communities, blogs, moderation and ActivityPub federation | `psdc-social` |
 | Academic fabric | Institution-neutral course, enrolment, content and assessment contracts with local authoritative adapters | Umbrella contracts; domain implementation pending |
 | Data fabric | Classification, sovereignty, catalogs, lineage, authorized exchange and lifecycle policy | Umbrella contracts plus service-owned stores |
 | Developer fabric | Forge, CI, registry, SDKs, templates, sandbox and service catalog | Cloud plus umbrella standards |

@@ -13,7 +13,7 @@ fork relationships exist repository by repository.
 
 ## Decision
 
-The Commons GitHub organization owns the canonical `fpsdc-*` upstream
+The Commons GitHub organization owns the canonical `psdc-*` upstream
 repositories. The Algonquin GitHub organization owns matching `algonquin-*` thin
 forks. Every other institution repeats the same mapping in its own organization.
 

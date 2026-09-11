@@ -42,7 +42,7 @@ Decision states:
 | A-009 | Algonquin AI Web uses `apps/web` and prefers the frozen Open WebUI v0.6.5 BSD baseline as gated scaffolding | ADR-0009 |
 | A-010 | The core is provider-neutral while College-approved systems remain authoritative in production | ADR-0010 |
 | A-011 | Superseded Terraform preference retained only as decision history | ADR-0011, superseded by ADR-0017 |
-| A-012 | The reusable architecture is a tenant-neutral Federated Post-Secondary Digital Commons; Algonquin is its first deployment | ADR-0012 |
+| A-012 | The reusable architecture is a tenant-neutral Post-Secondary Digital Commons; Algonquin is its first deployment | ADR-0012 |
 | A-013 | Use institution resources first, post-secondary federation second, Canadian commercial capacity third and hyperscalers last | ADR-0013 |
 | A-014 | The Social Fabric is Fediverse- and ActivityPub-based | ADR-0014 |
 | A-015 | Model funding at CA$30 per participating student per enrolled month | ADR-0015 |
@@ -50,11 +50,11 @@ Decision states:
 | A-017 | OpenTofu + Ansible is the IaC default; Terraform is not a default or standing exception | ADR-0017 |
 | A-018 | Algonquin AI Desktop uses the verified OpenWork MIT core outside `ee/`; Den and hosted services are excluded | ADR-0018 |
 | A-019 | Algonquin AI Mobile uses the verified Happy MIT Expo baseline with an institution-controlled E2EE relay | ADR-0019 |
-| A-020 | Federated Post-Secondary Digital Commons is the shared platform name; Algonquin names only its reference deployment | ADR-0020 |
+| A-020 | Post-Secondary Digital Commons is the shared platform name; Algonquin names only its reference deployment | ADR-0020 |
 | A-021 | Shared clients are institution-branded, signed and authenticated; no upstream-vendor or global Commons account is required | ADR-0021 |
 | A-022 | Use independent repositories per fabric, client and institution deployment; allow Happy-style package workspaces only inside one cohesive product | ADR-0022 |
 | A-023 | Commons and institution code live in separate GitHub organizations; each institution repository is a thin fork of its Commons counterpart | ADR-0023 |
-| A-024 | New FPSDC-authored material defaults to Apache-2.0 with upstream-first institutional and commercial contribution policy | ADR-0024 |
+| A-024 | New PSDC-authored material defaults to Apache-2.0 with upstream-first institutional and commercial contribution policy | ADR-0024 |
 
 ## 1. Mission, governance, and institutional ownership
 
@@ -67,7 +67,7 @@ Decision states:
 | GOV-005 | Service RACI for every ecosystem | One accountable owner per service and contract | Program steering group | Before implementation |
 | GOV-006 | Repository model | Polyrepo by bounded product; a workspace/vault repository coordinates checkouts but contains no product source | Architecture council | Accepted by ADR-0022; verify migration before retiring source checkout |
 | GOV-007 | Naming, domains and trademarks | Algonquin naming remains provisional until institution approves | College communications/legal | Before public branding |
-| GOV-008 | Code and documentation license | Apache-2.0 for new FPSDC-authored code, configuration and documentation; imported material retains its original approved license | Governance + legal | Accepted by ADR-0024; legal review before first public release |
+| GOV-008 | Code and documentation license | Apache-2.0 for new PSDC-authored code, configuration and documentation; imported material retains its original approved license | Governance + legal | Accepted by ADR-0024; legal review before first public release |
 | GOV-009 | Contribution governance and code of conduct | Public, documented, student-accessible process | Club governance | Before public repository |
 | GOV-010 | Funding and budget authority | Transparent annual infrastructure and operations budget | Sponsor + finance owner | Before procurement |
 | GOV-011 | Data stewards by domain | Named steward for identity, academic, media, social and telemetry data | Institutional owners | Before real data |
@@ -113,7 +113,7 @@ Decision states:
 | ARC-013 | Cross-repository release compatibility | Publish support matrix and contract tests | Release engineering | Before independent releases |
 | ARC-014 | Public versus private API boundary | Explicit allowlist; internal APIs never accidentally exposed | Security + service owners | Before ingress |
 | ARC-015 | Data ownership | One owning service; no cross-service database reads | Architecture council | Accepted principle; enforce before code |
-| ARC-016 | Reusable platform identity | Tenant-neutral Federated Post-Secondary Digital Commons with Algonquin deployment overlay | Architecture council | Accepted by ADR-0012 |
+| ARC-016 | Reusable platform identity | Tenant-neutral Post-Secondary Digital Commons with Algonquin deployment overlay | Architecture council | Accepted by ADR-0012 |
 | ARC-017 | Federation locality order | Institution → regional/provincial/Canadian federation → Canadian provider → hyperscaler | Architecture + policy | Accepted by ADR-0013 |
 | ARC-018 | Cross-fabric federation model | Federate permitted capabilities/services, never one shared trust or data domain | Federation governance | Before federation contracts |
 | ARC-019 | Neutral resource naming | Institution, Tenant, Subject, Course, ComputeProvider/Node/Cell and Federation | Contract maintainers | Before v1 schemas |

@@ -2,7 +2,7 @@
 
 > Status: Accepted  
 > Date: 2026-09-11  
-> Scope: FPSDC-authored code, configuration and documentation  
+> Scope: PSDC-authored code, configuration and documentation  
 > Decision owner: Project founder; legal review required before public release
 
 ## Context
@@ -15,7 +15,7 @@ permissive license and could make a custom license non-open-source.
 
 ## Decision
 
-- License new FPSDC-authored code, configuration and documentation under
+- License new PSDC-authored code, configuration and documentation under
   Apache License 2.0 by default.
 - Preserve the original license, copyright and notices for imported MIT, BSD,
   Apache or other approved upstream material. Do not relicense third-party work.

@@ -1,4 +1,4 @@
-# Federated Post-Secondary Digital Commons Reference Architecture
+# Post-Secondary Digital Commons Reference Architecture
 
 > Status: Accepted baseline; implementation incomplete  
 > Domain: vision  
@@ -99,12 +99,12 @@ users, developers, administrators, institutions, federated peers
 
 - ADR-0001: Standards-First / Buy-Borrow-Build
 - ADR-0005: Standard Platform Primitives
-- ADR-0012: Tenant-Neutral Federated Post-Secondary Digital Commons
+- ADR-0012: Tenant-Neutral Post-Secondary Digital Commons
 - ADR-0013: Institution-First Federation Locality
 - ADR-0014: Fediverse Social Fabric
 - ADR-0016: Accepted Project Defaults
 - ADR-0017: OpenTofu Default Infrastructure-as-Code Toolchain
-- ADR-0020: Federated Post-Secondary Digital Commons Is the Shared Platform Name
+- ADR-0020: Post-Secondary Digital Commons Is the Shared Platform Name
 
 ## Decisions and open questions
 

@@ -1,7 +1,7 @@
 # Master Architecture Document Suite
 
 This directory is the documentation source of truth for the tenant-neutral
-Federated Post-Secondary Digital Commons and its Algonquin reference deployment. As of
+Post-Secondary Digital Commons and its Algonquin reference deployment. As of
 2026-09-10 it contains 423 accepted-baseline specifications whose implementation
 detail remains incomplete, ADR-0001 through ADR-0024 (with ADR-0011 superseded),
 constitutional architecture documents, system context and contract pages,

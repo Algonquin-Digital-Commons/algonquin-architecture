@@ -7,7 +7,7 @@
 ## Source-of-truth model
 
 The ecosystem is a collection of independent Git repositories, not a grand
-monorepo. The `fpsdc-workspace` checkout root is a lightweight coordinator and Obsidian
+monorepo. The `psdc-workspace` checkout root is a lightweight coordinator and Obsidian
 vault containing repository metadata and maps only. Product and architecture
 content remains canonical in its owning repository.
 
@@ -20,15 +20,15 @@ checkout directories and must never commit nested product source.
 
 ## Ownership
 
-- `fpsdc-architecture` owns constitutional architecture, cross-system contracts,
+- `psdc-architecture` owns constitutional architecture, cross-system contracts,
   dependency rules, governance, human decisions and conformance profiles.
 - Each fabric repository owns its implementation architecture, code,
   infrastructure, security evidence, runbooks and releases.
-- `fpsdc-openwork-desktop` and `fpsdc-happy-mobile` own their separate upstream
+- `psdc-desktop` and `psdc-mobile` own their separate upstream
   provenance, downstream patches, product releases and store/package pipelines.
 - Each institution deployment repository owns only local configuration, branding,
   policy overlays, environment composition and operational evidence.
-- `fpsdc-workspace` owns navigation and developer checkout metadata, never runtime
+- `psdc-workspace` owns navigation and developer checkout metadata, never runtime
   code or deployment secrets.
 
 Every institution repository uses `origin` for its institution-owned GitHub fork
@@ -51,7 +51,7 @@ and component versions for each institution release.
 
 A repository may use pnpm, Cargo, Go, Python or another package workspace for
 tightly coupled packages that share ownership and a release train. The Happy-style
-pattern is appropriate inside `fpsdc-happy-mobile`; it is not a reason to place
+pattern is appropriate inside `psdc-mobile`; it is not a reason to place
 Cloud, AI, Compute, Media and Social into one Git history.
 
 ## Obsidian portability

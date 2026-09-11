@@ -6,7 +6,7 @@
 
 ## Access model
 
-Users do not create OpenWork, Happy or FPSDC-wide vendor accounts. They start at
+Users do not create OpenWork, Happy or PSDC-wide vendor accounts. They start at
 their institution's portal, download that institution's signed client, and sign in
 through its OIDC provider. The client talks only to that deployment's endpoints.
 
@@ -140,7 +140,7 @@ than a capability the Commons can guarantee.
 
 Branding is configuration and institution-owned assets, not long-lived source
 forks for every school. Shared UI behavior, security fixes and accessibility stay
-upstream in the FPSDC client code. Institution-specific integrations use adapters
+upstream in the PSDC client code. Institution-specific integrations use adapters
 and deployment manifests. A source fork is reserved for genuine product-policy or
 platform differences and must retain contract conformance.
 

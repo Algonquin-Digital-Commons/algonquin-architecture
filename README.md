@@ -1,7 +1,7 @@
-# Federated Post-Secondary Digital Commons
+# Post-Secondary Digital Commons
 
 Umbrella architecture and contract repository for the tenant-neutral
-Federated Post-Secondary Digital Commons and its Algonquin reference deployment. This
+Post-Secondary Digital Commons and its Algonquin reference deployment. This
 repository contains the system context, ownership boundaries,
 governance, security requirements, and shared contracts used by the Commons
 Cloud, Compute, AI, Media and Spatial, and Social Fabrics.
@@ -25,7 +25,7 @@ live in the sibling repositories under the workspace root.
 - [Institution-branded client access](./docs/clients/Institution-Branded-Client-Distribution-and-Access.md)
 - [Ecosystem gap analysis](./docs/roadmap/Ecosystem-Gap-Analysis-2026-09-10.md)
 - [Commons AI Web foundation](./docs/clients/Commons-AI-Web-Foundation.md)
-- [ADR-0009: web bootstrap](./docs/architecture/architecture-decision-records/ADR-0009-fpsdc-ai-web-foundation.md)
+- [ADR-0009: web bootstrap](./docs/architecture/architecture-decision-records/ADR-0009-psdc-ai-web-foundation.md)
 - [ADR-0010: institutional production authorities](./docs/architecture/architecture-decision-records/ADR-0010-provider-neutral-core-institutional-production-authority.md)
 - [ADR-0017: OpenTofu default](./docs/architecture/architecture-decision-records/ADR-0017-opentofu-default.md)
 

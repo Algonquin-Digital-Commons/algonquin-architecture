@@ -24,19 +24,19 @@ The initial repository set is:
 
 | Repository | Boundary |
 |---|---|
-| `fpsdc-architecture` | Constitutional architecture, governance, shared contracts, ADRs and conformance profiles |
-| `fpsdc-cloud` | Commons Cloud Fabric |
-| `fpsdc-ai` | AI gateway, routing, policy integration, model adapters and closely coupled service packages |
-| `fpsdc-compute` | Commons Compute Fabric |
-| `fpsdc-media` | Commons Media and Spatial Fabric |
-| `fpsdc-social` | Commons Social Fabric and ActivityPub integration |
-| `fpsdc-openwork-desktop` | OpenWork-derived desktop product and Session Host client integration |
-| `fpsdc-happy-mobile` | Happy-derived mobile/web companion, agent/CLI adapters and wire protocol packages |
-| `fpsdc-deployment-template` | Neutral institution-deployment composition, branding and policy template |
-| `fpsdc-workspace` | Repository manifest, bootstrap tooling and Obsidian maps only |
+| `psdc-architecture` | Constitutional architecture, governance, shared contracts, ADRs and conformance profiles |
+| `psdc-cloud` | Commons Cloud Fabric |
+| `psdc-ai` | AI gateway, routing, policy integration, model adapters and closely coupled service packages |
+| `psdc-compute` | Commons Compute Fabric |
+| `psdc-media` | Commons Media and Spatial Fabric |
+| `psdc-social` | Commons Social Fabric and ActivityPub integration |
+| `psdc-desktop` | OpenWork-derived desktop product and Session Host client integration |
+| `psdc-mobile` | Happy-derived mobile/web companion, agent/CLI adapters and wire protocol packages |
+| `psdc-deployment-template` | Neutral institution-deployment composition, branding and policy template |
+| `psdc-workspace` | Repository manifest, bootstrap tooling and Obsidian maps only |
 
 Each institution maintains its own thin forks, including a deployment repository
-forked from `fpsdc-deployment-template`, as refined by ADR-0023. It consumes
+forked from `psdc-deployment-template`, as refined by ADR-0023. It consumes
 released Commons artifacts and contracts; it does not turn the workspace
 repository into a central operations plane.
 

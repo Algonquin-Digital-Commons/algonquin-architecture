@@ -58,7 +58,7 @@ behaviors, known deviations, and evidence location.
 
 - ADR-0001: Standards-First / Buy-Borrow-Build
 - ADR-0005: Standard Platform Primitives
-- ADR-0012: Tenant-Neutral Federated Post-Secondary Digital Commons
+- ADR-0012: Tenant-Neutral Post-Secondary Digital Commons
 - ADR-0013: Institution-First Federation Locality
 - ADR-0014: Fediverse Social Fabric
 - ADR-0016: Accepted Project Defaults

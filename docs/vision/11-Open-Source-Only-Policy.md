@@ -6,7 +6,7 @@
 
 ## Policy statement
 
-The Federated Post-Secondary Digital Commons is self-hosted and open-source by default. Teams
+The Post-Secondary Digital Commons is self-hosted and open-source by default. Teams
 select technology for capability, security, interoperability, maintainability,
 community health, and total lifecycle cost—not because a vendor bundles it with a
 cloud account.

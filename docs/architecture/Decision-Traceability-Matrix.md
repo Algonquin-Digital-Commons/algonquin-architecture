@@ -13,7 +13,7 @@
 | ADR-0009 Commons AI Web foundation | AC AI web application, licensing, provenance, client roadmap | Frozen BSD bootstrap and native product evolution |
 | ADR-0010 Institutional production authorities | Identity broker, Entra adapter, Academic Service, Brightspace adapter | Provider-neutral contracts with College-authoritative production data |
 | ADR-0011 Terraform default with open fallback | Historical infrastructure choice | Superseded by ADR-0017; not current guidance |
-| ADR-0012 Federated Post-Secondary Digital Commons | Constitutional architecture, tenancy, repository boundaries | Institution-neutral reusable core with Algonquin as reference deployment |
+| ADR-0012 Post-Secondary Digital Commons | Constitutional architecture, tenancy, repository boundaries | Institution-neutral reusable core with Algonquin as reference deployment |
 | ADR-0013 Institution-first locality | Scheduling, data placement, federation and provider selection | Local-first ladder and explicit workload envelopes |
 | ADR-0014 Fediverse social fabric | Social, photos, video, communities and blogs | ActivityPub is the durable social federation protocol |
 | ADR-0015 Commons funding assumption | Economics, capacity and phased planning | CA$30 per enrolled student-month is a planning input, not approved revenue |
@@ -21,7 +21,7 @@
 | ADR-0017 OpenTofu default | Infrastructure scaffolds, module policy, state and license controls | OpenTofu + Ansible default with no standing source-available exception |
 | ADR-0018 OpenWork desktop foundation | AC AI desktop, local workspace/tool mediation, session host | MIT-only import boundary; no `ee/`, Den, hosted MCP, or provider bypass |
 | ADR-0019 Happy mobile foundation | AC AI mobile, session relay, pairing, permissions, notifications and handoff | MIT Expo baseline; self-hosted content-blind E2EE relay and provider-neutral sessions |
-| ADR-0020 Shared platform name | All shared architecture, contracts, software, documentation and conformance | Federated Post-Secondary Digital Commons is canonical; Algonquin names only the reference deployment |
+| ADR-0020 Shared platform name | All shared architecture, contracts, software, documentation and conformance | Post-Secondary Digital Commons is canonical; Algonquin names only the reference deployment |
 | ADR-0021 Institution-branded client access | Web, desktop, mobile, manifest, signing, OIDC, distribution and pairing | Institution portal/account/endpoints; neutral shared code; no upstream-vendor or global Commons account |
 | ADR-0022 Polyrepo ecosystem | Git boundaries, releases, ownership, clients, deployment overlays and developer workspace | Independent repositories per bounded product; Happy-style package workspaces only within one cohesive product |
 | ADR-0023 Institution fork model | GitHub organizations, white-labelling, upstream synchronization and institution release ownership | Repository-by-repository thin forks; institution `origin`, Commons `upstream`, deployment-manifest configuration |

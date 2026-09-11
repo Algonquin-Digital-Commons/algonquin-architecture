@@ -2,7 +2,7 @@
 
 > Status: Accepted  
 > Date: 2026-09-10  
-> Scope: FPSDC desktop client  
+> Scope: PSDC desktop client  
 > Decision owner: Project founder; exact-source import requires legal and security review
 
 ## Context
@@ -18,7 +18,7 @@ provider account, or source-available component part of its required core.
 
 ## Decision
 
-`fpsdc-openwork-desktop` will be scaffolded from an immutable, verified commit
+`psdc-desktop` will be scaffolded from an immutable, verified commit
 of the MIT-licensed OpenWork core outside `ee/`. The current upstream uses a
 React interface, Electron shell, and an OpenWork server; the exact pinned commit,
 not this observation, determines the imported implementation.

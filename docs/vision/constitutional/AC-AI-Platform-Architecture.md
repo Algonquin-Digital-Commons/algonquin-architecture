@@ -89,7 +89,7 @@ accessible UX, evaluation, and developer APIs.
 - ADR-0008: Open-Source, Self-Hosted Core
 - ADR-0009: Algonquin AI Web Foundation
 - ADR-0010: Provider-Neutral Core with Institutional Production Authorities
-- ADR-0012: Tenant-Neutral Federated Post-Secondary Digital Commons
+- ADR-0012: Tenant-Neutral Post-Secondary Digital Commons
 - ADR-0013: Institution-First Federation Locality
 - ADR-0016: Accepted Project Defaults
 - ADR-0017: OpenTofu Default Infrastructure-as-Code Toolchain

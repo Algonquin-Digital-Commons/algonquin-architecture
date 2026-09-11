@@ -1,4 +1,4 @@
-# Federated Post-Secondary Digital Commons Funding Model
+# Post-Secondary Digital Commons Funding Model
 
 > Status: Accepted planning assumption; external approval required  
 > Date: 2026-09-10  
