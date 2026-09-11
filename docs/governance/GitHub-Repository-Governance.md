@@ -1,6 +1,14 @@
 # GitHub Repository Governance
 
-> Status: Active governance policy
+
+> Standard: PSDC-DOC-001
+> Document type: policy-standard
+> Status: Active
+> Owner: PSDC Architecture Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+
 > Effective: 2026-09-11
 > Applies to: `Post-Secondary-Digital-Commons` and `Algonquin-Digital-Commons`
 

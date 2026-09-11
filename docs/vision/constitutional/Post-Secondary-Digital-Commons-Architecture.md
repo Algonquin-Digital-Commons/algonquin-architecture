@@ -1,8 +1,15 @@
 # Post-Secondary Digital Commons Architecture
 
-> Status: Accepted constitutional direction
-> Date: 2026-09-10
+
+> Standard: PSDC-DOC-001
+> Document type: architecture-specification
+> Status: Accepted
+> Owner: PSDC Architecture Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
 > Governing decisions: ADR-0012, ADR-0013, ADR-0014, ADR-0016, ADR-0020
+
+> Date: 2026-09-10
 
 ## Purpose
 

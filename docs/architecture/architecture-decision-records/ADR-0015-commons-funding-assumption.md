@@ -1,6 +1,14 @@
 # ADR-0015: Use CA$30 per Enrolled Student-Month as the Funding Assumption
 
-> Status: Accepted planning assumption
+
+> Standard: PSDC-DOC-001
+> Document type: adr
+> Status: Accepted
+> Owner: PSDC Architecture Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+
 > Date: 2026-09-10
 > Scope: Business-case and capacity scenarios
 > External approval: Not granted
@@ -34,4 +42,3 @@ student work, and reserves—not a consumer chatbot subscription.
 Student governance, College leadership, finance, legal, accessibility/equity,
 privacy, procurement, and any applicable provincial authority must approve the
 actual funding model before collection or public claims.
-

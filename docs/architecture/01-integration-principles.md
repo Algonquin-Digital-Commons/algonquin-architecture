@@ -1,5 +1,14 @@
 # Integration Principles
 
+
+> Standard: PSDC-DOC-001
+> Document type: architecture-map
+> Status: Normative
+> Owner: PSDC Architecture Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+
 1. Platform capability first, then a versioned API/contract, then clients.
 2. Prefer asynchronous events for cross-system notifications and projections.
 3. Keep each ecosystem independently deployable and testable.

@@ -1,5 +1,14 @@
 # Post-Secondary Digital Commons
 
+
+> Standard: PSDC-DOC-001
+> Document type: repository-index
+> Status: Normative
+> Owner: PSDC Architecture Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: none; index governed by repository policy
+
 Umbrella architecture and contract repository for the tenant-neutral
 Post-Secondary Digital Commons and its Algonquin reference deployment. This
 repository contains the system context, ownership boundaries,
@@ -29,6 +38,7 @@ live in the sibling repositories under the workspace root.
 - [Ecosystem implementation readiness](./docs/roadmap/Ecosystem-Implementation-Readiness-2026-09-11.md)
 - [Documentation completion audit](./docs/architecture/Documentation-Completion-Audit-2026-09-11.md)
 - [Specification completeness standard](./docs/architecture/Specification-Completeness-Standard.md)
+- [Ecosystem documentation quality and scope standard](./docs/standards/Ecosystem-Documentation-Quality-Standard.md)
 - [PSDC Web foundation](./docs/clients/PSDC-Web-Foundation.md)
 - [ADR-0009: web bootstrap](./docs/architecture/architecture-decision-records/ADR-0009-psdc-ai-web-foundation.md)
 - [ADR-0010: institutional production authorities](./docs/architecture/architecture-decision-records/ADR-0010-provider-neutral-core-institutional-production-authority.md)
@@ -45,3 +55,39 @@ live in the sibling repositories under the workspace root.
 - `contracts/ai/` — model and inference references
 - `contracts/compute/` — jobs, capacity, and worker references
 - `contracts/media/` — assets, renditions, and media metadata
+
+## Purpose
+
+This index explains the purpose and placement of $dir and links readers to the authoritative documents it contains.
+
+## Allowed contents
+
+This directory belongs to $repo. It may contain scoped documentation, contracts, configuration examples, tests, and navigation links owned by this repository.
+
+## Prohibited contents
+
+It MUST NOT contain secrets, credentials, private infrastructure values, unrelated product source, copied institution overrides, or undocumented external dependencies.
+
+## Owner
+
+The owning role is $owner; accountable maintenance remains with RedjiJB until a second maintainer is appointed.
+
+## Contents
+
+- `.github`
+- `.gitignore`
+- `contracts`
+- `CONTRIBUTING.md`
+- `docs`
+- `LICENSE`
+- `NOTICE`
+- `README.md`
+
+## References
+
+- [Ecosystem documentation quality standard](https://github.com/Post-Secondary-Digital-Commons/psdc-architecture/blob/main/docs/standards/Ecosystem-Documentation-Quality-Standard.md)
+- [Repository governance](https://github.com/Post-Secondary-Digital-Commons/psdc-architecture/blob/main/docs/governance/GitHub-Repository-Governance.md)
+
+## Contribution and change control
+
+Changes MUST use a pull request, preserve the repository boundary, update affected links and contracts, and pass the structural and substantive documentation audits before merge.

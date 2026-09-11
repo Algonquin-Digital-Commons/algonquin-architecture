@@ -1,6 +1,14 @@
 # Ecosystem Implementation Readiness — 2026-09-11
 
-> Status: Architecture and scope complete; implementation not started
+
+> Standard: PSDC-DOC-001
+> Document type: roadmap
+> Status: Complete
+> Owner: PSDC Architecture Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+
 > Repository scope: one workspace, ten common products, ten Algonquin forks
 
 ## Executive finding

@@ -1,9 +1,14 @@
 # Event Registration Agent
 
-> Status: Normative specification; implementation gated
-> Domain: studentlife
-> Owner: PSDC Studentlife Working Group; accountable maintainer RedjiJB until delegation
+
+> Standard: PSDC-DOC-001
+> Document type: architecture-specification
+> Status: Normative
+> Owner: PSDC Studentlife Working Group
+> Accountable maintainer: RedjiJB until delegation
 > Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+> Domain: studentlife
 
 ## Purpose and outcome
 

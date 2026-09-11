@@ -1,6 +1,14 @@
 # ADR-0017: OpenTofu Is the Default Infrastructure-as-Code CLI
 
-> Status: Accepted; supersedes ADR-0011
+
+> Standard: PSDC-DOC-001
+> Document type: adr
+> Status: Historical
+> Owner: PSDC Architecture Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+
 > Date: 2026-09-10
 > Scope: Infrastructure provisioning toolchain
 > Decision owner: Project founder

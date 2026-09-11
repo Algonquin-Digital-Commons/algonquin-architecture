@@ -1,7 +1,14 @@
 # PSDC Web Foundation
 
-> Status: Normative web foundation; implementation gated
+
+> Standard: PSDC-DOC-001
+> Document type: architecture-specification
+> Status: Normative
 > Owner: PSDC Web Working Group
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+
 > Decisions: ADR-0009 and ADR-0025
 
 ## Architectural identity

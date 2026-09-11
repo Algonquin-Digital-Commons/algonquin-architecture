@@ -1,9 +1,14 @@
 # Open WebUI Baseline and License Boundary
 
-> Status: Normative supporting policy for ADR-0009
-> Domain: clients
+
+> Standard: PSDC-DOC-001
+> Document type: architecture-specification
+> Status: Normative
 > Owner: Commons AI Fabric client team and open-source review
+> Accountable maintainer: RedjiJB until delegation
 > Last reviewed: 2026-09-10
+> Governing decisions: Applicable ADRs and repository governance
+> Domain: clients
 
 ## Purpose
 

@@ -1,6 +1,14 @@
 # ADR-0002: Institutional Identity Is the Root of Access
 
+
+> Standard: PSDC-DOC-001
+> Document type: adr
 > Status: Accepted
+> Owner: PSDC Architecture Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+
 > Scope: Institutional users and services
 
 ## Context

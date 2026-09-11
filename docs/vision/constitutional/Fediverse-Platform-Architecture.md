@@ -1,9 +1,14 @@
 # Fediverse Platform Architecture
 
-> Status: Normative federation architecture; local moderation ratification is a deployment gate
-> Domain: vision
+
+> Standard: PSDC-DOC-001
+> Document type: architecture-specification
+> Status: Normative
 > Owner: Commons Social Fabric architecture and trust/safety
+> Accountable maintainer: RedjiJB until delegation
 > Last reviewed: 2026-09-10
+> Governing decisions: Applicable ADRs and repository governance
+> Domain: vision
 
 ## Purpose
 

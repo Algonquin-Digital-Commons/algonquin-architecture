@@ -1,6 +1,14 @@
 # Ecosystem Dependency Contract
 
-> Status: Normative dependency contract; implementation evidence gated
+
+> Standard: PSDC-DOC-001
+> Document type: architecture-map
+> Status: Normative
+> Owner: PSDC Architecture Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+
 > Purpose: Make runtime, build, feature, and external dependencies explicit
 
 ## Dependency classes

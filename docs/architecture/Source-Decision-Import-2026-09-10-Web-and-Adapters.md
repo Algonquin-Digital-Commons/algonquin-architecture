@@ -1,6 +1,14 @@
 # Source Decision Import — Web Foundation and Provider Adapters
 
-> Status: Complete import record
+
+> Standard: PSDC-DOC-001
+> Document type: architecture-map
+> Status: Complete
+> Owner: PSDC Architecture Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+
 > Date: 2026-09-10
 > Source type: Two user-provided chat excerpts
 

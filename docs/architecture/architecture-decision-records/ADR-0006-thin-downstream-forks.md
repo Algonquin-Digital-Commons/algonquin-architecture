@@ -1,6 +1,14 @@
 # ADR-0006: Thin, Upstream-Compatible Product Forks
 
+
+> Standard: PSDC-DOC-001
+> Document type: adr
 > Status: Accepted
+> Owner: PSDC Architecture Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+
 > Scope: Adopted user-facing and federated products
 
 ## Context

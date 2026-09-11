@@ -1,8 +1,15 @@
 # Federated Social Governance Policy
 
-> Status: Normative common policy; each institution ratifies its local enforcement profile before public federation
-> Scope: Commons Social Fabric and every ActivityPub-enabled social product
+
+> Standard: PSDC-DOC-001
+> Document type: architecture-specification
+> Status: Normative
+> Owner: PSDC Architecture Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
 > Governing decisions: ADR-0002, ADR-0008, ADR-0012, ADR-0014, ADR-0020
+
+> Scope: Commons Social Fabric and every ActivityPub-enabled social product
 
 ## Are the social products federated?
 

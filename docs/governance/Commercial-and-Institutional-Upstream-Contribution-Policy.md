@@ -1,6 +1,14 @@
 # Commercial and Institutional Upstream Contribution Policy
 
-> Status: Accepted project policy; participation agreement language requires legal review
+
+> Standard: PSDC-DOC-001
+> Document type: policy-standard
+> Status: Accepted
+> Owner: PSDC Architecture Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+
 > Governing decision: ADR-0024
 
 PSDC is permissively licensed so institutions, researchers, students and
@@ -41,4 +49,3 @@ encouraged—but not legally compelled—to contribute modifications.
 Changes move **upstream** from an institution or business fork to the canonical
 Commons repository. Commons releases then flow **downstream** to institution
 forks.
-

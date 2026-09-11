@@ -1,5 +1,14 @@
 # ActivityPub Federation
 
+
+> Standard: PSDC-DOC-001
+> Document type: architecture-map
+> Status: Normative
+> Owner: PSDC Architecture Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+
 The Commons Social Fabric is the sole public ActivityPub security and interoperability edge.
 Centralizing that boundary avoids five inconsistent implementations of HTTP
 signatures, discovery, delivery, moderation, remote media, and abuse controls.

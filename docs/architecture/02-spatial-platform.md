@@ -1,5 +1,14 @@
 # Spatial Platform
 
+
+> Standard: PSDC-DOC-001
+> Document type: architecture-map
+> Status: Normative
+> Owner: PSDC Architecture Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+
 Spatial support is a shared capability, not a single application. Every ecosystem
 may attach spatial context using the same versioned contract while keeping its own
 domain behavior and access controls.

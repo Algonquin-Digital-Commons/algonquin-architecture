@@ -1,8 +1,15 @@
 # Institution-Branded Client Distribution and Access
 
-> Status: Normative distribution architecture; implementation gated
-> Applies to: OpenWork-derived desktop, Happy-derived mobile and web companion
+
+> Standard: PSDC-DOC-001
+> Document type: architecture-specification
+> Status: Normative
+> Owner: PSDC Architecture Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
 > Governing decisions: ADR-0002, ADR-0008, ADR-0018, ADR-0019, ADR-0020, ADR-0021
+
+> Applies to: OpenWork-derived desktop, Happy-derived mobile and web companion
 
 ## Access model
 

@@ -1,8 +1,15 @@
 # Technology Defaults and Alternatives
 
-> Status: Normative technology baseline; exact releases are implementation evidence
-> Date: 2026-09-10
+
+> Standard: PSDC-DOC-001
+> Document type: architecture-specification
+> Status: Normative
+> Owner: PSDC Architecture Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
 > Governing decisions: ADR-0008, ADR-0009, ADR-0016, ADR-0017, ADR-0018, ADR-0019
+
+> Date: 2026-09-10
 
 This matrix turns the architecture's earlier candidate lists into an explicit
 default stack. Alternatives remain supported evaluation or exit paths; they are

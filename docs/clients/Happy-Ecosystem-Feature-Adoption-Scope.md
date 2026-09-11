@@ -1,6 +1,14 @@
 # Happy Ecosystem Feature Adoption Scope
 
-> Status: Accepted product scope; staged implementation
+
+> Standard: PSDC-DOC-001
+> Document type: architecture-specification
+> Status: Accepted
+> Owner: PSDC Architecture Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+
 > Applies to: Happy-derived mobile, OpenWork-derived desktop, Commons Session Host and Relay
 
 ## Adopt first

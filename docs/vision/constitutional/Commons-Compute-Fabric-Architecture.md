@@ -1,9 +1,14 @@
 # Commons Compute Fabric Compute Fabric Architecture
 
-> Status: Normative compute-fabric architecture; capacity evidence is an implementation gate
-> Domain: vision
+
+> Standard: PSDC-DOC-001
+> Document type: architecture-specification
+> Status: Normative
 > Owner: Commons Compute Fabric architecture
+> Accountable maintainer: RedjiJB until delegation
 > Last reviewed: 2026-09-10
+> Governing decisions: Applicable ADRs and repository governance
+> Domain: vision
 
 ## Purpose
 

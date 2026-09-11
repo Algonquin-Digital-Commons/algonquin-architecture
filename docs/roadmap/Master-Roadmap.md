@@ -1,9 +1,14 @@
 # Master Roadmap
 
-> Status: Normative specification; implementation gated
-> Domain: roadmap
-> Owner: PSDC Roadmap Working Group; accountable maintainer RedjiJB until delegation
+
+> Standard: PSDC-DOC-001
+> Document type: roadmap
+> Status: Normative
+> Owner: PSDC Roadmap Working Group
+> Accountable maintainer: RedjiJB until delegation
 > Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+> Domain: roadmap
 
 ## Purpose and outcome
 

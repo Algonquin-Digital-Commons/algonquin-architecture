@@ -1,9 +1,14 @@
 # Chaos Testing
 
-> Status: Normative specification; implementation gated
-> Domain: reliability
-> Owner: PSDC Reliability Working Group; accountable maintainer RedjiJB until delegation
+
+> Standard: PSDC-DOC-001
+> Document type: architecture-specification
+> Status: Normative
+> Owner: PSDC Reliability Working Group
+> Accountable maintainer: RedjiJB until delegation
 > Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+> Domain: reliability
 
 ## Purpose and outcome
 

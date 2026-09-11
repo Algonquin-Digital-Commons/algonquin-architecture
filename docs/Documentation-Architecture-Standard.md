@@ -1,5 +1,14 @@
 # Documentation Architecture Standard
 
+
+> Standard: PSDC-DOC-001
+> Document type: governance-standard
+> Status: Normative
+> Owner: PSDC Architecture Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+
 ## Purpose
 
 Keep architecture work consistent across Commons Cloud, Commons Compute Fabric, Commons AI Fabric, Commons Media and Spatial Fabric,

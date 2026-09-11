@@ -1,9 +1,14 @@
 # Post-Secondary Digital Commons Vision and Principles
 
-> Status: Normative common vision; institution ratification occurs through its deployment manifest
-> Domain: vision
+
+> Standard: PSDC-DOC-001
+> Document type: architecture-specification
+> Status: Normative
 > Owner: Platform architecture and institutional sponsors
+> Accountable maintainer: RedjiJB until delegation
 > Last reviewed: 2026-09-10
+> Governing decisions: Applicable ADRs and repository governance
+> Domain: vision
 
 ## Purpose
 

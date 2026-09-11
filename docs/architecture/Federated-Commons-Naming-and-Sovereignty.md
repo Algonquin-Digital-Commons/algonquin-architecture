@@ -1,6 +1,14 @@
 # Federated Commons Naming and Sovereignty
 
+
+> Standard: PSDC-DOC-001
+> Document type: architecture-map
 > Status: Accepted
+> Owner: PSDC Architecture Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+
 > Governing decision: ADR-0020
 
 ## Canonical names
@@ -56,4 +64,3 @@ server or deployment mechanism. A peer is compatible when its enabled protocol
 versions, security profile, object semantics, failure behavior and revocation
 mechanisms pass the shared conformance suite. Identical internal stacks are not
 required.
-

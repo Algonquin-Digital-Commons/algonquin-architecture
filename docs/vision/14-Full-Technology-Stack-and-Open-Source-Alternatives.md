@@ -1,8 +1,15 @@
 # Full Technology Stack and Open-Source Alternatives
 
-> Status: Accepted project catalog; exact-release verification required
-> Date: 2026-09-10
+
+> Standard: PSDC-DOC-001
+> Document type: architecture-specification
+> Status: Accepted
+> Owner: PSDC Architecture Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
 > Governing decisions: ADR-0008, ADR-0009, ADR-0010, ADR-0016, ADR-0017, ADR-0018, ADR-0019
+
+> Date: 2026-09-10
 
 This is the readable inventory for the complete Digital Commons stack. It answers
 three separate questions for every capability: what the default is, whether the

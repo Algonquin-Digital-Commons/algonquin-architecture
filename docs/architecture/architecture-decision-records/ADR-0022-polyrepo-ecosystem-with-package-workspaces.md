@@ -1,6 +1,14 @@
 # ADR-0022: Polyrepo Ecosystem with Product-Local Package Workspaces
 
+
+> Standard: PSDC-DOC-001
+> Document type: adr
 > Status: Accepted
+> Owner: PSDC Architecture Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+
 > Date: 2026-09-10
 > Scope: Source control, releases, ownership and developer workspace
 > Decision owner: Project founder

@@ -1,6 +1,14 @@
 # Technology Reference Stack
 
-> Status: Normative open-source reference stack; exact releases are implementation evidence
+
+> Standard: PSDC-DOC-001
+> Document type: architecture-specification
+> Status: Normative
+> Owner: PSDC Architecture Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+
 > Constraint: Every selection requires license, security, accessibility,
 > operational, and institutional review before production
 

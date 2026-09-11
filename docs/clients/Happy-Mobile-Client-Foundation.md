@@ -1,7 +1,14 @@
 # Happy Mobile Client Foundation
 
-> Status: Normative foundation; source import authorized only at the implementation provenance gate
+
+> Standard: PSDC-DOC-001
+> Document type: architecture-specification
+> Status: Normative
 > Owner: Commons AI Fabric mobile team
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+
 > Governing decision: ADR-0019
 
 ## Product role

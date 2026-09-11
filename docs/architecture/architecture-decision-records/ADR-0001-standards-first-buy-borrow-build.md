@@ -1,6 +1,14 @@
 # ADR-0001: Standards-First / Buy-Borrow-Build
 
+
+> Standard: PSDC-DOC-001
+> Document type: adr
 > Status: Accepted
+> Owner: PSDC Architecture Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+
 > Scope: Entire Algonquin Digital Platform
 > Decision owner: Platform architecture
 > Review trigger: A proposal to create a new infrastructure primitive or protocol

@@ -1,6 +1,14 @@
 # Source Decision Import — Commons Expansion
 
-> Status: Complete decision extraction
+
+> Standard: PSDC-DOC-001
+> Document type: architecture-map
+> Status: Complete
+> Owner: PSDC Architecture Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+
 > Source: `ChatGPT-AI Club Platform Proposal-20260910-1634.md`
 > Imported: 2026-09-10
 

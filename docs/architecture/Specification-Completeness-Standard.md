@@ -1,7 +1,14 @@
 # Specification Completeness Standard
 
-> Status: Normative specification
+
+> Standard: PSDC-DOC-001
+> Document type: governance-standard
+> Status: Normative
 > Owner: PSDC Architecture Maintainer
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+
 > Effective: 2026-09-11
 
 ## Purpose
@@ -10,6 +17,11 @@ This standard defines when Post Secondary Digital Commons architecture and
 scope documentation is complete enough to authorize implementation. It prevents
 empty outlines from being treated as architecture while keeping measured
 deployment evidence separate from design decisions.
+
+This specification-focused standard is subordinate to the ecosystem-wide
+[Documentation Quality and Scope Standard](../standards/Ecosystem-Documentation-Quality-Standard.md),
+which defines document types, domain-specific depth, anti-boilerplate rules,
+maturity levels, and machine-enforceable conformance.
 
 ## Completion rule
 
