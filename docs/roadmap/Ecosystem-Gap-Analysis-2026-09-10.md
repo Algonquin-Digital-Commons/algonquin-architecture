@@ -1,7 +1,8 @@
-# Ecosystem Gap Analysis — 2026-09-10
+# Ecosystem Gap Analysis — Updated 2026-09-11
 
 > Status: Current-state baseline  
-> Scope: Full Post-Secondary Digital Commons architecture and all five ecosystem repositories
+> Scope: Full Post-Secondary Digital Commons architecture, nine neutral common
+> repositories, nine Algonquin institution forks, and the workspace repository
 
 ## Executive finding
 
@@ -19,20 +20,22 @@ tenant-neutral.
 
 ## Evidence snapshot
 
-The repository consistency inspection on 2026-09-10 found:
+The repository consistency inspection on 2026-09-11 found:
 
-- five ecosystem implementation repositories plus the umbrella architecture;
-- 587 Markdown documents, including 423 accepted-baseline specifications whose
-  implementation content remains incomplete;
-- 162 `.gitkeep` scaffold markers; four agent-session JSON Schema scaffolds now
-  replace empty markers in the desktop/mobile/session paths;
-- 4,964 TODO/provenance-gate-bearing lines after the naming/client-access update;
-- one OpenAPI YAML placeholder, five draft JSON Schemas, plus one legacy GitHub
-  Actions structure check;
+- 19 clean local Git repositories: one workspace coordinator, nine neutral
+  `psdc-*` common repositories, and nine `algonquin-*` institution forks;
+- 1,228 Markdown documents across the complete checkout, including 601 in the
+  neutral common repositories; most detailed specifications remain incomplete;
+- 347 `.gitkeep` scaffold markers and no application source files;
+- 10,430 TODO, TBD, placeholder, or provenance-gate-bearing lines across the
+  common and institution checkouts;
+- four YAML files and 15 JSON files, including draft API, deployment, and
+  agent-session contracts;
 - no application or OpenTofu source, deployable infrastructure, automated test
   suite, or accepted self-hosted Woodpecker CI pipeline;
-- a large uncommitted migration-source tree; ADR-0022 now requires verified
-  history transfer into independent repositories before implementation begins.
+- verified local common-to-Algonquin ancestry and corrected Git identity, but no
+  GitHub organization slugs, hosted remotes, protected branches, or pull-request
+  workflow yet.
 
 Counts describe repository maturity, not quality or completion. Re-run them at
 each milestone because this document intentionally does not pretend that seeded
@@ -45,7 +48,7 @@ specifications are implemented.
 | Vision and scope | Defined | Constitutional principles and Commons architecture | Sponsor and institutional review recorded |
 | Architecture decisions | Defined project baseline | ADR-0001 through ADR-0024 | Owners verify implementation conformance |
 | Technology choices | Defined project baseline | Defaults/alternatives matrix and OpenTofu decision | Exact versions, licenses and lifecycle owners pinned |
-| Obsidian navigation | Defined | Root vault, maps and ecosystem notes | Link validation in self-hosted CI and relocation committed |
+| Obsidian navigation | Locally validated | Root vault, maps, ecosystem notes and repaired polyrepo paths | Repeat link validation in self-hosted CI |
 | Detailed specifications | Scaffolded | Broad decision-seeded outlines | Critical paths contain measurable requirements and acceptance tests |
 | Shared contracts | Started | Catalog, identity/academic skeletons, OpenAPI placeholder and draft agent-session schemas | Complete event/command/crypto profiles, fixtures and compatibility tests for the first slice |
 | Tenant-neutral Commons | Conceptual | ADR and constitutional model | A second independently configured institutional deployment |
@@ -63,7 +66,7 @@ specifications are implemented.
 
 | Priority | Gap | Why it blocks progress | Required evidence |
 |---|---|---|---|
-| P0 | Complete multi-organization fork migration | Independent local repositories exist, but GitHub organizations/remotes and verified fork relationships are not configured | Commons and Algonquin organization slugs, repository forks, `origin`/`upstream` remotes, protected branches, repository-local CI and archived source checkout |
+| P0 | Publish the multi-organization fork topology | Independent local repositories and ancestry are verified, but GitHub organizations/remotes are not configured | Common and Algonquin organization slugs, hosted repository forks, `origin`/`upstream` remotes, protected branches and repository-local CI |
 | P0 | Accountable ownership | Defaults cannot become operated services without decision and incident owners | Sponsor, product, architecture, security/privacy, operations and domain RACI |
 | P0 | OpenTofu state/module design | Reproducibility still needs an exact backend and dependency policy | Supported release, provider/module allowlist, encrypted locking backend and recovery test |
 | P0 | Neutral configuration boundary | White-labelling fails if Algonquin assumptions enter core logic | Tenant-neutral naming/schema rules and an Algonquin deployment overlay |
@@ -104,6 +107,19 @@ Do not introduce OpenStack, a service mesh, distributed Python, a separate vecto
 database, multi-cluster federation or every empty service directory into this
 slice unless measured requirements demand them.
 
+## Current client checkout state
+
+- The neutral web-client boundary is `psdc-ai/apps/web`; the Algonquin fork is
+  `algonquin-ai/apps/web`. Both are provenance-gated placeholders, not runnable
+  applications.
+- The standalone client repositories are `psdc-desktop` and `psdc-mobile`, with
+  `algonquin-desktop` and `algonquin-mobile` as institution forks.
+- OpenWork and Happy remain documented upstream inspirations and attribution
+  sources; their names are not used as repository or directory identities.
+- No Open WebUI, OpenWork, or Happy source has been imported. App-store signing,
+  desktop packaging, campus-device propagation, and mobile publication remain
+  planned work.
+
 ## Definition of ecosystem completion
 
 The ecosystem is not complete because every placeholder exists. It reaches a
@@ -117,8 +133,9 @@ data-sovereignty and exit tests.
 
 ## Immediate sequence
 
-1. Review and commit the documentation baseline; resolve the Obsidian relocation.
-2. Name owners and select exact code/document licenses.
+1. Create or name the common and Algonquin GitHub organizations, create the
+   hosted forks, configure `origin`/`upstream`, branch protection and local CI.
+2. Name accountable owners for product, architecture, privacy, security and operations.
 3. Complete OpenTofu version, state backend, provider allowlist and recovery design.
 4. Freeze the first-slice contracts and threat model; complete the Agent Session
    event/command/cryptographic profile before remote control.
