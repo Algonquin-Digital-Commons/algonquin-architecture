@@ -59,3 +59,15 @@ Conformance evidence for **License Policy** MUST record the policy version, acto
 ## Acceptance and review
 
 The policy is accepted only when positive, negative, authorization, exception-expiry, audit-retrieval, failure, and recovery tests pass for **License Policy**. PSDC Architecture Maintainers MUST review it at least annually and whenever an ADR, contract, threat model, legal requirement, or material incident changes its assumptions. Review output MUST record the decision, evidence, and next review trigger.
+
+## Purpose
+
+This policy defines the required outcome, actors, and decision boundary for **License-Policy**. It applies to all implementations and institution overlays that claim conformance.
+
+## Scope
+
+The scope covers the systems, people, data, interfaces, and lifecycle named by this policy. Local values may tighten these rules but MUST NOT weaken shared safety, privacy, or audit requirements.
+
+## Normative rules
+
+The requirements in this document are normative. Owners MUST implement them, SHOULD document justified risk trade-offs, and MUST NOT treat an example as an exemption.

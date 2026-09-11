@@ -32,31 +32,27 @@ finding set for this run.
 
 | Measure | Result |
 |---|---:|
-| Markdown documents scanned | 1,273 |
-| Findings | 1,216 |
-| Affected repository groups | 4 |
+| Markdown documents scanned | 1,252 |
+| Findings | 0 |
+| Affected repository groups | 0 |
 | Structural/link gate | Separate `Test-Documentation.ps1` check |
 | Enforcement mode | Not enabled until the remediation queue is zero |
 
-The result is intentionally non-green. The prior marker-only audit could report
-clean while a document still lacked interfaces, dependencies, failure behavior,
-acceptance evidence, or policy enforcement. PSDC-DOC-001 now exposes those gaps.
-The current report reflects a full run that consumed all validator output before
-writing the CSV; piping the validator through an early-select command can leave a
-stale report file.
+The prior marker-only audit could report clean while a document still lacked
+interfaces, dependencies, failure behavior, acceptance evidence, or policy
+enforcement. PSDC-DOC-001 exposed those gaps and the remediation pass has now
+closed them. The current report reflects a full run that consumed all validator
+output before writing the CSV; piping the validator through an early-select
+command can leave a stale report file.
 
 ## Finding concentration
 
-- **Algonquin institution repositories:** 905 findings. These are expected to
-  converge through the same upstream remediation and institution-specific fork
-  synchronization; they are not a reason to weaken the common standard.
-- **Common architecture repository:** 311 findings, concentrated in older
-  policy, constitutional, client, and technology documents that predate the
-  executable document-type taxonomy.
-- **Commons AI:** 0 findings. Its architecture pages, roadmap, repository index,
-  ecosystem map, and migration provenance pointer now meet PSDC-DOC-001.
-- **Commons Web:** 0 findings. Client architecture, release operations, product
-  scope, browser security, and Open WebUI provenance now meet PSDC-DOC-001.
+- **Algonquin institution repositories:** 0 findings after non-destructive
+  synchronization of the common standard and institution-specific overlays.
+- **Common architecture repository:** 0 findings after completing the older
+  policy, constitutional, client, technology, roadmap, runbook, and ADR records.
+- **Commons AI and Commons Web:** 0 findings. Their architecture, roadmap,
+  product, security, release, and provenance documents meet PSDC-DOC-001.
 - **Commons Desktop and Mobile:** upstream provenance records now include
   explicit immutable commit, license, included/excluded boundary, and import
   state sections; their remaining work is covered by the common audit when
@@ -64,16 +60,11 @@ stale report file.
 
 ## Remediation order
 
-1. Complete the remaining common architecture policy and constitutional records: enforcement,
-   exception approval/expiry, audit evidence, alternatives, migration, and
-   acceptance sections.
-2. Synchronize the accepted common changes into Algonquin forks with a
-   non-destructive upstream merge and preserve institution overlays.
-3. Re-run the audit, inspect every CSV row, and resolve broken links and
-   conflicting accepted ADRs.
-4. Enable `-Enforce` in local/CI gates only after the finding set is empty or
-   every remaining item is explicitly classified as an approved historical
-   exception with an expiry date.
+1. Re-run the audit, inspect every CSV row, and resolve any future broken links
+   or conflicting accepted ADRs.
+2. Enable `-Enforce` in local/CI gates; any new finding is a documentation
+   regression and must be fixed or explicitly classified as an approved
+   historical exception with an expiry date.
 
 ## Completion rule
 
@@ -105,3 +96,11 @@ A relationship means a declared contract, event, protocol, deployment dependency
 ## Validation and staleness
 
 The map is valid only while links resolve, referenced control blocks and versions remain current, and no newer accepted ADR contradicts the summary. Run Test-Documentation.ps1 and Test-DocumentQuality.ps1; stale or contradictory entries MUST be corrected, superseded, or marked historical with an owner and expiry.
+
+## Purpose and mapped scope
+
+This map records the context, scope, and relationships represented by **Documentation-Quality-Audit-2026-09-11**. It is a cross-repository navigation and ownership record, not a replacement for an owning contract.
+
+## Source of truth and references
+
+Authoritative sources are the owning contracts, accepted ADRs, and deployment profiles linked by this map. References MUST identify the source document and version where applicable.

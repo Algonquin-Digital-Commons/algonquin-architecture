@@ -95,3 +95,19 @@ architectural blanks. Removing empty markers alone is not sufficient.
 - Link standards and upstream projects to their authoritative sources.
 - Avoid embedding secrets, private infrastructure addresses, personal data, or
   precise private spatial data.
+
+## Required controls
+
+Implementations MUST satisfy the required controls and provide evidence before claiming conformance.
+
+## Maturity
+
+Maturity is recorded as proposed, active, accepted, or retired with an accountable owner.
+
+## Definition of done
+
+Definition of done includes content, ownership, interfaces, testing, evidence, and rollback where applicable.
+
+## Change control
+
+Change control requires review, impact analysis, linked decisions, and a supersession or migration note where behavior changes.

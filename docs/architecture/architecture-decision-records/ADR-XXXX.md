@@ -68,3 +68,13 @@ ADRs. State whether this ADR supersedes or is superseded by another decision.
 ## Alternatives and evidence
 
 For **ADR Authoring Template**, the decision record considered: retain the prior approach; adopt a mature compatible standard or open-source implementation; and build or fork a new primitive. The selected decision is preferred under the stated constraints. A change trigger is new security, licensing, interoperability, sovereignty, cost, or operational evidence; a new option requires an ADR update rather than an undocumented exception.
+
+## Alternatives
+
+Considered alternatives include retaining the prior approach, adopting a mature open implementation, and building a local adapter. The selected decision is preferred under the stated requirements, constraints, sovereignty, and maintenance capacity; a new option requires a superseding ADR.
+
+## Normative requirement
+
+This stub MUST be completed with context, decision, consequences,
+alternatives, migration/rollback plan, owner, and acceptance evidence before it is
+accepted as an ADR. Until then it is non-deployable scaffolding.

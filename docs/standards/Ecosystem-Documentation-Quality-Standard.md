@@ -267,3 +267,15 @@ overlays may be stricter but may not weaken this common standard.
 - [Documentation Architecture Standard](../Documentation-Architecture-Standard.md)
 - [Repository and Obsidian Linking Model](../architecture/Repository-and-Obsidian-Linking-Model.md)
 - [Decision Traceability Matrix](../architecture/Decision-Traceability-Matrix.md)
+
+## Required controls
+
+Implementations MUST satisfy the required controls and provide evidence before claiming conformance.
+
+## Maturity
+
+Maturity is recorded as proposed, active, accepted, or retired with an accountable owner.
+
+## Change control
+
+Change control requires review, impact analysis, linked decisions, and a supersession or migration note where behavior changes.

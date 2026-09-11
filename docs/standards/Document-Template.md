@@ -13,6 +13,11 @@
 
 ## Instructions
 
+## Non-normative template
+
+This file is non-normative scaffolding. Replace each instruction and stub
+with reviewed, document-specific content before accepting a downstream document.
+
 1. Choose exactly one document type from PSDC-DOC-001.
 2. Replace the control block with a durable owner, accountable maintainer,
    review date, and governing ADRs.

@@ -208,3 +208,15 @@ An exception to **VM Security** requires a written reason, affected scope, risk 
 ## Audit evidence
 
 Conformance evidence for **VM Security** MUST record the policy version, actor or service, decision, reason code, affected object or boundary, timestamp, outcome, and reviewer where applicable. Evidence MUST minimize protected data, be access-controlled, be exportable to the institution, and be retained according to the governing data policy. The owner MUST be able to demonstrate both an allowed and a denied case.
+
+## Purpose
+
+This policy defines the required outcome, actors, and decision boundary for **VM-Security**. It applies to all implementations and institution overlays that claim conformance.
+
+## Normative rules
+
+The requirements in this document are normative. Owners MUST implement them, SHOULD document justified risk trade-offs, and MUST NOT treat an example as an exemption.
+
+## Acceptance and review
+
+Acceptance requires the documented controls, tests, operator ownership, and evidence to be complete. The owner reviews this policy on material architecture change and at least once per release cycle.

@@ -104,3 +104,23 @@ Dependencies require timeouts, bounded retries, circuit breakers, health signals
 ## Testing and evidence
 
 Evidence MUST include contract and schema validation, authorization/privacy/security tests, failure and recovery exercises, capacity measurements, accessibility where user-facing, SBOM/license review, signed provenance, and standalone institution conformance. The workspace structural and substantive documentation gates are required before release authorization.
+
+## Purpose and outcome
+
+This specification defines the purpose and intended outcome of **Commons-Cloud-Service-Taxonomy-v1** for the institution-neutral Commons ecosystem and its deployment boundaries.
+
+## Out of scope
+
+Out of scope are secrets, unowned implementation internals, unrelated product capabilities, and any integration not named by a versioned contract. Such work requires its owning specification.
+
+## Architecture and ownership
+
+The architecture assigns responsibilities, trust boundaries, and ownership to the components named here. Shared owners retain portable contracts; institution maintainers own local configuration and operations.
+
+## Failure and recovery
+
+Failures produce bounded, typed behavior with no secret or protected-content leakage. Operators MUST have detection, quarantine or degradation, recovery, and rollback procedures.
+
+## Acceptance criteria
+
+Acceptance requires the stated interfaces, controls, tests, operational ownership, and evidence to be complete. A document is not complete merely because a stub or implementation exists.

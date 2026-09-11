@@ -196,3 +196,19 @@ production release gates. Changes follow ADR-based change control.
 - [ADR-0001: Standards First](../architecture/architecture-decision-records/ADR-0001-standards-first-buy-borrow-build.md)
 - [ADR-0012: Post Secondary Digital Commons](../architecture/architecture-decision-records/ADR-0012-post-secondary-digital-commons.md)
 - [ADR-0017: OpenTofu Default](../architecture/architecture-decision-records/ADR-0017-opentofu-default.md)
+
+## Users and stakeholders
+
+The product serves the stakeholders and user roles named in **User-Personas**. Authorization, not navigation visibility, determines access.
+
+## Accessibility
+
+Critical journeys MUST meet WCAG 2.2 AA expectations for keyboard, screen reader, reduced motion, contrast, localization, and recovery.
+
+## Privacy and security
+
+Privacy and security require data minimization, consent, user-visible retention and memory controls, least privilege, safe rendering, and no protected content in URLs or telemetry.
+
+## Acceptance scenarios
+
+Acceptance scenarios cover happy path, denied capability, dependency failure, recovery, accessibility, privacy controls, and institution overlay. Each scenario has expected evidence and user-visible behavior.

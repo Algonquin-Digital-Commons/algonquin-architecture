@@ -44,3 +44,12 @@ For **ADR-0014: The Social Fabric Is Fediverse- and ActivityPub-Based**, the dec
 ## Migration and rollback
 
 A change implementing **ADR-0014: The Social Fabric Is Fediverse- and ActivityPub-Based** MUST preserve the current contract during the declared compatibility window, publish a versioned migration plan, and rehearse rollback before production promotion. Migration evidence includes inventory, data/state transformation, operator communication, and verification. Rollback is triggered by failed acceptance, security regression, loss of institution control, or unrecoverable compatibility failure; it restores the last accepted artifact and preserves audit history. If no migration is currently required, the owner MUST record that as a reviewed no-op and revisit it when the decision changes.
+
+## Alternatives
+
+Considered alternatives include retaining the prior approach, adopting a mature open implementation, and building a local adapter. The selected decision is preferred under the stated requirements, constraints, sovereignty, and maintenance capacity; a new option requires a superseding ADR.
+
+## Context
+
+The decision establishes the federation boundary for institution-controlled social
+services while preserving user safety, moderation authority, and interoperability.

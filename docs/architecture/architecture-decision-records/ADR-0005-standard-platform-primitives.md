@@ -42,3 +42,12 @@ For **ADR-0005: Standard Platform Primitives**, the decision record considered: 
 ## Migration and rollback
 
 A change implementing **ADR-0005: Standard Platform Primitives** MUST preserve the current contract during the declared compatibility window, publish a versioned migration plan, and rehearse rollback before production promotion. Migration evidence includes inventory, data/state transformation, operator communication, and verification. Rollback is triggered by failed acceptance, security regression, loss of institution control, or unrecoverable compatibility failure; it restores the last accepted artifact and preserves audit history. If no migration is currently required, the owner MUST record that as a reviewed no-op and revisit it when the decision changes.
+
+## Alternatives
+
+Considered alternatives include retaining the prior approach, adopting a mature open implementation, and building a local adapter. The selected decision is preferred under the stated requirements, constraints, sovereignty, and maintenance capacity; a new option requires a superseding ADR.
+
+## Context
+
+This decision responds to the Commons ecosystem's need for interoperable,
+supportable platform primitives while retaining institution sovereignty.

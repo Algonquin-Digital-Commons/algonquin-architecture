@@ -120,3 +120,15 @@ security-boundary changes, new mandatory dependencies, licensing changes, or
 federation-policy changes require an ADR. Institution overlays MAY tighten local
 policy but SHALL NOT weaken common security, portability, accessibility, or
 protocol-compatibility requirements.
+
+## Required controls
+
+Implementations MUST satisfy the required controls and provide evidence before claiming conformance.
+
+## Maturity
+
+Maturity is recorded as proposed, active, accepted, or retired with an accountable owner.
+
+## Definition of done
+
+Definition of done includes content, ownership, interfaces, testing, evidence, and rollback where applicable.

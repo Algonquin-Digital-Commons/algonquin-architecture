@@ -96,3 +96,7 @@ A relationship means a declared contract, event, protocol, deployment dependency
 ## Source of truth and references
 
 The source of truth is the linked document in the owning repository plus its accepted ADRs, schemas, and deployment profiles. When a link crosses repositories it MUST use a canonical hosted URL or a workspace-relative path that the structural checker can resolve.
+
+## Validation and staleness
+
+Maintainers MUST validate links, versions, ownership, and contradictions whenever a boundary or contract changes. A stale edge is corrected, superseded, or marked historical with an owner and expiry before dependent release.

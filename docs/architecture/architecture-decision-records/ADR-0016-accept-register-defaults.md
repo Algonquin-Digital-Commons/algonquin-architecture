@@ -36,3 +36,17 @@ For **ADR-0016: Accept the Human-Decision Register Defaults as the Project Basel
 ## Migration and rollback
 
 A change implementing **ADR-0016: Accept the Human-Decision Register Defaults as the Project Baseline** MUST preserve the current contract during the declared compatibility window, publish a versioned migration plan, and rehearse rollback before production promotion. Migration evidence includes inventory, data/state transformation, operator communication, and verification. Rollback is triggered by failed acceptance, security regression, loss of institution control, or unrecoverable compatibility failure; it restores the last accepted artifact and preserves audit history. If no migration is currently required, the owner MUST record that as a reviewed no-op and revisit it when the decision changes.
+
+## Alternatives
+
+Considered alternatives include retaining the prior approach, adopting a mature open implementation, and building a local adapter. The selected decision is preferred under the stated requirements, constraints, sovereignty, and maintenance capacity; a new option requires a superseding ADR.
+
+## Context
+
+This decision records which proposed defaults the sole maintainer accepts so future
+contributors can distinguish settled choices from open human decisions.
+
+## Consequences
+
+Defaults reduce ambiguity and enable consistent scaffolding, but remain changeable
+through the documented decision process when evidence or staffing changes.
