@@ -33,9 +33,12 @@ The repository consistency inspection on 2026-09-11 found:
   agent-session contracts;
 - no application or OpenTofu source, deployable infrastructure, automated test
   suite, or accepted self-hosted Woodpecker CI pipeline;
+- ten public repositories published under `Post-Secondary-Digital-Commons`,
+  including the workspace and all nine common repositories; local common
+  `origin` remotes are configured and pushed;
 - verified local common-to-Algonquin ancestry and corrected Git identity, but no
-  GitHub organization slugs, hosted remotes, protected branches, or pull-request
-  workflow yet.
+  confirmed Algonquin organization slug, hosted institution forks, protected
+  branches, or pull-request workflow yet.
 
 Counts describe repository maturity, not quality or completion. Re-run them at
 each milestone because this document intentionally does not pretend that seeded
@@ -66,7 +69,7 @@ specifications are implemented.
 
 | Priority | Gap | Why it blocks progress | Required evidence |
 |---|---|---|---|
-| P0 | Publish the multi-organization fork topology | Independent local repositories and ancestry are verified, but GitHub organizations/remotes are not configured | Common and Algonquin organization slugs, hosted repository forks, `origin`/`upstream` remotes, protected branches and repository-local CI |
+| P0 | Complete the hosted institution-fork topology | The common organization is published and local ancestry is verified, but the intended Algonquin organization slug and hosted forks are unresolved | Confirm Algonquin organization, create hosted repository forks, configure Algonquin `origin` plus hosted common `upstream`, then add protected branches and repository-local CI |
 | P0 | Accountable ownership | Defaults cannot become operated services without decision and incident owners | Sponsor, product, architecture, security/privacy, operations and domain RACI |
 | P0 | OpenTofu state/module design | Reproducibility still needs an exact backend and dependency policy | Supported release, provider/module allowlist, encrypted locking backend and recovery test |
 | P0 | Neutral configuration boundary | White-labelling fails if Algonquin assumptions enter core logic | Tenant-neutral naming/schema rules and an Algonquin deployment overlay |
@@ -133,8 +136,9 @@ data-sovereignty and exit tests.
 
 ## Immediate sequence
 
-1. Create or name the common and Algonquin GitHub organizations, create the
-   hosted forks, configure `origin`/`upstream`, branch protection and local CI.
+1. Confirm the intended Algonquin GitHub organization, create the nine hosted
+   forks, configure Algonquin `origin` and hosted common `upstream`, then add
+   branch protection and local CI.
 2. Name accountable owners for product, architecture, privacy, security and operations.
 3. Complete OpenTofu version, state backend, provider allowlist and recovery design.
 4. Freeze the first-slice contracts and threat model; complete the Agent Session
