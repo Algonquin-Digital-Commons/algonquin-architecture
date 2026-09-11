@@ -42,3 +42,21 @@ student work, and reserves—not a consumer chatbot subscription.
 Student governance, College leadership, finance, legal, accessibility/equity,
 privacy, procurement, and any applicable provincial authority must approve the
 actual funding model before collection or public claims.
+
+## Alternatives
+
+Considered alternatives include retaining the prior approach, adopting a mature open implementation, and building a local adapter. The selected decision is preferred under the stated requirements, constraints, sovereignty, and maintenance capacity; a new option requires a superseding ADR.
+
+## Migration and rollback
+
+Migration MUST identify data/configuration transitions, compatibility windows, verification evidence, owner, and rollback trigger. Rollback restores the last known-good contract and implementation without losing audit evidence.
+
+## Context
+
+The funding assumption is recorded so that implementation and public claims do not
+silently depend on an unapproved commercial, institutional, or grant commitment.
+
+## Consequences
+
+The fork must keep funding-sensitive capabilities optional, disclose uncertainty,
+and obtain an explicit governance decision before collecting money or promising support.

@@ -38,3 +38,11 @@ is a frozen foundation for independent development, not a moving upstream.
 - Deep visual or architectural divergence requires an ADR and lifecycle funding.
 - A license change automatically suspends adoption or upgrade until the new terms
   pass the open-source admission test.
+
+## Alternatives
+
+Considered alternatives include retaining the prior approach, adopting a mature open implementation, and building a local adapter. The selected decision is preferred under the stated requirements, constraints, sovereignty, and maintenance capacity; a new option requires a superseding ADR.
+
+## Migration and rollback
+
+Migration MUST identify data/configuration transitions, compatibility windows, verification evidence, owner, and rollback trigger. Rollback restores the last known-good contract and implementation without losing audit evidence.

@@ -13,6 +13,11 @@
 
 ## Instructions
 
+## Non-normative template
+
+This file is non-normative scaffolding. Replace each instruction and stub
+with reviewed, document-specific content before accepting a downstream document.
+
 Choose one document type, complete the control block, state scope and
 exclusions, identify dependencies and trust boundaries, define interfaces and
 failure behavior, link common contracts/ADRs, and provide binary acceptance

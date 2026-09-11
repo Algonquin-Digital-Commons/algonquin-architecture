@@ -59,3 +59,11 @@ service continuity and risk acceptance.
 - Institution branding and component choice can differ without breaking
   federation, provided the selected protocol profiles pass conformance tests.
 - A disconnected institution continues operating its local platform.
+
+## Alternatives
+
+Considered alternatives include retaining the prior approach, adopting a mature open implementation, and building a local adapter. The selected decision is preferred under the stated requirements, constraints, sovereignty, and maintenance capacity; a new option requires a superseding ADR.
+
+## Migration and rollback
+
+Migration MUST identify data/configuration transitions, compatibility windows, verification evidence, owner, and rollback trigger. Rollback restores the last known-good contract and implementation without losing audit evidence.

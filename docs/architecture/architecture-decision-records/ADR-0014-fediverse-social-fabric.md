@@ -36,3 +36,16 @@ institutional identity data to federation peers.
 - Federation trust and moderation operate at institution, consortium, and public
   levels with different policies.
 - Compatibility and abuse-resistance testing precede public federation.
+
+## Alternatives
+
+Considered alternatives include retaining the prior approach, adopting a mature open implementation, and building a local adapter. The selected decision is preferred under the stated requirements, constraints, sovereignty, and maintenance capacity; a new option requires a superseding ADR.
+
+## Migration and rollback
+
+Migration MUST identify data/configuration transitions, compatibility windows, verification evidence, owner, and rollback trigger. Rollback restores the last known-good contract and implementation without losing audit evidence.
+
+## Context
+
+The decision establishes the federation boundary for institution-controlled social
+services while preserving user safety, moderation authority, and protocol interoperability.

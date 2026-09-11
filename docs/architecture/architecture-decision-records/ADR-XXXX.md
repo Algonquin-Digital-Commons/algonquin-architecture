@@ -64,3 +64,13 @@ interoperability evidence that demonstrates the decision works.
 
 Link governing specifications, issues, standards, upstream projects and replaced
 ADRs. State whether this ADR supersedes or is superseded by another decision.
+
+## Alternatives
+
+Considered alternatives include retaining the prior approach, adopting a mature open implementation, and building a local adapter. The selected decision is preferred under the stated requirements, constraints, sovereignty, and maintenance capacity; a new option requires a superseding ADR.
+
+## Normative requirement
+
+This stub MUST be completed with a concrete context, decision, consequences,
+alternatives, migration/rollback plan, owner, and acceptance evidence before it is
+accepted as an ADR. Until then it is non-deployable scaffolding.

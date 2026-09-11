@@ -82,3 +82,7 @@ Tauri or a native client if the gate or patch budget fails.
 - [OpenWork repository](https://github.com/different-ai/openwork)
 - [OpenWork MIT license for the core](https://github.com/different-ai/openwork/blob/dev/LICENSE)
 - [OpenWork EE license](https://github.com/different-ai/openwork/blob/dev/ee/LICENSE)
+
+## Migration and rollback
+
+Migration MUST identify data/configuration transitions, compatibility windows, verification evidence, owner, and rollback trigger. Rollback restores the last known-good contract and implementation without losing audit evidence.

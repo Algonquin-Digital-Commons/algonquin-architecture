@@ -31,3 +31,11 @@ interface. Clients never connect directly to providers.
   available without distorting the compatibility API.
 - Compatibility behavior needs conformance tests and documented intentional gaps.
 - Providers and runtimes can change without changing client contracts.
+
+## Alternatives
+
+Considered alternatives include retaining the prior approach, adopting a mature open implementation, and building a local adapter. The selected decision is preferred under the stated requirements, constraints, sovereignty, and maintenance capacity; a new option requires a superseding ADR.
+
+## Migration and rollback
+
+Migration MUST identify data/configuration transitions, compatibility windows, verification evidence, owner, and rollback trigger. Rollback restores the last known-good contract and implementation without losing audit evidence.

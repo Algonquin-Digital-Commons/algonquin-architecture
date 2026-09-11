@@ -55,3 +55,11 @@ distribution reciprocity. Neither is the current default.
   the permissive license.
 - Every repository must carry `LICENSE`, `NOTICE`, `CONTRIBUTING.md` and a
   third-party license inventory before public release.
+
+## Alternatives
+
+Considered alternatives include retaining the prior approach, adopting a mature open implementation, and building a local adapter. The selected decision is preferred under the stated requirements, constraints, sovereignty, and maintenance capacity; a new option requires a superseding ADR.
+
+## Migration and rollback
+
+Migration MUST identify data/configuration transitions, compatibility windows, verification evidence, owner, and rollback trigger. Rollback restores the last known-good contract and implementation without losing audit evidence.

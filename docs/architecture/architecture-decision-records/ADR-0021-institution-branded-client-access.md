@@ -54,3 +54,11 @@ Institutions can deliver coherent white-labelled applications while sharing
 security and accessibility maintenance. Users trust their institution rather than
 an upstream client vendor, and cross-institution accounts remain explicitly
 separate unless linked through a scoped federation workflow.
+
+## Alternatives
+
+Considered alternatives include retaining the prior approach, adopting a mature open implementation, and building a local adapter. The selected decision is preferred under the stated requirements, constraints, sovereignty, and maintenance capacity; a new option requires a superseding ADR.
+
+## Migration and rollback
+
+Migration MUST identify data/configuration transitions, compatibility windows, verification evidence, owner, and rollback trigger. Rollback restores the last known-good contract and implementation without losing audit evidence.

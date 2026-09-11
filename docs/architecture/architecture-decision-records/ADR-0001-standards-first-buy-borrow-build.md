@@ -57,3 +57,11 @@ replaceable.
 A proposal is compliant when it names the governing standard, evaluated mature
 implementations, selected extension point, compatibility test, responsible owner,
 upgrade path, and fallback or migration strategy.
+
+## Alternatives
+
+Considered alternatives include retaining the prior approach, adopting a mature open implementation, and building a local adapter. The selected decision is preferred under the stated requirements, constraints, sovereignty, and maintenance capacity; a new option requires a superseding ADR.
+
+## Migration and rollback
+
+Migration MUST identify data/configuration transitions, compatibility windows, verification evidence, owner, and rollback trigger. Rollback restores the last known-good contract and implementation without losing audit evidence.

@@ -134,3 +134,47 @@ users, developers, administrators, institutions, federated peers
 
 - [Consolidated Ecosystem Architecture](../../architecture/Consolidated-Ecosystem-Architecture.md)
 - [Ecosystem Dependency Contract](../../architecture/Ecosystem-Dependency-Contract.md)
+
+## Purpose and outcome
+
+This specification defines the purpose and intended outcome of **PSDC-Platform-Reference-Architecture** for the Algonquin deployment and its Commons compatibility boundary.
+
+## Out of scope
+
+Out of scope are secrets, unowned implementation internals, unrelated product capabilities, and any integration not named by a versioned contract. Such work requires its owning specification.
+
+## Architecture and ownership
+
+The architecture assigns responsibilities, trust boundaries, and ownership to the components named here. Algonquin owns institutional configuration and operations; Commons owners retain portable contracts unless this document explicitly records a local exception.
+
+## Interfaces and contracts
+
+Interfaces, APIs, events, schemas, and boundary conditions MUST be versioned, validated, and documented for producers and consumers. Private database schemas MUST NOT cross repository boundaries.
+
+## Dependencies and ownership
+
+Dependencies include runtime services, identity, policy, storage, network, upstream source, and operator capabilities named by this specification. Each dependency requires an owner, compatibility expectation, and failure behavior.
+
+## Security, privacy, and safety
+
+Security, privacy, safety, and policy controls MUST enforce least privilege, data classification, tenant separation, provenance, and auditable decisions. Sensitive defaults fail closed.
+
+## Deployment and implementation
+
+Deployment and implementation MUST separate portable source from institution configuration and secrets. The release path requires reproducible artifacts, health checks, observability, and a tested rollback.
+
+## Capacity and scaling
+
+Capacity planning MUST identify workload, latency, throughput, storage, concurrency, and scaling limits. Evidence covers expected peak, recovery margin, and degradation when a dependency saturates.
+
+## Failure and recovery
+
+Failures produce bounded, typed behavior with no secret or protected-content leakage. Operators MUST have detection, quarantine or degradation, recovery, and rollback procedures.
+
+## Testing and evidence
+
+Testing and evidence include contract, integration, authorization, privacy/security, accessibility where applicable, failure, migration, and rollback checks. Evidence is linked to the release or decision record.
+
+## Acceptance criteria
+
+Acceptance requires the stated interfaces, controls, tests, operational ownership, and evidence to be complete. A document is not complete merely because a stub or implementation exists.

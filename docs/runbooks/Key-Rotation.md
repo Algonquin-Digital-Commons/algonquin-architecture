@@ -196,3 +196,27 @@ production release gates. Changes follow ADR-based change control.
 - [ADR-0001: Standards First](../architecture/architecture-decision-records/ADR-0001-standards-first-buy-borrow-build.md)
 - [ADR-0012: Post Secondary Digital Commons](../architecture/architecture-decision-records/ADR-0012-post-secondary-digital-commons.md)
 - [ADR-0017: OpenTofu Default](../architecture/architecture-decision-records/ADR-0017-opentofu-default.md)
+
+## Trigger and symptoms
+
+Trigger conditions include the symptoms, alert, user report, or scheduled activity that starts this runbook.
+
+## Prerequisites
+
+Prerequisites include authorized operator access, current configuration, logs/metrics, backups, maintenance window, and a verified last-known-good release.
+
+## Diagnosis and hypotheses
+
+Operators MUST form hypotheses from the observed symptom, collect the most informative evidence, and record the diagnostic result before changing state.
+
+## Rollback and recovery
+
+Rollback or recovery restores the last known-good state, preserves audit evidence, and has a clear stop condition. Do not improvise irreversible changes.
+
+## Escalation
+
+Escalate when evidence indicates data loss, security impact, repeated recovery failure, expired authority, or a dependency owner is required. Record the handoff and time.
+
+## Verification
+
+Verification confirms health, contract compatibility, security controls, user-visible behavior, and monitoring after recovery. The operator records evidence and follow-up prevention work.
