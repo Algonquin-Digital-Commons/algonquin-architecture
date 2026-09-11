@@ -1,7 +1,14 @@
 # Specification Completeness Standard
 
-> Status: Normative specification
+
+> Standard: PSDC-DOC-001
+> Document type: architecture-specification
+> Status: Normative
 > Owner: PSDC Architecture Maintainer
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+
 > Effective: 2026-09-11
 
 ## Purpose

@@ -1,8 +1,13 @@
 # Standards-First Decision Coverage Matrix
 
-> Status: Normative coverage matrix; implementation evidence gated
+
+> Standard: PSDC-DOC-001
+> Document type: architecture-map
+> Status: Normative
 > Owner: Platform architecture
+> Accountable maintainer: RedjiJB until delegation
 > Last reviewed: 2026-09-10
+> Governing decisions: Applicable ADRs and repository governance
 
 This matrix shows how the accepted standards-first decisions constrain every
 section of the master documentation suite. It prevents a subsystem from treating

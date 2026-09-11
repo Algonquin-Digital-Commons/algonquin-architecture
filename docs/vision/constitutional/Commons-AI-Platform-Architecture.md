@@ -1,9 +1,14 @@
 # Commons AI Fabric Platform Architecture
 
-> Status: Normative platform architecture; implementation gated
-> Domain: vision
+
+> Standard: PSDC-DOC-001
+> Document type: architecture-specification
+> Status: Normative
 > Owner: Commons AI Fabric architecture
+> Accountable maintainer: RedjiJB until delegation
 > Last reviewed: 2026-09-10
+> Governing decisions: Applicable ADRs and repository governance
+> Domain: vision
 
 ## Purpose
 

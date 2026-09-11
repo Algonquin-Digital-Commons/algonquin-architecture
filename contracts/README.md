@@ -1,5 +1,14 @@
 # Shared Contracts
 
+
+> Standard: PSDC-DOC-001
+> Document type: repository-index
+> Status: Normative
+> Owner: Algonquin Institution Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: none; index governed by repository policy
+
 Versioned schemas and protocol profiles shared across repositories:
 
 - `identity/` — normalized user, service, role, and scope shapes
@@ -15,3 +24,42 @@ Versioned schemas and protocol profiles shared across repositories:
 
 Contracts are implementation-neutral. Product repositories generate or maintain
 language-specific bindings only after the contract is approved and versioned.
+
+## Purpose
+
+This index explains the purpose and placement of $dir and links readers to the authoritative documents it contains.
+
+## Allowed contents
+
+This directory belongs to $repo. It may contain scoped documentation, contracts, configuration examples, tests, and navigation links owned by this repository.
+
+## Prohibited contents
+
+It MUST NOT contain secrets, credentials, private infrastructure values, unrelated product source, copied institution overrides, or undocumented external dependencies.
+
+## Owner
+
+The owning role is $owner; accountable maintenance remains with RedjiJB until a second maintainer is appointed.
+
+## Contents
+
+- `academic`
+- `activitypub`
+- `agent-sessions`
+- `ai`
+- `compute`
+- `deployment`
+- `events`
+- `identity`
+- `media`
+- `README.md`
+- `spatial`
+
+## References
+
+- [Ecosystem documentation quality standard](https://github.com/Post-Secondary-Digital-Commons/psdc-architecture/blob/main/docs/standards/Ecosystem-Documentation-Quality-Standard.md)
+- [Repository governance](https://github.com/Post-Secondary-Digital-Commons/psdc-architecture/blob/main/docs/governance/GitHub-Repository-Governance.md)
+
+## Contribution and change control
+
+Changes MUST use a pull request, preserve the repository boundary, update affected links and contracts, and pass the structural and substantive documentation audits before merge.

@@ -18,4 +18,3 @@ therefore a project and participation policy, not a condition added to the publi
 license. Recognized consortium, certification, shared-infrastructure and support
 participants may have a separate contribution obligation in their participation
 agreement.
-

@@ -1,6 +1,13 @@
 # ADR Authoring Template
 
-> Status: Authoring template; never normative
+
+> Standard: PSDC-DOC-001
+> Document type: adr
+> Status: Template
+> Owner: Algonquin Institution Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
 
 Copy this structure to the next sequential ADR number. Replace the instructional
 text with project evidence and delete sections that are genuinely inapplicable

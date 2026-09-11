@@ -1,9 +1,14 @@
 # Incident Response
 
-> Status: Normative specification; implementation gated
-> Domain: security
-> Owner: PSDC Security Working Group; accountable maintainer RedjiJB until delegation
+
+> Standard: PSDC-DOC-001
+> Document type: policy-standard
+> Status: Normative
+> Owner: PSDC Security Working Group
+> Accountable maintainer: RedjiJB until delegation
 > Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+> Domain: security
 
 ## Purpose and outcome
 

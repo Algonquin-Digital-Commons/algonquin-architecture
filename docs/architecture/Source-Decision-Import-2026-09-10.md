@@ -1,6 +1,14 @@
 # Source Decision Import — 2026-09-10
 
-> Status: Complete import record
+
+> Standard: PSDC-DOC-001
+> Document type: architecture-map
+> Status: Complete
+> Owner: Algonquin Institution Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+
 > Source type: User-provided chat excerpt
 > Scope: Standards-first architecture decisions
 

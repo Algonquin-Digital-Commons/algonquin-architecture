@@ -1,6 +1,14 @@
 # Cross-Pollination and Shared Capabilities
 
-> Status: Normative interaction model; implementation gated
+
+> Standard: PSDC-DOC-001
+> Document type: architecture-map
+> Status: Normative
+> Owner: Algonquin Institution Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+
 > Goal: Encourage reuse and collaboration without collapsing ownership boundaries
 
 ## Shared capability map

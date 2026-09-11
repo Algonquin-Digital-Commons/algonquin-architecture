@@ -1,6 +1,14 @@
 # ADR-0011: Terraform Is the Default IaC CLI with an OpenTofu Exit Path
 
-> Status: Superseded by ADR-0017
+
+> Standard: PSDC-DOC-001
+> Document type: adr
+> Status: Historical
+> Owner: Algonquin Institution Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+
 > Date: 2026-09-10
 > Scope: Infrastructure provisioning toolchain
 > Decision owner: Project founder; legal review required before multi-institution distribution

@@ -1,6 +1,14 @@
 # ADR-0024: Apache-2.0 with Upstream-First Contribution Policy
 
+
+> Standard: PSDC-DOC-001
+> Document type: adr
 > Status: Accepted
+> Owner: Algonquin Institution Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+
 > Date: 2026-09-11
 > Scope: PSDC-authored code, configuration and documentation
 > Decision owner: Project founder; legal review required before public release
@@ -47,4 +55,3 @@ distribution reciprocity. Neither is the current default.
   the permissive license.
 - Every repository must carry `LICENSE`, `NOTICE`, `CONTRIBUTING.md` and a
   third-party license inventory before public release.
-

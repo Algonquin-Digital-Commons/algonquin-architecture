@@ -1,6 +1,14 @@
 # Open-Source-Only Technology Policy
 
-> Status: Adopted baseline implementing ADR-0008 and ADR-0017
+
+> Standard: PSDC-DOC-001
+> Document type: architecture-specification
+> Status: Normative
+> Owner: Algonquin Institution Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+
 > Applies to: code, infrastructure, control planes, data stores, clients, build
 > systems, observability, AI runtimes, media pipelines, and federation
 

@@ -1,9 +1,14 @@
 # Service Catalog
 
-> Status: Normative specification; implementation gated
-> Domain: cloud
-> Owner: PSDC Cloud Working Group; accountable maintainer RedjiJB until delegation
+
+> Standard: PSDC-DOC-001
+> Document type: architecture-specification
+> Status: Normative
+> Owner: PSDC Cloud Working Group
+> Accountable maintainer: RedjiJB until delegation
 > Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+> Domain: cloud
 
 ## Purpose and outcome
 

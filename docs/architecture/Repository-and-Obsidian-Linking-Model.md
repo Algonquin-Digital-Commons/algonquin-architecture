@@ -1,8 +1,13 @@
 # Repository and Obsidian Linking Model
 
-> Status: Normative polyrepo and vault model
-> Governing decisions: ADR-0022, ADR-0023
+
+> Standard: PSDC-DOC-001
+> Document type: architecture-map
+> Status: Normative
+> Owner: Algonquin Institution Maintainers
+> Accountable maintainer: RedjiJB until delegation
 > Last reviewed: 2026-09-11
+> Governing decisions: ADR-0022, ADR-0023
 
 ## Source-of-truth model
 

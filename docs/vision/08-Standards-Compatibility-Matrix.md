@@ -1,9 +1,14 @@
 # 08 Standards Compatibility Matrix
 
-> Status: Normative compatibility targets; conformance results are implementation evidence
-> Domain: vision
+
+> Standard: PSDC-DOC-001
+> Document type: architecture-specification
+> Status: Normative
 > Owner: Platform architecture and quality engineering
+> Accountable maintainer: RedjiJB until delegation
 > Last reviewed: 2026-09-10
+> Governing decisions: Applicable ADRs and repository governance
+> Domain: vision
 
 ## Purpose
 

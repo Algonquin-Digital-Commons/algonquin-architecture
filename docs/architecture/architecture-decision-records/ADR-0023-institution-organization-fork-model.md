@@ -1,6 +1,14 @@
 # ADR-0023: Institution Organizations Use Thin Repository Forks
 
+
+> Standard: PSDC-DOC-001
+> Document type: adr
 > Status: Accepted
+> Owner: Algonquin Institution Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+
 > Date: 2026-09-11
 > Scope: GitHub organizations, white-labelling and upstream synchronization
 > Decision owner: Project founder

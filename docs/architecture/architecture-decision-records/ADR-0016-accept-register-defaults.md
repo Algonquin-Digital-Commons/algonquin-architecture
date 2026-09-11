@@ -1,6 +1,14 @@
 # ADR-0016: Accept the Human-Decision Register Defaults as the Project Baseline
 
+
+> Standard: PSDC-DOC-001
+> Document type: adr
 > Status: Accepted
+> Owner: Algonquin Institution Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+
 > Date: 2026-09-10
 > Scope: Human Choices and Decisions Register
 > Decision owner: Project founder
@@ -20,4 +28,3 @@ direction while the concrete decision remains a tracked gap.
 Alternatives remain documented so the architecture retains an exit path. A team
 departing from an accepted default records rationale, compatibility, migration,
 and ownership through the decision process appropriate to its impact.
-

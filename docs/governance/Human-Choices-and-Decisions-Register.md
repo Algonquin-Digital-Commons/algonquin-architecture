@@ -1,7 +1,14 @@
 # Human Choices and Decisions Register
 
-> Status: Normative decision register; all project-controlled defaults accepted
+
+> Standard: PSDC-DOC-001
+> Document type: policy-standard
+> Status: Accepted
 > Owner: Platform governance
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+
 > Last updated: 2026-09-11
 > Purpose: Consolidate decisions that cannot be safely inferred or delegated to
 > software, an AI agent, a vendor, or an individual contributor

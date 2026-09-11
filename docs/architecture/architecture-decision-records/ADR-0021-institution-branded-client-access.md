@@ -1,6 +1,14 @@
 # ADR-0021: Clients Are Institution-Branded and Institution-Authenticated
 
+
+> Standard: PSDC-DOC-001
+> Document type: adr
 > Status: Accepted
+> Owner: Algonquin Institution Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+
 > Date: 2026-09-10
 > Scope: Web, desktop, mobile, CLI and client distribution
 > Decision owner: Project founder

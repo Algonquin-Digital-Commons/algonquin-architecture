@@ -1,6 +1,14 @@
 # ADR-0004: ACF Is Runtime-Agnostic
 
+
+> Standard: PSDC-DOC-001
+> Document type: adr
 > Status: Accepted
+> Owner: Algonquin Institution Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+
 > Scope: Algonquin Compute Fabric
 
 ## Context

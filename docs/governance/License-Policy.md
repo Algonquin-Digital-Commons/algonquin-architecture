@@ -1,6 +1,14 @@
 # License Policy
 
-> Status: Accepted default; legal review required before public release
+
+> Standard: PSDC-DOC-001
+> Document type: policy-standard
+> Status: Accepted
+> Owner: Algonquin Institution Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+
 > Governing decision: ADR-0024
 
 ## Default
@@ -35,4 +43,3 @@ AGPL-3.0-or-later can require operators of modified network software to offer
 corresponding source to remote users. MPL-2.0 can require source for distributed
 modifications at the file level. Both require a new compatibility and legal ADR
 because neither is the accepted permissive default.
-

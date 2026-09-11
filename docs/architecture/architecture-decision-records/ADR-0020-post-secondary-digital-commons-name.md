@@ -1,6 +1,14 @@
 # ADR-0020: Post-Secondary Digital Commons Is the Shared Platform Name
 
+
+> Standard: PSDC-DOC-001
+> Document type: adr
 > Status: Accepted
+> Owner: Algonquin Institution Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+
 > Date: 2026-09-10
 > Scope: Shared architecture, software, contracts, documentation and federation
 > Decision owner: Project founder

@@ -1,5 +1,14 @@
 # Cross-System Contracts
 
+
+> Standard: PSDC-DOC-001
+> Document type: architecture-map
+> Status: Normative
+> Owner: Algonquin Institution Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+
 The umbrella repository owns the stable shapes exchanged between ecosystems.
 Product repositories may add internal APIs, but cross-system integrations must
 use versioned contracts here.

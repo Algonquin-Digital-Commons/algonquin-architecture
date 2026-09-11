@@ -1,7 +1,12 @@
 # Post-Secondary Digital Commons — Consolidated Architecture
 
-> Status: Normative architecture; implementation gated
+
+> Standard: PSDC-DOC-001
+> Document type: architecture-map
+> Status: Normative
 > Owner: Platform architecture
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
 > Governing decisions: ADR-0001 through ADR-0025
 
 ## Commons system model
