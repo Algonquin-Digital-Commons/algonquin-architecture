@@ -2,7 +2,7 @@
 
 
 > Standard: PSDC-DOC-001
-> Document type: adr
+> Document type: template
 > Status: Template
 > Owner: PSDC Architecture Maintainers
 > Accountable maintainer: RedjiJB until delegation
@@ -12,6 +12,17 @@
 Copy this structure to the next sequential ADR number. Replace the instructional
 text with project evidence and delete sections that are genuinely inapplicable
 only after explaining why. This file records no decision.
+
+## Non-normative template
+
+This file is non-normative authoring guidance. It is not an accepted architecture
+decision and is excluded from the completed-specification inventory.
+
+## Instructions
+
+Copy the structure to a sequential ADR file, replace instructional text with
+evidence, complete the control block, and obtain the required review before
+marking the new record accepted.
 
 ## Context
 
