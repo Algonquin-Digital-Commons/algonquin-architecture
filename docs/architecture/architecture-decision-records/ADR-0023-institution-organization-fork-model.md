@@ -42,11 +42,13 @@ thin fork with configuration and assets, preserving upstream compatibility.
 
 ## Consequences
 
-- GitHub organization slugs and remote URLs must be configured before pushing.
+- The initial hosted topology uses `Post-Secondary-Digital-Commons` for common
+  repositories and `Algonquin-Digital-Commons` for Algonquin forks.
+- Every institution checkout must keep its institution fork as `origin` and the
+  matching common repository as `upstream`.
 - Fork synchronization, divergence budgets and upstream contribution metrics are
   required in CI.
 - Institution production authority remains independent even when software history
   is shared.
 - Another university can reproduce the white-label model without asking
   Algonquin for infrastructure, identity or release access.
-
