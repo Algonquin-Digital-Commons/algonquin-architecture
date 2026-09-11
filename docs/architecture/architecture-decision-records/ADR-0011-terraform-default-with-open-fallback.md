@@ -66,3 +66,11 @@ fallback for workflows that do not need Terraform state.
 - [Terraform repository and license](https://github.com/hashicorp/terraform)
 - [Terraform BSL license text](https://github.com/hashicorp/terraform/blob/main/LICENSE)
 - [OpenTofu](https://opentofu.org/)
+
+## Alternatives and evidence
+
+For **ADR-0011: Terraform Is the Default IaC CLI with an OpenTofu Exit Path**, the decision record considered: retain the prior approach; adopt a mature compatible standard or open-source implementation; and build or fork a new primitive. The selected decision is preferred under the stated constraints. A change trigger is new security, licensing, interoperability, sovereignty, cost, or operational evidence; a new option requires an ADR update rather than an undocumented exception.
+
+## Migration and rollback
+
+A change implementing **ADR-0011: Terraform Is the Default IaC CLI with an OpenTofu Exit Path** MUST preserve the current contract during the declared compatibility window, publish a versioned migration plan, and rehearse rollback before production promotion. Migration evidence includes inventory, data/state transformation, operator communication, and verification. Rollback is triggered by failed acceptance, security regression, loss of institution control, or unrecoverable compatibility failure; it restores the last accepted artifact and preserves audit history. If no migration is currently required, the owner MUST record that as a reviewed no-op and revisit it when the decision changes.

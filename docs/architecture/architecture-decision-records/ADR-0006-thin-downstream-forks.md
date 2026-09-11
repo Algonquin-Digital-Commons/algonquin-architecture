@@ -38,3 +38,11 @@ is a frozen foundation for independent development, not a moving upstream.
 - Deep visual or architectural divergence requires an ADR and lifecycle funding.
 - A license change automatically suspends adoption or upgrade until the new terms
   pass the open-source admission test.
+
+## Alternatives and evidence
+
+For **ADR-0006: Thin, Upstream-Compatible Product Forks**, the decision record considered: retain the prior approach; adopt a mature compatible standard or open-source implementation; and build or fork a new primitive. The selected decision is preferred under the stated constraints. A change trigger is new security, licensing, interoperability, sovereignty, cost, or operational evidence; a new option requires an ADR update rather than an undocumented exception.
+
+## Migration and rollback
+
+A change implementing **ADR-0006: Thin, Upstream-Compatible Product Forks** MUST preserve the current contract during the declared compatibility window, publish a versioned migration plan, and rehearse rollback before production promotion. Migration evidence includes inventory, data/state transformation, operator communication, and verification. Rollback is triggered by failed acceptance, security regression, loss of institution control, or unrecoverable compatibility failure; it restores the last accepted artifact and preserves audit history. If no migration is currently required, the owner MUST record that as a reviewed no-op and revisit it when the decision changes.

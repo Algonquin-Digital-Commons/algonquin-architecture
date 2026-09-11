@@ -428,3 +428,19 @@ changes the architecture unless its result triggers a new ADR:
     accessibility, operations and contracts.
 12. Select the exact OpenTofu release, state backend and provider/module allowlist.
 13. Define the second-institution pilot and federation trust agreement.
+
+## Enforcement
+
+Platform governance MUST enforce **Human Choices and Decisions Register** at the declared policy, identity, repository, gateway, deployment, or moderation enforcement points. A request or change that does not satisfy the normative requirements MUST be denied or quarantined with a stable reason code. Enforcement decisions MUST be attributable, fail closed for authorization failures, and remain independently testable without relying on a proprietary service.
+
+## Exceptions
+
+An exception to **Human Choices and Decisions Register** requires a written reason, affected scope, risk assessment, compensating control, approving role, start date, and expiry date. The subject owner MUST NOT self-approve a high-impact exception. Expired exceptions MUST stop applying automatically; renewal requires new evidence and review.
+
+## Audit evidence
+
+Conformance evidence for **Human Choices and Decisions Register** MUST record the policy version, actor or service, decision, reason code, affected object or boundary, timestamp, outcome, and reviewer where applicable. Evidence MUST minimize protected data, be access-controlled, be exportable to the institution, and be retained according to the governing data policy. The owner MUST be able to demonstrate both an allowed and a denied case.
+
+## Acceptance and review
+
+The policy is accepted only when positive, negative, authorization, exception-expiry, audit-retrieval, failure, and recovery tests pass for **Human Choices and Decisions Register**. Platform governance MUST review it at least annually and whenever an ADR, contract, threat model, legal requirement, or material incident changes its assumptions. Review output MUST record the decision, evidence, and next review trigger.

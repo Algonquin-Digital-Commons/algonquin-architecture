@@ -64,3 +64,7 @@ interoperability evidence that demonstrates the decision works.
 
 Link governing specifications, issues, standards, upstream projects and replaced
 ADRs. State whether this ADR supersedes or is superseded by another decision.
+
+## Alternatives and evidence
+
+For **ADR Authoring Template**, the decision record considered: retain the prior approach; adopt a mature compatible standard or open-source implementation; and build or fork a new primitive. The selected decision is preferred under the stated constraints. A change trigger is new security, licensing, interoperability, sovereignty, cost, or operational evidence; a new option requires an ADR update rather than an undocumented exception.

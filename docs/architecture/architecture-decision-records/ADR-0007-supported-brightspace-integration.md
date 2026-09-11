@@ -39,3 +39,11 @@ course data become explicitly unavailable when its adapter is disabled.
 - Contract tests and vendor-change monitoring are required.
 - Disabling the connector does not disable the core platform, but it does disable
   the production academic capabilities that require authoritative LMS data.
+
+## Alternatives and evidence
+
+For **ADR-0007: Use Supported Brightspace Integration Mechanisms**, the decision record considered: retain the prior approach; adopt a mature compatible standard or open-source implementation; and build or fork a new primitive. The selected decision is preferred under the stated constraints. A change trigger is new security, licensing, interoperability, sovereignty, cost, or operational evidence; a new option requires an ADR update rather than an undocumented exception.
+
+## Migration and rollback
+
+A change implementing **ADR-0007: Use Supported Brightspace Integration Mechanisms** MUST preserve the current contract during the declared compatibility window, publish a versioned migration plan, and rehearse rollback before production promotion. Migration evidence includes inventory, data/state transformation, operator communication, and verification. Rollback is triggered by failed acceptance, security regression, loss of institution control, or unrecoverable compatibility failure; it restores the last accepted artifact and preserves audit history. If no migration is currently required, the owner MUST record that as a reviewed no-op and revisit it when the decision changes.

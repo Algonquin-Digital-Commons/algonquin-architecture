@@ -123,3 +123,19 @@ Before calling repository governance production-ready:
   audit without providing a synchronization benefit.
 - Treating settings as documentation only permits GitHub configuration drift;
   the future governance check must compare live API state with the manifest.
+
+## Enforcement
+
+PSDC Architecture Maintainers MUST enforce **GitHub Repository Governance** at the declared policy, identity, repository, gateway, deployment, or moderation enforcement points. A request or change that does not satisfy the normative requirements MUST be denied or quarantined with a stable reason code. Enforcement decisions MUST be attributable, fail closed for authorization failures, and remain independently testable without relying on a proprietary service.
+
+## Exceptions
+
+An exception to **GitHub Repository Governance** requires a written reason, affected scope, risk assessment, compensating control, approving role, start date, and expiry date. The subject owner MUST NOT self-approve a high-impact exception. Expired exceptions MUST stop applying automatically; renewal requires new evidence and review.
+
+## Audit evidence
+
+Conformance evidence for **GitHub Repository Governance** MUST record the policy version, actor or service, decision, reason code, affected object or boundary, timestamp, outcome, and reviewer where applicable. Evidence MUST minimize protected data, be access-controlled, be exportable to the institution, and be retained according to the governing data policy. The owner MUST be able to demonstrate both an allowed and a denied case.
+
+## Acceptance and review
+
+The policy is accepted only when positive, negative, authorization, exception-expiry, audit-retrieval, failure, and recovery tests pass for **GitHub Repository Governance**. PSDC Architecture Maintainers MUST review it at least annually and whenever an ADR, contract, threat model, legal requirement, or material incident changes its assumptions. Review output MUST record the decision, evidence, and next review trigger.

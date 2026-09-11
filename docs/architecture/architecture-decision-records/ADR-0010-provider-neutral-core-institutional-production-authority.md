@@ -70,3 +70,11 @@ content, assignments, deadlines, announcements, and permitted actions.
 - Provider outages affect the named capability without contaminating unrelated
   platform services.
 - ADR-0002, ADR-0007, and ADR-0008 are interpreted through this distinction.
+
+## Alternatives and evidence
+
+For **ADR-0010: Provider-Neutral Core with Institutional Production Authorities**, the decision record considered: retain the prior approach; adopt a mature compatible standard or open-source implementation; and build or fork a new primitive. The selected decision is preferred under the stated constraints. A change trigger is new security, licensing, interoperability, sovereignty, cost, or operational evidence; a new option requires an ADR update rather than an undocumented exception.
+
+## Migration and rollback
+
+A change implementing **ADR-0010: Provider-Neutral Core with Institutional Production Authorities** MUST preserve the current contract during the declared compatibility window, publish a versioned migration plan, and rehearse rollback before production promotion. Migration evidence includes inventory, data/state transformation, operator communication, and verification. Rollback is triggered by failed acceptance, security regression, loss of institution control, or unrecoverable compatibility failure; it restores the last accepted artifact and preserves audit history. If no migration is currently required, the owner MUST record that as a reviewed no-op and revisit it when the decision changes.

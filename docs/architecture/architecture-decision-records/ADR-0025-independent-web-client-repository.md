@@ -57,3 +57,11 @@ learning-management system, or federation server directly.
 - Two repositories are added to the ecosystem inventory.
 - Shared API contracts remain owned by their domain repositories rather than by
   the web client.
+
+## Alternatives and evidence
+
+For **ADR-0025: Independent Web Client Repository**, the decision record considered: retain the prior approach; adopt a mature compatible standard or open-source implementation; and build or fork a new primitive. The selected decision is preferred under the stated constraints. A change trigger is new security, licensing, interoperability, sovereignty, cost, or operational evidence; a new option requires an ADR update rather than an undocumented exception.
+
+## Migration and rollback
+
+A change implementing **ADR-0025: Independent Web Client Repository** MUST preserve the current contract during the declared compatibility window, publish a versioned migration plan, and rehearse rollback before production promotion. Migration evidence includes inventory, data/state transformation, operator communication, and verification. Rollback is triggered by failed acceptance, security regression, loss of institution control, or unrecoverable compatibility failure; it restores the last accepted artifact and preserves audit history. If no migration is currently required, the owner MUST record that as a reviewed no-op and revisit it when the decision changes.
