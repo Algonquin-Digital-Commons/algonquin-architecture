@@ -83,12 +83,13 @@ The owning role is $owner; accountable maintenance remains with RedjiJB until a 
 - `NOTICE`
 - `README.md`
 
+## Contribution and change control
+
+Changes MUST use a pull request, preserve the repository boundary, update affected links and contracts, and pass the structural and substantive documentation audits before merge.
+
 ## References
 
 - [Ecosystem documentation quality standard](https://github.com/Post-Secondary-Digital-Commons/psdc-architecture/blob/main/docs/standards/Ecosystem-Documentation-Quality-Standard.md)
 - [AI documentation review rubric](./docs/standards/AI-Documentation-Review-Rubric.md)
 - [Repository governance](https://github.com/Post-Secondary-Digital-Commons/psdc-architecture/blob/main/docs/governance/GitHub-Repository-Governance.md)
 
-## Contribution and change control
-
-Changes MUST use a pull request, preserve the repository boundary, update affected links and contracts, and pass the structural and substantive documentation audits before merge.

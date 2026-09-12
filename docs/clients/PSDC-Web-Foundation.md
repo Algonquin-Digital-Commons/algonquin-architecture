@@ -2,7 +2,7 @@
 
 
 > Standard: PSDC-DOC-001
-> Document type: architecture-specification
+> Document type: provenance-record
 > Status: Normative
 > Owner: PSDC Web Working Group
 > Accountable maintainer: RedjiJB until delegation
@@ -86,50 +86,6 @@ maintenance cost exceeds the measured cost of another OSI-licensed client or a
 fully native implementation. The gateway contract makes that replacement local to
 `psdc-web`.
 
-## Purpose and outcome
+## Upstream candidate tag and commit, license, included and excluded scope, and import state
 
-This specification defines the purpose and intended outcome of **PSDC-Web-Foundation** for the Algonquin deployment and its Commons compatibility boundary.
-
-## Scope
-
-The scope includes the capabilities, users, data, lifecycle, and interfaces described here. Institution overlays may configure approved values but MUST preserve the shared contract.
-
-## Out of scope
-
-Out of scope are secrets, unowned implementation internals, unrelated product capabilities, and any integration not named by a versioned contract. Such work requires its owning specification.
-
-## Architecture and ownership
-
-The architecture assigns responsibilities, trust boundaries, and ownership to the components named here. Algonquin owns institutional configuration and operations; Commons owners retain portable contracts unless this document explicitly records a local exception.
-
-## Interfaces and contracts
-
-Interfaces, APIs, events, schemas, and boundary conditions MUST be versioned, validated, and documented for producers and consumers. Private database schemas MUST NOT cross repository boundaries.
-
-## Dependencies and ownership
-
-Dependencies include runtime services, identity, policy, storage, network, upstream source, and operator capabilities named by this specification. Each dependency requires an owner, compatibility expectation, and failure behavior.
-
-## Security, privacy, and safety
-
-Security, privacy, safety, and policy controls MUST enforce least privilege, data classification, tenant separation, provenance, and auditable decisions. Sensitive defaults fail closed.
-
-## Deployment and implementation
-
-Deployment and implementation MUST separate portable source from institution configuration and secrets. The release path requires reproducible artifacts, health checks, observability, and a tested rollback.
-
-## Capacity and scaling
-
-Capacity planning MUST identify workload, latency, throughput, storage, concurrency, and scaling limits. Evidence covers expected peak, recovery margin, and degradation when a dependency saturates.
-
-## Failure and recovery
-
-Failures produce bounded, typed behavior with no secret or protected-content leakage. Operators MUST have detection, quarantine or degradation, recovery, and rollback procedures.
-
-## Testing and evidence
-
-Testing and evidence include contract, integration, authorization, privacy/security, accessibility where applicable, failure, migration, and rollback checks. Evidence is linked to the release or decision record.
-
-## Acceptance criteria
-
-Acceptance requires the stated interfaces, controls, tests, operational ownership, and evidence to be complete. A document is not complete merely because a stub or implementation exists.
+Import state: no source imported. The candidate upstream is the canonical Open WebUI repository at separately verified tag v0.6.5; the immutable commit and checksums remain unset until the import review records them. Candidate license is BSD-3-Clause subject to file-level confirmation and notices. Included scope is the minimum eligible browser foundation. Excluded scope is provider routing, identity authority, data stores, hosted services, post-v0.6.5 restricted material, trademarks, telemetry, secrets, and unreviewed dependencies. PROV-WEB-001: No code enters psdc-web until the provenance manifest, SBOM, exact inventory, security and accessibility review, and rollback decision are accepted.

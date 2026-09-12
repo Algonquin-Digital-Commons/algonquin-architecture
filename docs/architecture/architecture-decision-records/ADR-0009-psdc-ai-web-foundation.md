@@ -84,11 +84,12 @@ No source import or production deployment occurs until:
 - Failing a gate above changes the preferred implementation to another eligible
   client or an Algonquin-native build; it does not change the gateway architecture.
 
+## Migration and rollback
+
+Migration MUST identify data/configuration transitions, compatibility windows, verification evidence, owner, and rollback trigger. Rollback restores the last known-good contract and implementation without losing audit evidence.
+
 ## References
 
 - [Open WebUI license explanation](https://docs.openwebui.com/license/)
 - [Open WebUI license notice](https://github.com/open-webui/open-webui/blob/main/LICENSE_NOTICE)
 
-## Migration and rollback
-
-Migration MUST identify data/configuration transitions, compatibility windows, verification evidence, owner, and rollback trigger. Rollback restores the last known-good contract and implementation without losing audit evidence.

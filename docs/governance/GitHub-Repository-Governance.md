@@ -147,3 +147,8 @@ Audit evidence includes implementation links, test results, configuration or pro
 ## Acceptance and review
 
 Acceptance requires the documented controls, tests, operator ownership, and evidence to be complete. The owner reviews this policy on material architecture change and at least once per release cycle.
+## Stable conformance requirement
+
+- **GOV-GRG-001:** The **GitHub Repository Governance** owner MUST record enforcement evidence, exceptions, expiry, and review outcomes for this policy.
+
+

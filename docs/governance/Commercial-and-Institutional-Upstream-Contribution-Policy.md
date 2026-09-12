@@ -77,3 +77,8 @@ Audit evidence includes implementation links, test results, configuration or pro
 ## Acceptance and review
 
 Acceptance requires the documented controls, tests, operator ownership, and evidence to be complete. The owner reviews this policy on material architecture change and at least once per release cycle.
+## Stable conformance requirement
+
+- **GOV-CAIUCP-001:** The **Commercial and Institutional Upstream Contribution Policy** owner MUST record enforcement evidence, exceptions, expiry, and review outcomes for this policy.
+
+

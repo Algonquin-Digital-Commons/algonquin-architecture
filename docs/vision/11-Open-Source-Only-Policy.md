@@ -2,7 +2,7 @@
 
 
 > Standard: PSDC-DOC-001
-> Document type: architecture-specification
+> Document type: policy-standard
 > Status: Normative
 > Owner: Algonquin Institution Maintainers
 > Accountable maintainer: RedjiJB until delegation
@@ -83,50 +83,6 @@ Obsidian plugin.
 - Reject changes that introduce mandatory vendor control without an approved ADR.
 - Test OpenTofu modules, provider locks, plans and state recovery at each supported release.
 
-## Purpose and outcome
+## Purpose, scope, normative rules, enforcement, exceptions, audit evidence, and acceptance review
 
-This specification defines the purpose and intended outcome of **11-Open-Source-Only-Policy** for the Algonquin deployment and its Commons compatibility boundary.
-
-## Scope
-
-The scope includes the capabilities, users, data, lifecycle, and interfaces described here. Institution overlays may configure approved values but MUST preserve the shared contract.
-
-## Out of scope
-
-Out of scope are secrets, unowned implementation internals, unrelated product capabilities, and any integration not named by a versioned contract. Such work requires its owning specification.
-
-## Architecture and ownership
-
-The architecture assigns responsibilities, trust boundaries, and ownership to the components named here. Algonquin owns institutional configuration and operations; Commons owners retain portable contracts unless this document explicitly records a local exception.
-
-## Interfaces and contracts
-
-Interfaces, APIs, events, schemas, and boundary conditions MUST be versioned, validated, and documented for producers and consumers. Private database schemas MUST NOT cross repository boundaries.
-
-## Dependencies and ownership
-
-Dependencies include runtime services, identity, policy, storage, network, upstream source, and operator capabilities named by this specification. Each dependency requires an owner, compatibility expectation, and failure behavior.
-
-## Security, privacy, and safety
-
-Security, privacy, safety, and policy controls MUST enforce least privilege, data classification, tenant separation, provenance, and auditable decisions. Sensitive defaults fail closed.
-
-## Deployment and implementation
-
-Deployment and implementation MUST separate portable source from institution configuration and secrets. The release path requires reproducible artifacts, health checks, observability, and a tested rollback.
-
-## Capacity and scaling
-
-Capacity planning MUST identify workload, latency, throughput, storage, concurrency, and scaling limits. Evidence covers expected peak, recovery margin, and degradation when a dependency saturates.
-
-## Failure and recovery
-
-Failures produce bounded, typed behavior with no secret or protected-content leakage. Operators MUST have detection, quarantine or degradation, recovery, and rollback procedures.
-
-## Testing and evidence
-
-Testing and evidence include contract, integration, authorization, privacy/security, accessibility where applicable, failure, migration, and rollback checks. Evidence is linked to the release or decision record.
-
-## Acceptance criteria
-
-Acceptance requires the stated interfaces, controls, tests, operational ownership, and evidence to be complete. A document is not complete merely because a stub or implementation exists.
+POL-OSS-001: This policy covers every mandatory runtime, build, deployment, client, model, dataset, and operational dependency. Required software MUST be OSI-licensed, self-hostable, independently obtainable, operable without vendor control, and replaceable through an open contract and export. Dependency and release gates enforce it. Exceptions are optional adapters with owner, data boundary, fallback, expiry, and exit test. Acceptance evidence includes SPDX and SBOM, provenance, feature review, standalone operation, export and restore, and replacement rehearsal.

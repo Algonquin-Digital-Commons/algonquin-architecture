@@ -1,222 +1,61 @@
 # Data Handling
 
-
 > Standard: PSDC-DOC-001
 > Document type: policy-standard
 > Status: Normative
-> Owner: PSDC Governance Working Group
+> Owner: Algonquin Digital Commons Governance
 > Accountable maintainer: RedjiJB until delegation
 > Last reviewed: 2026-09-11
-> Governing decisions: Applicable ADRs and repository governance
-> Domain: governance
-
-## Purpose and outcome
-
-This specification defines **Data Handling** as part of the Post Secondary Digital
-Commons. Its required outcome is accountable decision rights, repository control, safety, audit, contribution, and institution participation. An implementation conforms
-only when it satisfies this document, the linked ADRs, and the common
-[Specification Completeness Standard](../architecture/Specification-Completeness-Standard.md).
-
-## Scope
-
-- **In scope:** behaviour, interfaces, dependencies, data, security, deployment
-  boundaries, capacity, failure handling, observability, validation, and lifecycle
-  requirements for Data Handling.
-- **Out of scope:** institution-specific hostnames, credentials, physical capacity,
-  named operators, and legal approvals. Those values belong in signed institution
-  deployment manifests and cannot redefine the common contract.
-- **Authority:** the owning domain may make compatible implementation choices.
-  Contract-breaking or cross-domain changes require an ADR and migration plan.
-
-## Normative requirements
-
-- The Data Handling capability SHALL provide accountable decision rights, repository control, safety, audit, contribution, and institution participation.
-- The capability SHALL have a versioned configuration schema, explicit safe
-  defaults, validation before activation, and a reversible change procedure.
-- User-visible and administrative behaviour SHALL be accessible, explainable,
-  auditable, and bounded by institution policy and user authority.
-- An implementation SHALL expose only the minimum capability required by its
-  callers and SHALL reject unknown, unauthorized, malformed, expired, or
-  unsupported requests with stable machine-readable errors.
-- Institution deployments SHALL be independently operable and SHALL remain
-  compatible with the common contract and conformance suite.
-
-## Interfaces, APIs, events, and contracts
-
-- Required interoperability boundary: ADRs, policy records, membership roles, approval workflows, exception records, audit exports, and escalation channels.
-- HTTP interfaces SHALL use OpenAPI 3.1, explicit request and response schemas,
-  documented error codes, pagination for collections, and bounded timeouts.
-- Asynchronous interfaces SHALL use versioned schemas and CloudEvents envelopes;
-  delivery semantics, ordering, replay, deduplication, and dead-letter behaviour
-  SHALL be declared per event.
-- Mutations SHALL be idempotent or accept an idempotency key. Long-running work
-  SHALL expose status, cancellation, expiry, and result retrieval.
-- Consumers SHALL depend on contracts rather than another service's database,
-  internal queue, filesystem, or implementation-specific API.
-
-## Dependencies and ownership boundaries
-
-- This domain owns its schemas, policy enforcement points, migrations, service
-  metadata, and compatibility tests.
-- Identity, authorization, secrets, telemetry, object storage, notifications,
-  and gateway functions SHALL be consumed through their owning common contracts.
-- Mandatory runtime dependencies SHALL be open-source and self-hostable. An
-  external or proprietary service MAY be an optional adapter with a tested local
-  replacement and SHALL NOT be required for standalone institutional operation.
-- Circular synchronous dependencies are prohibited. Cross-domain workflows SHALL
-  define a coordinating owner and compensating behaviour.
-
-## Data, state, residency, and retention
-
-- Governed information includes decisions, approvals, membership, incidents, exceptions, audits, contribution provenance, and policy versions.
-- Every data class SHALL declare an authoritative owner, purpose, classification,
-  residency, retention, export, correction, archival, and deletion rule in the
-  institution manifest before production activation.
-- Services SHALL minimize copied data, preserve provenance, encrypt protected
-  state and backups, and prevent telemetry from becoming an undeclared secondary
-  record system.
-- Cache and derived data SHALL be rebuildable or explicitly protected by backup
-  and recovery objectives. Deletion SHALL propagate to indexes, caches,
-  derivatives, replicas, and backups according to the declared retention policy.
-
-## Security, privacy, safety, and compliance
-
-- Domain controls SHALL include two-person control when maintainers permit, protected branches, mandatory 2FA, least privilege, conflict disclosure, and immutable audit history.
-- Authentication SHALL use the institution-approved identity issuer;
-  authorization SHALL be deny-by-default, least-privilege, policy-driven, and
-  enforced at every trust boundary.
-- Secrets SHALL use institution-controlled secret storage, short-lived credentials
-  where possible, documented rotation, and immediate revocation procedures.
-- Threat modelling SHALL cover misuse, compromised identities, malicious inputs,
-  dependency compromise, data exfiltration, denial of service, and unsafe
-  automation. High-impact actions require explicit confirmation and audit.
-- Logs, traces, diagnostics, and model context SHALL exclude protected content
-  unless explicitly required, minimized, access-controlled, and retained by policy.
-
-## Deployment, environments, and configuration
-
-- The common repository SHALL contain portable schemas, reference configuration,
-  conformance tests, and reusable OpenTofu, Helm, Kubernetes, or container assets.
-- Each institution fork SHALL contain only branding, adapters, policy overlays,
-  release configuration, and signed site values. Secrets SHALL never be committed.
-- Development SHALL use synthetic data. Staging SHALL exercise production-like
-  identity, policy, backup, upgrade, and failure behaviour without production data.
-- Production changes SHALL use reviewed GitOps promotion, immutable versioned
-  artifacts, health gates, rollback, and recorded provenance.
-
-## Capacity, scaling, cost, and sustainability
-
-- Capacity SHALL be controlled by quotas, concurrency limits, bounded queues,
-  admission control, backpressure, and per-tenant fairness.
-- The institution manifest SHALL declare demand assumptions, normal and peak
-  capacity, saturation thresholds, scale limits, resource budgets, and service
-  objectives using the common schema.
-- Scale-out SHALL preserve authorization, ordering, idempotency, data consistency,
-  and auditability. Overload SHALL degrade optional work before protected or
-  interactive work and SHALL never bypass security controls.
-- Resource and energy consumption SHALL be observable and included in lifecycle
-  and capacity decisions.
-
-## Failure, recovery, and compatibility
-
-- Required lifecycle behaviour includes scheduled review, expiry and renewal, succession, incident escalation, member offboarding, exception closure, and policy publication.
-- Dependencies SHALL have timeouts, bounded retries with jitter, circuit breakers,
-  health reporting, and documented degraded modes. Security and authorization
-  failures SHALL fail closed.
-- Stateful implementations SHALL meet manifest-declared RPO and RTO values and
-  prove backup restoration before production. Stateless components SHALL be
-  replaceable from source, configuration, and signed artifacts.
-- Releases SHALL support rollback and a compatibility window covering the current
-  major contract version and one prior major version unless an ADR documents a
-  safer domain-specific migration.
-
-## Observability, testing, and operational readiness
-
-- Implementations SHALL publish health, readiness, structured logs, metrics,
-  traces, security events, usage, latency, error, and saturation signals through
-  OpenTelemetry-compatible boundaries without exposing protected data.
-- Required tests include unit, schema, contract, authorization, privacy, failure,
-  upgrade, rollback, accessibility where user-facing, performance, and
-  institution-standalone conformance tests.
-- A release requires a named owner, runbook, threat model, dependency lock,
-  license inventory, SBOM, vulnerability and secret scans, signed provenance,
-  recovery evidence, and passing acceptance tests.
-
-## Standards and implementation strategy
-
-- Adopted boundary and strategy: transparent open governance, documented authority, repository-native change control, and institution-local legal authority.
-- Implementations SHALL follow **adopt → extend → compatible fork → build**.
-  Building a new primitive requires an ADR demonstrating that mature alternatives
-  fail the requirements and that long-term maintenance is funded.
-- Product selection is replaceable behind the contract. Product-specific APIs
-  SHALL remain inside adapters and SHALL NOT leak into portable clients or domain
-  contracts.
-
-## Settled architecture constraints
-
-- A new proprietary primitive requires evidence that standards, mature implementations, extensions, and compatible forks are inadequate.
-- Institutional identity, infrastructure, secrets, policies, and production data remain College-controlled.
-- Any exception follows the adopt → extend → compatible fork → build hierarchy and requires an ADR with evidence.
-
-## Decision traceability
-
-- ADR-0001: Standards-First / Buy-Borrow-Build
-- ADR-0005: Standard Platform Primitives
-- ADR-0012: Tenant-Neutral Post-Secondary Digital Commons
-- ADR-0013: Institution-First Federation Locality
-- ADR-0016: Accepted Project Defaults
-- ADR-0017: OpenTofu Default Infrastructure-as-Code Toolchain
-
-## Acceptance criteria
-
-The specification is satisfied when an implementation evidence package proves:
-
-1. versioned schemas and examples validate;
-2. contract and compatibility tests pass;
-3. identity and least-privilege authorization tests pass;
-4. threat, privacy, accessibility, and license reviews are recorded as applicable;
-5. capacity limits, degraded modes, and failure recovery behave as declared;
-6. observability and audit evidence identify success, failure, and saturation;
-7. backup, restore, upgrade, and rollback are demonstrated where applicable;
-8. a standalone institution deployment passes the common conformance suite;
-9. no mandatory proprietary service or undocumented cross-domain dependency exists.
-
-## Decision status
-
-There are no unresolved architecture choices in this specification. Institution
-values are supplied through the governed deployment-manifest schema, and
-implementation evidence is collected at the implementation authorization and
-production release gates. Changes follow ADR-based change control.
-
-## References
-
-- [Specification Completeness Standard](../architecture/Specification-Completeness-Standard.md)
-- [Technology Defaults and Alternatives](../vision/13-Technology-Defaults-and-Alternatives.md)
-- [Human Choices and Decisions Register](../governance/Human-Choices-and-Decisions-Register.md)
-- [ADR-0001: Standards First](../architecture/architecture-decision-records/ADR-0001-standards-first-buy-borrow-build.md)
-- [ADR-0012: Post Secondary Digital Commons](../architecture/architecture-decision-records/ADR-0012-post-secondary-digital-commons.md)
-- [ADR-0017: OpenTofu Default](../architecture/architecture-decision-records/ADR-0017-opentofu-default.md)
+> Governing decisions: Common policy, Algonquin institutional policy, and applicable ADRs
 
 ## Purpose
 
-This policy defines the required outcome, actors, and decision boundary for **Data-Handling**. It applies to all implementations and institution overlays that claim conformance.
+This policy governs **Data Handling** across portable PSDC contracts. Its outcome is enforceable, reviewable behavior that each institution can tighten without weakening the common privacy, security, portability, or interoperability floor.
+
+## Scope and authority
+
+`POL-HANDLE-001`: This policy applies to collection, validation, use, transformation, sharing, storage, caching, backup, export, archival, and deletion. Applicable law and binding institution policy take precedence; institution overlays supply approved values and may impose stricter controls.
+
+Product, service, data, security, privacy, and release owners retain their existing accountability. The AI reviewer and automated validator provide evidence but cannot approve an exception or replace specialist judgment.
 
 ## Normative rules
 
-The requirements in this document are normative. Owners MUST implement them, SHOULD document justified risk trade-offs, and MUST NOT treat an example as an exemption.
+`POL-HANDLE-002`: A service MUST collect and process only fields required for an approved purpose and MUST validate the permitted purpose, actor, destination, and data class at every trust boundary.
 
-## Enforcement
+`POL-HANDLE-003`: Protected data MUST use approved encrypted transport and storage, least-privilege access, bounded copies, declared retention, user or owner correction/export, and deletion propagation.
 
-The owning maintainer enforces this policy through review, automated checks, release gates, operator runbooks, and periodic evidence review. A critical violation blocks promotion until corrected or explicitly excepted.
+`POL-HANDLE-004`: Implementations MUST expose the policy decision and reason at the enforcement point, fail safely when required context or policy is unavailable, and preserve a redacted receipt linked to the actor, resource, policy version, and correlation identifier.
 
-## Exceptions
+## Enforcement and deny behavior
 
-An exception requires affected scope, rationale, threat/risk assessment, compensating controls, accountable approver, expiry date, and rollback or remediation plan. Exceptions MUST be narrow and time-bounded.
+`POL-HANDLE-005`: Policy enforcement denies unapproved destination, purpose, copy, or export; the data owner quarantines mishandled copies and initiates incident review. A failed check MUST prevent the affected operation rather than merely emit a warning. Unaffected local and standalone functions continue when isolation is safe.
 
-## Audit evidence
+## Exceptions, expiry, and appeal
 
-Audit evidence includes implementation links, test results, configuration or provenance records, incidents, approvals, and exception history. Evidence MUST be reproducible by an independent maintainer.
+`POL-HANDLE-006`: An exception requires the accountable institution authority, exact scope, rationale, risk, compensating controls, evidence, start and expiry, and revocation trigger. It cannot waive law or silently weaken a shared contract. Affected users or owners may appeal with contrary evidence; the maintainer preserves the original decision and resolution.
 
-## Acceptance and review
+## Violation response
 
-Acceptance requires the documented controls, tests, operator ownership, and evidence to be complete. The owner reviews this policy on material architecture change and at least once per release cycle.
+Suspected violation triggers containment, evidence preservation, notification to the owning security/privacy/data role, impact analysis, correction or rollback, and tracked prevention. Credentials or protected payloads never enter the general issue record.
+
+## Audit evidence and review cadence
+
+`POL-HANDLE-007`: Acceptance evidence includes lineage, access decisions, copy inventory, encryption tests, export receipts, retention jobs, deletion propagation, and incident records. Evidence MUST identify environment, time window, owner, pass/fail boundary, and retained artifact.
+
+The owner reviews this policy annually and after a material law, institutional policy, data flow, threat, dependency, federation, licensing, or enforcement change.
+
+## Acceptance criteria
+
+`POL-HANDLE-008`: A capability conforms only when positive, negative, unavailable-policy, unauthorized-actor, prohibited-destination, retention/deletion, and exception-expiry tests demonstrate the rules at every relevant enforcement point and the accountable maintainer accepts residual risk.
+
+## Algonquin policy binding
+
+Algonquin remains the authority for legal basis, approved data classes and locations, retention values, institutional systems, exception approvers, and enforcement configuration. Those values are stored in governed deployment and policy records, not copied into the portable common policy. Until the responsible College authority approves a required value, the corresponding processing remains disabled.
+
+## References
+
+- [Ecosystem Documentation Quality Standard](../standards/Ecosystem-Documentation-Quality-Standard.md)
+- [Specification Completeness Standard](../architecture/Specification-Completeness-Standard.md)
+- [Human Choices and Decisions Register](./Human-Choices-and-Decisions-Register.md)
+- [License Policy](./License-Policy.md)
+- [Third-Party Provider Policy](./Third-Party-Provider-Policy.md)

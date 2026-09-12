@@ -13,7 +13,7 @@
 This institution profile adopts the Post-Secondary Digital Commons ecosystem
 documentation quality standard without weakening it. It applies to every
 Algonquin fork document and deployment overlay. Institution values may add
-stricter controls, but they MUST NOT redefine a common contract silently.
+**STANDARDS-EDQS-001:** stricter controls, but they MUST NOT redefine a common contract silently.
 
 ## Required controls
 
@@ -54,3 +54,4 @@ explicit migration plan, never by silently editing the summary.
 
 - [Common PSDC-DOC-001](https://github.com/Post-Secondary-Digital-Commons/psdc-architecture/blob/main/docs/standards/Ecosystem-Documentation-Quality-Standard.md)
 - [Institution fork policy](../../INSTITUTION_FORK.md)
+

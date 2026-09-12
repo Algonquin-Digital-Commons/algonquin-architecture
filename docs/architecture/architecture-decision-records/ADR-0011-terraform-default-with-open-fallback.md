@@ -61,12 +61,6 @@ fallback for workflows that do not need Terraform state.
 - Portability tests and provider-neutral state/data practices reduce, but do not
   eliminate, migration cost.
 
-## References
-
-- [Terraform repository and license](https://github.com/hashicorp/terraform)
-- [Terraform BSL license text](https://github.com/hashicorp/terraform/blob/main/LICENSE)
-- [OpenTofu](https://opentofu.org/)
-
 ## Alternatives
 
 Considered alternatives include retaining the prior approach, adopting a mature open implementation, and building a local adapter. The selected decision is preferred under the stated requirements, constraints, sovereignty, and maintenance capacity; a new option requires a superseding ADR.
@@ -74,3 +68,10 @@ Considered alternatives include retaining the prior approach, adopting a mature 
 ## Migration and rollback
 
 Migration MUST identify data/configuration transitions, compatibility windows, verification evidence, owner, and rollback trigger. Rollback restores the last known-good contract and implementation without losing audit evidence.
+
+## References
+
+- [Terraform repository and license](https://github.com/hashicorp/terraform)
+- [Terraform BSL license text](https://github.com/hashicorp/terraform/blob/main/LICENSE)
+- [OpenTofu](https://opentofu.org/)
+

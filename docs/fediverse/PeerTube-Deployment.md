@@ -30,7 +30,7 @@ only when it satisfies this document, the linked ADRs, and the common
 
 ## Normative requirements
 
-- The PeerTube Deployment capability SHALL provide institution-sovereign social federation with shared interoperability, moderation, safety, and portability policy.
+- **FED-PD-001:** The PeerTube Deployment capability SHALL provide institution-sovereign social federation with shared interoperability, moderation, safety, and portability policy.
 - The capability SHALL have a versioned configuration schema, explicit safe
   defaults, validation before activation, and a reversible change procedure.
 - User-visible and administrative behaviour SHALL be accessible, explainable,
@@ -43,114 +43,39 @@ only when it satisfies this document, the linked ADRs, and the common
 
 ## Interfaces, APIs, events, and contracts
 
-- Required interoperability boundary: ActivityPub, ActivityStreams 2.0, WebFinger, NodeInfo, HTTP Signatures or successor profiles, and moderation exchanges.
-- HTTP interfaces SHALL use OpenAPI 3.1, explicit request and response schemas,
-  documented error codes, pagination for collections, and bounded timeouts.
-- Asynchronous interfaces SHALL use versioned schemas and CloudEvents envelopes;
-  delivery semantics, ordering, replay, deduplication, and dead-letter behaviour
-  SHALL be declared per event.
-- Mutations SHALL be idempotent or accept an idempotency key. Long-running work
-  SHALL expose status, cancellation, expiry, and result retrieval.
-- Consumers SHALL depend on contracts rather than another service's database,
-  internal queue, filesystem, or implementation-specific API.
+See [Interface controls](../architecture/Domain-Control-Profiles.md#fediverse-profile); local extensions remain normative.
 
 ## Dependencies and ownership boundaries
 
-- This domain owns its schemas, policy enforcement points, migrations, service
-  metadata, and compatibility tests.
-- Identity, authorization, secrets, telemetry, object storage, notifications,
-  and gateway functions SHALL be consumed through their owning common contracts.
-- Mandatory runtime dependencies SHALL be open-source and self-hostable. An
-  external or proprietary service MAY be an optional adapter with a tested local
-  replacement and SHALL NOT be required for standalone institutional operation.
-- Circular synchronous dependencies are prohibited. Cross-domain workflows SHALL
-  define a coordinating owner and compensating behaviour.
+Inherits [baseline ownership controls](../architecture/Cross-Cutting-Architecture-Requirements.md#ownership-and-dependency-boundaries).
 
 ## Data, state, residency, and retention
 
-- Governed information includes actors, objects, activities, media references, moderation actions, reports, blocks, consent, and retention metadata.
-- Every data class SHALL declare an authoritative owner, purpose, classification,
-  residency, retention, export, correction, archival, and deletion rule in the
-  institution manifest before production activation.
-- Services SHALL minimize copied data, preserve provenance, encrypt protected
-  state and backups, and prevent telemetry from becoming an undeclared secondary
-  record system.
-- Cache and derived data SHALL be rebuildable or explicitly protected by backup
-  and recovery objectives. Deletion SHALL propagate to indexes, caches,
-  derivatives, replicas, and backups according to the declared retention policy.
+See [Data controls](../architecture/Domain-Control-Profiles.md#fediverse-profile); local extensions remain normative.
 
 ## Security, privacy, safety, and compliance
 
-- Domain controls SHALL include instance-level policy, abuse throttling, signed federation, media controls, block and allow decisions, reporting, and moderator audit.
-- Authentication SHALL use the institution-approved identity issuer;
-  authorization SHALL be deny-by-default, least-privilege, policy-driven, and
-  enforced at every trust boundary.
-- Secrets SHALL use institution-controlled secret storage, short-lived credentials
-  where possible, documented rotation, and immediate revocation procedures.
-- Threat modelling SHALL cover misuse, compromised identities, malicious inputs,
-  dependency compromise, data exfiltration, denial of service, and unsafe
-  automation. High-impact actions require explicit confirmation and audit.
-- Logs, traces, diagnostics, and model context SHALL exclude protected content
-  unless explicitly required, minimized, access-controlled, and retained by policy.
+See [Security controls](../architecture/Domain-Control-Profiles.md#fediverse-profile); local extensions remain normative.
 
 ## Deployment, environments, and configuration
 
-- The common repository SHALL contain portable schemas, reference configuration,
-  conformance tests, and reusable OpenTofu, Helm, Kubernetes, or container assets.
-- Each institution fork SHALL contain only branding, adapters, policy overlays,
-  release configuration, and signed site values. Secrets SHALL never be committed.
-- Development SHALL use synthetic data. Staging SHALL exercise production-like
-  identity, policy, backup, upgrade, and failure behaviour without production data.
-- Production changes SHALL use reviewed GitOps promotion, immutable versioned
-  artifacts, health gates, rollback, and recorded provenance.
+Inherits [baseline deployment controls](../architecture/Cross-Cutting-Architecture-Requirements.md#deployment-and-configuration).
 
 ## Capacity, scaling, cost, and sustainability
 
-- Capacity SHALL be controlled by quotas, concurrency limits, bounded queues,
-  admission control, backpressure, and per-tenant fairness.
-- The institution manifest SHALL declare demand assumptions, normal and peak
-  capacity, saturation thresholds, scale limits, resource budgets, and service
-  objectives using the common schema.
-- Scale-out SHALL preserve authorization, ordering, idempotency, data consistency,
-  and auditability. Overload SHALL degrade optional work before protected or
-  interactive work and SHALL never bypass security controls.
-- Resource and energy consumption SHALL be observable and included in lifecycle
-  and capacity decisions.
+Inherits [baseline capacity controls](../architecture/Cross-Cutting-Architecture-Requirements.md#capacity-and-overload).
 
 ## Failure, recovery, and compatibility
 
-- Required lifecycle behaviour includes queue backpressure, remote-instance failure isolation, moderation escalation, object deletion propagation, export, and federation suspension.
-- Dependencies SHALL have timeouts, bounded retries with jitter, circuit breakers,
-  health reporting, and documented degraded modes. Security and authorization
-  failures SHALL fail closed.
-- Stateful implementations SHALL meet manifest-declared RPO and RTO values and
-  prove backup restoration before production. Stateless components SHALL be
-  replaceable from source, configuration, and signed artifacts.
-- Releases SHALL support rollback and a compatibility window covering the current
-  major contract version and one prior major version unless an ADR documents a
-  safer domain-specific migration.
+See [Failure controls](../architecture/Domain-Control-Profiles.md#fediverse-profile); local extensions remain normative.
 
 ## Observability, testing, and operational readiness
 
-- Implementations SHALL publish health, readiness, structured logs, metrics,
-  traces, security events, usage, latency, error, and saturation signals through
-  OpenTelemetry-compatible boundaries without exposing protected data.
-- Required tests include unit, schema, contract, authorization, privacy, failure,
-  upgrade, rollback, accessibility where user-facing, performance, and
-  institution-standalone conformance tests.
-- A release requires a named owner, runbook, threat model, dependency lock,
-  license inventory, SBOM, vulnerability and secret scans, signed provenance,
-  recovery evidence, and passing acceptance tests.
+Inherits [baseline evidence controls](../architecture/Cross-Cutting-Architecture-Requirements.md#observability-and-evidence).
 
 ## Standards and implementation strategy
 
-- Adopted boundary and strategy: W3C ActivityPub and ActivityStreams, WebFinger, NodeInfo, and upstream applications behind local policy boundaries.
-- Implementations SHALL follow **adopt → extend → compatible fork → build**.
-  Building a new primitive requires an ADR demonstrating that mature alternatives
-  fail the requirements and that long-term maintenance is funded.
-- Product selection is replaceable behind the contract. Product-specific APIs
-  SHALL remain inside adapters and SHALL NOT leak into portable clients or domain
-  contracts.
+See [Standards controls](../architecture/Domain-Control-Profiles.md#fediverse-profile); local extensions remain normative.
 
 ## Settled architecture constraints
 
@@ -171,24 +96,7 @@ only when it satisfies this document, the linked ADRs, and the common
 
 ## Acceptance criteria
 
-The specification is satisfied when an implementation evidence package proves:
-
-1. versioned schemas and examples validate;
-2. contract and compatibility tests pass;
-3. identity and least-privilege authorization tests pass;
-4. threat, privacy, accessibility, and license reviews are recorded as applicable;
-5. capacity limits, degraded modes, and failure recovery behave as declared;
-6. observability and audit evidence identify success, failure, and saturation;
-7. backup, restore, upgrade, and rollback are demonstrated where applicable;
-8. a standalone institution deployment passes the common conformance suite;
-9. no mandatory proprietary service or undocumented cross-domain dependency exists.
-
-## Decision status
-
-There are no unresolved architecture choices in this specification. Institution
-values are supplied through the governed deployment-manifest schema, and
-implementation evidence is collected at the implementation authorization and
-production release gates. Changes follow ADR-based change control.
+Inherits [baseline acceptance gates](../architecture/Cross-Cutting-Architecture-Requirements.md#observability-and-evidence); every local requirement MUST also pass.
 
 ## References
 
@@ -199,38 +107,3 @@ production release gates. Changes follow ADR-based change control.
 - [ADR-0012: Post Secondary Digital Commons](../architecture/architecture-decision-records/ADR-0012-post-secondary-digital-commons.md)
 - [ADR-0017: OpenTofu Default](../architecture/architecture-decision-records/ADR-0017-opentofu-default.md)
 
-## Out of scope
-
-Out of scope are secrets, unowned implementation internals, unrelated product capabilities, and any integration not named by a versioned contract. Such work requires its owning specification.
-
-## Architecture and ownership
-
-The architecture assigns responsibilities, trust boundaries, and ownership to the components named here. Algonquin owns institutional configuration and operations; Commons owners retain portable contracts unless this document explicitly records a local exception.
-
-## Interfaces and contracts
-
-Interfaces, APIs, events, schemas, and boundary conditions MUST be versioned, validated, and documented for producers and consumers. Private database schemas MUST NOT cross repository boundaries.
-
-## Dependencies and ownership
-
-Dependencies include runtime services, identity, policy, storage, network, upstream source, and operator capabilities named by this specification. Each dependency requires an owner, compatibility expectation, and failure behavior.
-
-## Security, privacy, and safety
-
-Security, privacy, safety, and policy controls MUST enforce least privilege, data classification, tenant separation, provenance, and auditable decisions. Sensitive defaults fail closed.
-
-## Deployment and implementation
-
-Deployment and implementation MUST separate portable source from institution configuration and secrets. The release path requires reproducible artifacts, health checks, observability, and a tested rollback.
-
-## Capacity and scaling
-
-Capacity planning MUST identify workload, latency, throughput, storage, concurrency, and scaling limits. Evidence covers expected peak, recovery margin, and degradation when a dependency saturates.
-
-## Failure and recovery
-
-Failures produce bounded, typed behavior with no secret or protected-content leakage. Operators MUST have detection, quarantine or degradation, recovery, and rollback procedures.
-
-## Testing and evidence
-
-Testing and evidence include contract, integration, authorization, privacy/security, accessibility where applicable, failure, migration, and rollback checks. Evidence is linked to the release or decision record.

@@ -76,12 +76,13 @@ The mobile product gains a tested interaction model while the shared protocol,
 relay, identity, policy, and compute remain institution-controlled. Mobile is a
 supervision surface, not a remote-shell bypass or a new source of provider lock-in.
 
+## Migration and rollback
+
+Migration MUST identify data/configuration transitions, compatibility windows, verification evidence, owner, and rollback trigger. Rollback restores the last known-good contract and implementation without losing audit evidence.
+
 ## References
 
 - [Happy repository](https://github.com/slopus/happy)
 - [Happy MIT license](https://github.com/slopus/happy/blob/main/LICENSE)
 - [Happier feature reference](https://github.com/happier-dev/happier)
 
-## Migration and rollback
-
-Migration MUST identify data/configuration transitions, compatibility windows, verification evidence, owner, and rollback trigger. Rollback restores the last known-good contract and implementation without losing audit evidence.

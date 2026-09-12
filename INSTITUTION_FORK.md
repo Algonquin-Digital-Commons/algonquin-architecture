@@ -38,3 +38,8 @@ Secrets include issuer credentials, signing keys, provider keys, deployment toke
 ## Rollback
 
 Rollback retains a signed last-known-good artifact and configuration snapshot. Failed security, contract, health, or evidence gates block promotion and restore that release.
+## Stable conformance requirement
+
+- **ARCH-IF-001:** The **Algonquin Fork Boundary** implementation MUST satisfy its declared interfaces, failure behavior, security boundaries, and acceptance evidence.
+
+

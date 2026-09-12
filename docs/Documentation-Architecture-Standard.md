@@ -2,9 +2,9 @@
 
 
 > Standard: PSDC-DOC-001
-> Document type: architecture-specification
+> Document type: governance-standard
 > Status: Normative
-> Owner: Algonquin Institution Maintainers
+> Owner: PSDC Architecture Maintainers
 > Accountable maintainer: RedjiJB until delegation
 > Last reviewed: 2026-09-11
 > Governing decisions: Applicable ADRs and repository governance
@@ -96,50 +96,23 @@ architectural blanks. Removing empty markers alone is not sufficient.
 - Avoid embedding secrets, private infrastructure addresses, personal data, or
   precise private spatial data.
 
-## Purpose and outcome
+## Required controls
 
-This specification defines the purpose and intended outcome of **Documentation-Architecture-Standard** for the Algonquin deployment and its Commons compatibility boundary.
+Implementations MUST satisfy the required controls and provide evidence before claiming conformance.
 
-## Scope
+## Maturity
 
-The scope includes the capabilities, users, data, lifecycle, and interfaces described here. Institution overlays may configure approved values but MUST preserve the shared contract.
+Maturity is recorded as proposed, active, accepted, or retired with an accountable owner.
 
-## Out of scope
+## Definition of done
 
-Out of scope are secrets, unowned implementation internals, unrelated product capabilities, and any integration not named by a versioned contract. Such work requires its owning specification.
+Definition of done includes content, ownership, interfaces, testing, evidence, and rollback where applicable.
 
-## Architecture and ownership
+## Change control
 
-The architecture assigns responsibilities, trust boundaries, and ownership to the components named here. Algonquin owns institutional configuration and operations; Commons owners retain portable contracts unless this document explicitly records a local exception.
+Change control requires review, impact analysis, linked decisions, and a supersession or migration note where behavior changes.
+## Stable conformance requirement
 
-## Interfaces and contracts
+- **DASM-DAS-001:** The **Documentation Architecture Standard** implementation MUST satisfy its declared interfaces, failure behavior, security boundaries, and acceptance evidence.
 
-Interfaces, APIs, events, schemas, and boundary conditions MUST be versioned, validated, and documented for producers and consumers. Private database schemas MUST NOT cross repository boundaries.
 
-## Dependencies and ownership
-
-Dependencies include runtime services, identity, policy, storage, network, upstream source, and operator capabilities named by this specification. Each dependency requires an owner, compatibility expectation, and failure behavior.
-
-## Security, privacy, and safety
-
-Security, privacy, safety, and policy controls MUST enforce least privilege, data classification, tenant separation, provenance, and auditable decisions. Sensitive defaults fail closed.
-
-## Deployment and implementation
-
-Deployment and implementation MUST separate portable source from institution configuration and secrets. The release path requires reproducible artifacts, health checks, observability, and a tested rollback.
-
-## Capacity and scaling
-
-Capacity planning MUST identify workload, latency, throughput, storage, concurrency, and scaling limits. Evidence covers expected peak, recovery margin, and degradation when a dependency saturates.
-
-## Failure and recovery
-
-Failures produce bounded, typed behavior with no secret or protected-content leakage. Operators MUST have detection, quarantine or degradation, recovery, and rollback procedures.
-
-## Testing and evidence
-
-Testing and evidence include contract, integration, authorization, privacy/security, accessibility where applicable, failure, migration, and rollback checks. Evidence is linked to the release or decision record.
-
-## Acceptance criteria
-
-Acceptance requires the stated interfaces, controls, tests, operational ownership, and evidence to be complete. A document is not complete merely because a stub or implementation exists.

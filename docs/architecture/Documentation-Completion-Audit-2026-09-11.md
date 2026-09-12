@@ -2,12 +2,17 @@
 
 
 > Standard: PSDC-DOC-001
-> Document type: architecture-map
-> Status: Normative
-> Owner: Algonquin Institution Maintainers
+> Document type: historical-record
+> Status: Superseded
+> Owner: PSDC Architecture Maintainers
 > Accountable maintainer: RedjiJB until delegation
 > Last reviewed: 2026-09-11
 > Governing decisions: Applicable ADRs and repository governance
+
+> Source date: 2026-09-11
+> Superseded by: Documentation-Semantic-Audit-2026-09-11.md
+> Retention reason: preserves the prior completion claim for auditability while
+> corpus remediation corrects title-substitution clones and repeated filler.
 
 > Scope: Workspace, common repositories, Algonquin forks, contracts, maps and GitHub topology
 
@@ -79,23 +84,23 @@ merged.
 
 ## Purpose and mapped scope
 
-This map records the context, scope, and relationships represented by **Documentation-Completion-Audit-2026-09-11**. It is a cross-repository navigation and ownership record, not a replacement for an owning contract.
+This map explains the relationships represented by **Documentation Completion Audit — 2026-09-11**. It is a navigation and traceability authority for the named repositories, contracts, decisions, or cross-pollination paths; it does not silently replace an implementation specification.
 
 ## Scope and exclusions
 
-The map covers only the named systems, documents, capabilities, and edges. It excludes secrets, private implementation details, undocumented vendor commitments, and requirements owned by a different specification.
+The map covers only the documents, repositories, capabilities, and relationships explicitly named here. It excludes secrets, private infrastructure values, undocumented vendor commitments, and requirements that belong in an owning specification.
 
 ## Ownership boundaries
 
-The owning repository remains authoritative for each capability and contract. This map may summarize and link but MUST NOT redefine an institution policy, product boundary, or signed deployment value.
+The owning repository remains authoritative for each capability and contract. This map may summarize and link, but it MUST NOT redefine a product boundary, institution policy, or signed deployment value. Cross-repository changes require the owning ADR or contract update.
 
 ## Dependency and relationship semantics
 
-A relationship means a declared contract, event, protocol, deployment dependency, or navigation edge; it does not imply shared databases or filesystem access. Producers and consumers MUST use the referenced versioned interface.
+A relationship means a declared contract, event, protocol, deployment dependency, or navigation link; it does not mean shared database or filesystem access. Producers and consumers MUST use the referenced versioned contract, and circular synchronous dependencies require an accepted ADR.
 
 ## Source of truth and references
 
-Authoritative sources are the owning contracts, accepted ADRs, and deployment profiles linked by this map. References MUST identify the source document and version where applicable.
+The source of truth is the linked document in the owning repository plus its accepted ADRs, schemas, and deployment profiles. When a link crosses repositories it MUST use a canonical hosted URL or a workspace-relative path that the structural checker can resolve.
 
 ## Validation and staleness
 

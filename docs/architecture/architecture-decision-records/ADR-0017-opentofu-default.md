@@ -48,11 +48,6 @@ OpenTofu plus Ansible is the default infrastructure-as-code toolchain.
 - Existing Terraform-language ecosystem familiarity can usually be reused, but
   OpenTofu behavior and provider compatibility remain the tested authority.
 
-## References
-
-- [OpenTofu repository](https://github.com/opentofu/opentofu)
-- [OpenTofu MPL-2.0 license](https://github.com/opentofu/opentofu/blob/main/LICENSE)
-
 ## Alternatives
 
 Considered alternatives include retaining the prior approach, adopting a mature open implementation, and building a local adapter. The selected decision is preferred under the stated requirements, constraints, sovereignty, and maintenance capacity; a new option requires a superseding ADR.
@@ -60,3 +55,9 @@ Considered alternatives include retaining the prior approach, adopting a mature 
 ## Migration and rollback
 
 Migration MUST identify data/configuration transitions, compatibility windows, verification evidence, owner, and rollback trigger. Rollback restores the last known-good contract and implementation without losing audit evidence.
+
+## References
+
+- [OpenTofu repository](https://github.com/opentofu/opentofu)
+- [OpenTofu MPL-2.0 license](https://github.com/opentofu/opentofu/blob/main/LICENSE)
+

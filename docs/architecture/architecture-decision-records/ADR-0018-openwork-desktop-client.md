@@ -77,12 +77,13 @@ OpenWork accelerates the desktop experience without defining platform APIs. The
 project accepts the cost of maintaining a constrained downstream and may move to
 Tauri or a native client if the gate or patch budget fails.
 
+## Migration and rollback
+
+Migration MUST identify data/configuration transitions, compatibility windows, verification evidence, owner, and rollback trigger. Rollback restores the last known-good contract and implementation without losing audit evidence.
+
 ## References
 
 - [OpenWork repository](https://github.com/different-ai/openwork)
 - [OpenWork MIT license for the core](https://github.com/different-ai/openwork/blob/dev/LICENSE)
 - [OpenWork EE license](https://github.com/different-ai/openwork/blob/dev/ee/LICENSE)
 
-## Migration and rollback
-
-Migration MUST identify data/configuration transitions, compatibility windows, verification evidence, owner, and rollback trigger. Rollback restores the last known-good contract and implementation without losing audit evidence.
