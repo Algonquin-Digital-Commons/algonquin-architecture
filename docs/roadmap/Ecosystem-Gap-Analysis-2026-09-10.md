@@ -35,3 +35,8 @@ Risks include lock-in, authority escalation, privacy leakage, upstream drift, ca
 ## Evidence
 
 Evidence includes contract tests, threat/privacy reviews, provenance/SBOM, capacity/failure results, runbooks, approvals, and a signed phase decision.
+## Stable conformance requirement
+
+- **ROAD-EGA201-001:** The **Ecosystem Gap Analysis — Historical Pointer** owner MUST treat every declared exit criterion as a release gate and record evidence before phase advancement.
+
+

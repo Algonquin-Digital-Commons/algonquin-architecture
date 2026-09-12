@@ -922,17 +922,6 @@ individual scores for authoritative documents, an authority-aware contradiction
 report, requirement and human-decision ledgers, a prioritized remediation graph,
 reviewer self-critique, and a final statement of what remains unverified.
 
-## References
-
-- [Ecosystem Documentation Quality and Scope Standard](./Ecosystem-Documentation-Quality-Standard.md)
-- [Specification Completeness Standard](../architecture/Specification-Completeness-Standard.md)
-- [Decision Traceability Matrix](../architecture/Decision-Traceability-Matrix.md)
-- [Ecosystem Dependency Contract](../architecture/Ecosystem-Dependency-Contract.md)
-- [Human Choices and Decisions Register](../governance/Human-Choices-and-Decisions-Register.md)
-- [Open-Source License Compliance](../governance/Open-Source-License-Compliance.md)
-- [Institution Organization Fork Model ADR](../architecture/architecture-decision-records/ADR-0023-institution-organization-fork-model.md)
-- [License and Upstream Contribution ADR](../architecture/architecture-decision-records/ADR-0024-permissive-license-and-upstream-contribution.md)
-
 ## Reviewer instruction
 
 The following instruction can be supplied to a stronger model together with the
@@ -976,3 +965,15 @@ The operator SHOULD request deterministic or low-variance settings when availabl
 retain the full model output, and record model/version and review timestamp. A
 review is not reproducible if the corpus state, rubric version, or model identity
 is unknown.
+
+## References
+
+- [Ecosystem Documentation Quality and Scope Standard](./Ecosystem-Documentation-Quality-Standard.md)
+- [Specification Completeness Standard](../architecture/Specification-Completeness-Standard.md)
+- [Decision Traceability Matrix](../architecture/Decision-Traceability-Matrix.md)
+- [Ecosystem Dependency Contract](../architecture/Ecosystem-Dependency-Contract.md)
+- [Human Choices and Decisions Register](../governance/Human-Choices-and-Decisions-Register.md)
+- [Open-Source License Compliance](../governance/Open-Source-License-Compliance.md)
+- [Institution Organization Fork Model ADR](../architecture/architecture-decision-records/ADR-0023-institution-organization-fork-model.md)
+- [License and Upstream Contribution ADR](../architecture/architecture-decision-records/ADR-0024-permissive-license-and-upstream-contribution.md)
+

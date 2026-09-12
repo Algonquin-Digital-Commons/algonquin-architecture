@@ -1,12 +1,17 @@
 # Documentation Quality Audit — 2026-09-11
 
 > Standard: PSDC-DOC-001
-> Document type: architecture-map
-> Status: Active
+> Document type: historical-record
+> Status: Superseded
 > Owner: PSDC Architecture Maintainer
 > Accountable maintainer: RedjiJB until delegation
 > Last reviewed: 2026-09-11
 > Governing decisions: PSDC-DOC-001 and repository governance
+
+> Source date: 2026-09-11
+> Superseded by: Documentation-Semantic-Audit-2026-09-11.md
+> Retention reason: preserves the earlier structural-only result and explains why
+> a zero-finding heading audit was not sufficient evidence of semantic quality.
 
 ## Purpose and scope
 
@@ -74,13 +79,6 @@ maps point to authoritative specifications, provenance is reproducible, and
 the structural and substantive audits pass. Empty headings, generic boilerplate,
 and unreviewed “not applicable” statements do not satisfy this rule.
 
-## References
-
-- [Ecosystem documentation quality and scope standard](../standards/Ecosystem-Documentation-Quality-Standard.md)
-- [Specification completeness standard](./Specification-Completeness-Standard.md)
-- [Machine-readable findings](./Documentation-Quality-Findings-2026-09-11.csv)
-- [Workspace documentation test](../../../../scripts/Test-DocumentQuality.ps1)
-
 ## Scope and exclusions
 
 The map covers only the documents, repositories, capabilities, and relationships explicitly named here. It excludes secrets, private infrastructure values, undocumented vendor commitments, and requirements that belong in an owning specification.
@@ -104,3 +102,11 @@ This map records the context, scope, and relationships represented by **Document
 ## Source of truth and references
 
 Authoritative sources are the owning contracts, accepted ADRs, and deployment profiles linked by this map. References MUST identify the source document and version where applicable.
+
+## References
+
+- [Ecosystem documentation quality and scope standard](../standards/Ecosystem-Documentation-Quality-Standard.md)
+- [Specification completeness standard](./Specification-Completeness-Standard.md)
+- [Machine-readable findings](./Documentation-Quality-Findings-2026-09-11.csv)
+- [Workspace documentation test](../../../../scripts/Test-DocumentQuality.ps1)
+

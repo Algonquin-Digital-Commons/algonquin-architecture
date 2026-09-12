@@ -2,12 +2,17 @@
 
 
 > Standard: PSDC-DOC-001
-> Document type: roadmap
-> Status: Complete
+> Document type: historical-record
+> Status: Superseded
 > Owner: PSDC Architecture Maintainers
 > Accountable maintainer: RedjiJB until delegation
 > Last reviewed: 2026-09-11
 > Governing decisions: Applicable ADRs and repository governance
+
+> Source date: 2026-09-11
+> Superseded by: ../architecture/Documentation-Semantic-Audit-2026-09-11.md
+> Retention reason: preserves the previous implementation-readiness claim and its
+> rationale while the stronger semantic review resolves the newly exposed gaps.
 
 > Repository scope: one workspace, ten common products, ten Algonquin forks
 

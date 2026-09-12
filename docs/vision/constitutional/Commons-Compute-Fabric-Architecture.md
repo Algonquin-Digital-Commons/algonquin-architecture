@@ -105,14 +105,9 @@ distributed serving → experimental heterogeneous sharding.
 - Implementation evidence gate: measure hardware, power, network and utilization; select worker
   implementation details; prove isolation, preemption, recovery and accounting.
 
-## References
-
-- [Post-Secondary Digital Commons Architecture](Post-Secondary-Digital-Commons-Architecture.md)
-- [Ecosystem Implementation Readiness](../../roadmap/Ecosystem-Implementation-Readiness-2026-09-11.md)
-
 ## Interfaces and contracts
 
-Cross-system interactions MUST use versioned APIs, schemas, events, or federation protocols owned by the referenced repository. Producers, consumers, compatibility windows, idempotency, authorization context, and machine-readable errors MUST be explicit; direct database or private queue access is prohibited.
+**VISION-CCFA-001:** Cross-system interactions MUST use versioned APIs, schemas, events, or federation protocols owned by the referenced repository. Producers, consumers, compatibility windows, idempotency, authorization context, and machine-readable errors MUST be explicit; direct database or private queue access is prohibited.
 
 ## Security, privacy, and safety
 
@@ -134,26 +129,8 @@ Dependencies require timeouts, bounded retries, circuit breakers, health signals
 
 Evidence MUST include contract and schema validation, authorization/privacy/security tests, failure and recovery exercises, capacity measurements, accessibility where user-facing, SBOM/license review, signed provenance, and standalone institution conformance. The workspace structural and substantive documentation gates are required before release authorization.
 
-## Purpose and outcome
+## References
 
-This specification defines the purpose and intended outcome of **Commons-Compute-Fabric-Architecture** for the institution-neutral Commons ecosystem and its deployment boundaries.
+- [Post-Secondary Digital Commons Architecture](Post-Secondary-Digital-Commons-Architecture.md)
+- [Ecosystem Implementation Readiness](../../roadmap/Ecosystem-Implementation-Readiness-2026-09-11.md)
 
-## Out of scope
-
-Out of scope are secrets, unowned implementation internals, unrelated product capabilities, and any integration not named by a versioned contract. Such work requires its owning specification.
-
-## Architecture and ownership
-
-The architecture assigns responsibilities, trust boundaries, and ownership to the components named here. Shared owners retain portable contracts; institution maintainers own local configuration and operations.
-
-## Dependencies and ownership
-
-Dependencies include runtime services, identity, policy, storage, network, upstream source, and operator capabilities named by this specification. Each dependency requires an owner, compatibility expectation, and failure behavior.
-
-## Failure and recovery
-
-Failures produce bounded, typed behavior with no secret or protected-content leakage. Operators MUST have detection, quarantine or degradation, recovery, and rollback procedures.
-
-## Acceptance criteria
-
-Acceptance requires the stated interfaces, controls, tests, operational ownership, and evidence to be complete. A document is not complete merely because a stub or implementation exists.

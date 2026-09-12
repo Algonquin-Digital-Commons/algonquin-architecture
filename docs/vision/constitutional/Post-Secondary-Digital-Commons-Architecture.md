@@ -151,7 +151,7 @@ This document does not authorize product implementation, institution-specific se
 
 ## Interfaces and contracts
 
-Cross-system interactions MUST use versioned APIs, schemas, events, or federation protocols owned by the referenced repository. Producers, consumers, compatibility windows, idempotency, authorization context, and machine-readable errors MUST be explicit; direct database or private queue access is prohibited.
+**VISION-PSDCA-001:** Cross-system interactions MUST use versioned APIs, schemas, events, or federation protocols owned by the referenced repository. Producers, consumers, compatibility windows, idempotency, authorization context, and machine-readable errors MUST be explicit; direct database or private queue access is prohibited.
 
 ## Dependencies and ownership
 
@@ -181,14 +181,4 @@ Evidence MUST include contract and schema validation, authorization/privacy/secu
 
 The specification is accepted only when all named boundaries and requirements have an owner, an observable test or evidence type, a recovery path, and a traceable governing ADR or contract. Unmeasured production values remain implementation gates rather than undocumented assumptions.
 
-## Purpose and outcome
 
-This specification defines the purpose and intended outcome of **Post-Secondary-Digital-Commons-Architecture** for the institution-neutral Commons ecosystem and its deployment boundaries.
-
-## Architecture and ownership
-
-The architecture assigns responsibilities, trust boundaries, and ownership to the components named here. Shared owners retain portable contracts; institution maintainers own local configuration and operations.
-
-## Failure and recovery
-
-Failures produce bounded, typed behavior with no secret or protected-content leakage. Operators MUST have detection, quarantine or degradation, recovery, and rollback procedures.

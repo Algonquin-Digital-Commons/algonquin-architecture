@@ -84,11 +84,12 @@ No source import or production deployment occurs until:
 - Failing a gate above changes the preferred implementation to another eligible
   client or an Algonquin-native build; it does not change the gateway architecture.
 
+## Migration and rollback
+
+A change implementing **ADR-0009: Bootstrap Algonquin AI Web from the Open WebUI v0.6.5 BSD Baseline** MUST preserve the current contract during the declared compatibility window, publish a versioned migration plan, and rehearse rollback before production promotion. Migration evidence includes inventory, data/state transformation, operator communication, and verification. Rollback is triggered by failed acceptance, security regression, loss of institution control, or unrecoverable compatibility failure; it restores the last accepted artifact and preserves audit history. If no migration is currently required, the owner MUST record that as a reviewed no-op and revisit it when the decision changes.
+
 ## References
 
 - [Open WebUI license explanation](https://docs.openwebui.com/license/)
 - [Open WebUI license notice](https://github.com/open-webui/open-webui/blob/main/LICENSE_NOTICE)
 
-## Migration and rollback
-
-A change implementing **ADR-0009: Bootstrap Algonquin AI Web from the Open WebUI v0.6.5 BSD Baseline** MUST preserve the current contract during the declared compatibility window, publish a versioned migration plan, and rehearse rollback before production promotion. Migration evidence includes inventory, data/state transformation, operator communication, and verification. Rollback is triggered by failed acceptance, security regression, loss of institution control, or unrecoverable compatibility failure; it restores the last accepted artifact and preserves audit history. If no migration is currently required, the owner MUST record that as a reviewed no-op and revisit it when the decision changes.

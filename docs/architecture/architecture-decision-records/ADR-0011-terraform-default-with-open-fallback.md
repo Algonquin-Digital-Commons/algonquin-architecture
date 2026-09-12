@@ -61,12 +61,6 @@ fallback for workflows that do not need Terraform state.
 - Portability tests and provider-neutral state/data practices reduce, but do not
   eliminate, migration cost.
 
-## References
-
-- [Terraform repository and license](https://github.com/hashicorp/terraform)
-- [Terraform BSL license text](https://github.com/hashicorp/terraform/blob/main/LICENSE)
-- [OpenTofu](https://opentofu.org/)
-
 ## Alternatives and evidence
 
 For **ADR-0011: Terraform Is the Default IaC CLI with an OpenTofu Exit Path**, the decision record considered: retain the prior approach; adopt a mature compatible standard or open-source implementation; and build or fork a new primitive. The selected decision is preferred under the stated constraints. A change trigger is new security, licensing, interoperability, sovereignty, cost, or operational evidence; a new option requires an ADR update rather than an undocumented exception.
@@ -78,3 +72,10 @@ A change implementing **ADR-0011: Terraform Is the Default IaC CLI with an OpenT
 ## Alternatives
 
 Considered alternatives include retaining the prior approach, adopting a mature open implementation, and building a local adapter. The selected decision is preferred under the stated requirements, constraints, sovereignty, and maintenance capacity; a new option requires a superseding ADR.
+
+## References
+
+- [Terraform repository and license](https://github.com/hashicorp/terraform)
+- [Terraform BSL license text](https://github.com/hashicorp/terraform/blob/main/LICENSE)
+- [OpenTofu](https://opentofu.org/)
+

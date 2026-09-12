@@ -2,7 +2,7 @@
 
 
 > Standard: PSDC-DOC-001
-> Document type: architecture-specification
+> Document type: governance-standard
 > Status: Accepted
 > Owner: Platform architecture and open-source governance
 > Accountable maintainer: RedjiJB until delegation
@@ -106,51 +106,12 @@ Before choosing extend, fork, or build, record:
 - Implementation evidence gate: each implementation records its exact upstream, release,
   license, patch budget, owner, evidence and exit path.
 
+## Required controls, maturity, definition of done, and change control
+
+**VISION-0BVAVF-001:** GOV-SOURCE-001: Teams MUST evaluate adopt, extend, compatible fork, and new build in that order against requirements, license, security, accessibility, interoperability, maintenance, and exit cost. A fork requires provenance, patch budget, upstream strategy, and replacement trigger; a build requires evidence that eligible alternatives fail. Maturity requires enforced decision templates and gates. Definition of done is an accepted evidence-backed record. Material exceptions require an ADR and scheduled reassessment.
+
 ## References
 
 - [Open-Source-Only Technology Policy](11-Open-Source-Only-Policy.md)
 - [Full Technology Stack and Open-Source Alternatives](14-Full-Technology-Stack-and-Open-Source-Alternatives.md)
 
-## Purpose and outcome
-
-This specification defines the purpose and intended outcome of **07-Build-vs-Adopt-vs-Fork** for the institution-neutral Commons ecosystem and its deployment boundaries.
-
-## Out of scope
-
-Out of scope are secrets, unowned implementation internals, unrelated product capabilities, and any integration not named by a versioned contract. Such work requires its owning specification.
-
-## Architecture and ownership
-
-The architecture assigns responsibilities, trust boundaries, and ownership to the components named here. Shared owners retain portable contracts; institution maintainers own local configuration and operations.
-
-## Interfaces and contracts
-
-Interfaces, APIs, events, schemas, and boundary conditions MUST be versioned, validated, and documented for producers and consumers. Private database schemas MUST NOT cross repository boundaries.
-
-## Dependencies and ownership
-
-Dependencies include runtime services, identity, policy, storage, network, upstream source, and operator capabilities named by this specification. Each dependency requires an owner, compatibility expectation, and failure behavior.
-
-## Security, privacy, and safety
-
-Security, privacy, safety, and policy controls MUST enforce least privilege, data classification, tenant separation, provenance, and auditable decisions. Sensitive defaults fail closed.
-
-## Deployment and implementation
-
-Deployment and implementation MUST separate portable source from institution configuration and secrets. The release path requires reproducible artifacts, health checks, observability, and a tested rollback.
-
-## Capacity and scaling
-
-Capacity planning MUST identify workload, latency, throughput, storage, concurrency, and scaling limits. Evidence covers expected peak, recovery margin, and degradation when a dependency saturates.
-
-## Failure and recovery
-
-Failures produce bounded, typed behavior with no secret or protected-content leakage. Operators MUST have detection, quarantine or degradation, recovery, and rollback procedures.
-
-## Testing and evidence
-
-Testing and evidence include contract, integration, authorization, privacy/security, accessibility where applicable, failure, migration, and rollback checks. Evidence is linked to the release or decision record.
-
-## Acceptance criteria
-
-Acceptance requires the stated interfaces, controls, tests, operational ownership, and evidence to be complete. A document is not complete merely because a stub or implementation exists.

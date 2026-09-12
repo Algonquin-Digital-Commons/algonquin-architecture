@@ -2,12 +2,17 @@
 
 
 > Standard: PSDC-DOC-001
-> Document type: architecture-map
-> Status: Normative
+> Document type: historical-record
+> Status: Superseded
 > Owner: PSDC Architecture Maintainers
 > Accountable maintainer: RedjiJB until delegation
 > Last reviewed: 2026-09-11
 > Governing decisions: Applicable ADRs and repository governance
+
+> Source date: 2026-09-11
+> Superseded by: Documentation-Semantic-Audit-2026-09-11.md
+> Retention reason: preserves the prior completion claim for auditability while
+> corpus remediation corrects title-substitution clones and repeated filler.
 
 > Scope: Workspace, common repositories, Algonquin forks, contracts, maps and GitHub topology
 

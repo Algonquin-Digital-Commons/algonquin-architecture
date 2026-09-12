@@ -2,7 +2,7 @@
 
 
 > Standard: PSDC-DOC-001
-> Document type: architecture-specification
+> Document type: architecture-map
 > Status: Normative
 > Owner: Platform architecture and quality engineering
 > Accountable maintainer: RedjiJB until delegation
@@ -76,51 +76,12 @@ behaviors, known deviations, and evidence location.
 - Implementation evidence gate: pin versions, build suites, document deviations, and publish
   evidence before using `Compatible` or `Certified` status.
 
+## Ownership, dependency relationships, source of truth, and validation
+
+MAP-STANDARDS-001: Contract owners own protocol profiles; component owners own implementations; the architecture maintainer resolves collisions. Relationships are directional producer-consumer contracts, never private database coupling. Published standards, local profiles, schemas, and accepted ADRs are source of truth. Validation MUST include positive, negative, version-skew, optional-feature, and independent-implementation tests and mark stale or superseded entries.
+
 ## References
 
 - [Ecosystem Implementation Readiness](../roadmap/Ecosystem-Implementation-Readiness-2026-09-11.md)
 - [Full Technology Stack and Open-Source Alternatives](14-Full-Technology-Stack-and-Open-Source-Alternatives.md)
 
-## Purpose and outcome
-
-This specification defines the purpose and intended outcome of **08-Standards-Compatibility-Matrix** for the institution-neutral Commons ecosystem and its deployment boundaries.
-
-## Out of scope
-
-Out of scope are secrets, unowned implementation internals, unrelated product capabilities, and any integration not named by a versioned contract. Such work requires its owning specification.
-
-## Architecture and ownership
-
-The architecture assigns responsibilities, trust boundaries, and ownership to the components named here. Shared owners retain portable contracts; institution maintainers own local configuration and operations.
-
-## Interfaces and contracts
-
-Interfaces, APIs, events, schemas, and boundary conditions MUST be versioned, validated, and documented for producers and consumers. Private database schemas MUST NOT cross repository boundaries.
-
-## Dependencies and ownership
-
-Dependencies include runtime services, identity, policy, storage, network, upstream source, and operator capabilities named by this specification. Each dependency requires an owner, compatibility expectation, and failure behavior.
-
-## Security, privacy, and safety
-
-Security, privacy, safety, and policy controls MUST enforce least privilege, data classification, tenant separation, provenance, and auditable decisions. Sensitive defaults fail closed.
-
-## Deployment and implementation
-
-Deployment and implementation MUST separate portable source from institution configuration and secrets. The release path requires reproducible artifacts, health checks, observability, and a tested rollback.
-
-## Capacity and scaling
-
-Capacity planning MUST identify workload, latency, throughput, storage, concurrency, and scaling limits. Evidence covers expected peak, recovery margin, and degradation when a dependency saturates.
-
-## Failure and recovery
-
-Failures produce bounded, typed behavior with no secret or protected-content leakage. Operators MUST have detection, quarantine or degradation, recovery, and rollback procedures.
-
-## Testing and evidence
-
-Testing and evidence include contract, integration, authorization, privacy/security, accessibility where applicable, failure, migration, and rollback checks. Evidence is linked to the release or decision record.
-
-## Acceptance criteria
-
-Acceptance requires the stated interfaces, controls, tests, operational ownership, and evidence to be complete. A document is not complete merely because a stub or implementation exists.

@@ -2,7 +2,7 @@
 
 
 > Standard: PSDC-DOC-001
-> Document type: architecture-specification
+> Document type: provenance-record
 > Status: Normative
 > Owner: Commons AI Fabric client team and open-source review
 > Accountable maintainer: RedjiJB until delegation
@@ -61,6 +61,10 @@ client remains the exit path if that burden becomes unsafe or unsustainable.
 - ADR-0008: Open-Source, Self-Hosted Core
 - ADR-0009: PSDC Web Foundation
 
+## Upstream, candidate tag commit, license, included and excluded scope, and import state
+
+Import state: no source imported. Upstream is the canonical Open WebUI repository. The only candidate baseline is tag v0.6.5 under separately verified BSD-3-Clause terms; its immutable commit, archive checksum, and file-level inventory MUST be recorded in the import pull request. Included scope is limited to reviewed eligible browser-client files and notices. Excluded scope includes later source-available material, hosted control planes, trademarks, analytics, secrets, generated state, and unclear files. PROV-OWUI-001: Failed license, security, accessibility, or maintenance review leaves import state unchanged.
+
 ## References
 
 - [PSDC Web Foundation](./PSDC-Web-Foundation.md)
@@ -68,50 +72,3 @@ client remains the exit path if that burden becomes unsafe or unsustainable.
 - [Open WebUI license explanation](https://docs.openwebui.com/license/)
 - [Open WebUI license notice](https://github.com/open-webui/open-webui/blob/main/LICENSE_NOTICE)
 
-## Purpose and outcome
-
-This specification defines the purpose and intended outcome of **OpenWebUI-Downstream-Strategy** for the institution-neutral Commons ecosystem and its deployment boundaries.
-
-## Scope
-
-The scope includes the capabilities, users, data, lifecycle, and interfaces described here. Institution overlays may configure approved values but MUST preserve the shared contract.
-
-## Out of scope
-
-Out of scope are secrets, unowned implementation internals, unrelated product capabilities, and any integration not named by a versioned contract. Such work requires its owning specification.
-
-## Architecture and ownership
-
-The architecture assigns responsibilities, trust boundaries, and ownership to the components named here. Shared owners retain portable contracts; institution maintainers own local configuration and operations.
-
-## Interfaces and contracts
-
-Interfaces, APIs, events, schemas, and boundary conditions MUST be versioned, validated, and documented for producers and consumers. Private database schemas MUST NOT cross repository boundaries.
-
-## Dependencies and ownership
-
-Dependencies include runtime services, identity, policy, storage, network, upstream source, and operator capabilities named by this specification. Each dependency requires an owner, compatibility expectation, and failure behavior.
-
-## Security, privacy, and safety
-
-Security, privacy, safety, and policy controls MUST enforce least privilege, data classification, tenant separation, provenance, and auditable decisions. Sensitive defaults fail closed.
-
-## Deployment and implementation
-
-Deployment and implementation MUST separate portable source from institution configuration and secrets. The release path requires reproducible artifacts, health checks, observability, and a tested rollback.
-
-## Capacity and scaling
-
-Capacity planning MUST identify workload, latency, throughput, storage, concurrency, and scaling limits. Evidence covers expected peak, recovery margin, and degradation when a dependency saturates.
-
-## Failure and recovery
-
-Failures produce bounded, typed behavior with no secret or protected-content leakage. Operators MUST have detection, quarantine or degradation, recovery, and rollback procedures.
-
-## Testing and evidence
-
-Testing and evidence include contract, integration, authorization, privacy/security, accessibility where applicable, failure, migration, and rollback checks. Evidence is linked to the release or decision record.
-
-## Acceptance criteria
-
-Acceptance requires the stated interfaces, controls, tests, operational ownership, and evidence to be complete. A document is not complete merely because a stub or implementation exists.

@@ -2,7 +2,7 @@
 
 
 > Standard: PSDC-DOC-001
-> Document type: architecture-specification
+> Document type: policy-standard
 > Status: Normative
 > Owner: PSDC Architecture Maintainers
 > Accountable maintainer: RedjiJB until delegation
@@ -145,50 +145,6 @@ license, security, operations, accessibility, compatibility, migration, rollback
 data export, and lifecycle ownership. Exact version selection remains a release
 decision even when the project default is accepted.
 
-## Purpose and outcome
+## Purpose, scope, normative rules, enforcement, exceptions, audit evidence, and acceptance review
 
-This specification defines the purpose and intended outcome of **13-Technology-Defaults-and-Alternatives** for the institution-neutral Commons ecosystem and its deployment boundaries.
-
-## Scope
-
-The scope includes the capabilities, users, data, lifecycle, and interfaces described here. Institution overlays may configure approved values but MUST preserve the shared contract.
-
-## Out of scope
-
-Out of scope are secrets, unowned implementation internals, unrelated product capabilities, and any integration not named by a versioned contract. Such work requires its owning specification.
-
-## Architecture and ownership
-
-The architecture assigns responsibilities, trust boundaries, and ownership to the components named here. Shared owners retain portable contracts; institution maintainers own local configuration and operations.
-
-## Interfaces and contracts
-
-Interfaces, APIs, events, schemas, and boundary conditions MUST be versioned, validated, and documented for producers and consumers. Private database schemas MUST NOT cross repository boundaries.
-
-## Dependencies and ownership
-
-Dependencies include runtime services, identity, policy, storage, network, upstream source, and operator capabilities named by this specification. Each dependency requires an owner, compatibility expectation, and failure behavior.
-
-## Security, privacy, and safety
-
-Security, privacy, safety, and policy controls MUST enforce least privilege, data classification, tenant separation, provenance, and auditable decisions. Sensitive defaults fail closed.
-
-## Deployment and implementation
-
-Deployment and implementation MUST separate portable source from institution configuration and secrets. The release path requires reproducible artifacts, health checks, observability, and a tested rollback.
-
-## Capacity and scaling
-
-Capacity planning MUST identify workload, latency, throughput, storage, concurrency, and scaling limits. Evidence covers expected peak, recovery margin, and degradation when a dependency saturates.
-
-## Failure and recovery
-
-Failures produce bounded, typed behavior with no secret or protected-content leakage. Operators MUST have detection, quarantine or degradation, recovery, and rollback procedures.
-
-## Testing and evidence
-
-Testing and evidence include contract, integration, authorization, privacy/security, accessibility where applicable, failure, migration, and rollback checks. Evidence is linked to the release or decision record.
-
-## Acceptance criteria
-
-Acceptance requires the stated interfaces, controls, tests, operational ownership, and evidence to be complete. A document is not complete merely because a stub or implementation exists.
+POL-TECH-001: This policy selects portable defaults and alternatives for infrastructure, identity, data, observability, AI, clients, media, and federation. Components MUST depend on the open contract, not a product-private API. Admission requires provenance, threat and privacy review, ownership, compatibility, migration, rollback, and standalone evidence. CI and architecture review enforce selections. An alternative requires an allowed substitution or ADR with equivalent controls and exit path. Acceptance is a reproducible evaluation plus conformance and failure tests.

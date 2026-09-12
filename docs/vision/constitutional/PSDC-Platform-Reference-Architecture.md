@@ -130,14 +130,9 @@ users, developers, administrators, institutions, federated peers
   named institutional operators, and production approvals are implementation and
   release evidence; they do not reopen this architecture unless an ADR changes it.
 
-## References
-
-- [Consolidated Ecosystem Architecture](../../architecture/Consolidated-Ecosystem-Architecture.md)
-- [Ecosystem Dependency Contract](../../architecture/Ecosystem-Dependency-Contract.md)
-
 ## Security, privacy, and safety
 
-Trust boundaries MUST use institution-controlled identity, deny-by-default authorization, least privilege, secret rotation, minimized telemetry, and explicit data classification/residency/retention/deletion. Protected content, credentials, and private infrastructure values MUST NOT appear in maps, logs, or committed configuration.
+**VISION-PPRA-001:** Trust boundaries MUST use institution-controlled identity, deny-by-default authorization, least privilege, secret rotation, minimized telemetry, and explicit data classification/residency/retention/deletion. Protected content, credentials, and private infrastructure values MUST NOT appear in maps, logs, or committed configuration.
 
 ## Deployment and implementation
 
@@ -155,30 +150,8 @@ Dependencies require timeouts, bounded retries, circuit breakers, health signals
 
 Evidence MUST include contract and schema validation, authorization/privacy/security tests, failure and recovery exercises, capacity measurements, accessibility where user-facing, SBOM/license review, signed provenance, and standalone institution conformance. The workspace structural and substantive documentation gates are required before release authorization.
 
-## Purpose and outcome
+## References
 
-This specification defines the purpose and intended outcome of **PSDC-Platform-Reference-Architecture** for the institution-neutral Commons ecosystem and its deployment boundaries.
+- [Consolidated Ecosystem Architecture](../../architecture/Consolidated-Ecosystem-Architecture.md)
+- [Ecosystem Dependency Contract](../../architecture/Ecosystem-Dependency-Contract.md)
 
-## Out of scope
-
-Out of scope are secrets, unowned implementation internals, unrelated product capabilities, and any integration not named by a versioned contract. Such work requires its owning specification.
-
-## Architecture and ownership
-
-The architecture assigns responsibilities, trust boundaries, and ownership to the components named here. Shared owners retain portable contracts; institution maintainers own local configuration and operations.
-
-## Interfaces and contracts
-
-Interfaces, APIs, events, schemas, and boundary conditions MUST be versioned, validated, and documented for producers and consumers. Private database schemas MUST NOT cross repository boundaries.
-
-## Dependencies and ownership
-
-Dependencies include runtime services, identity, policy, storage, network, upstream source, and operator capabilities named by this specification. Each dependency requires an owner, compatibility expectation, and failure behavior.
-
-## Failure and recovery
-
-Failures produce bounded, typed behavior with no secret or protected-content leakage. Operators MUST have detection, quarantine or degradation, recovery, and rollback procedures.
-
-## Acceptance criteria
-
-Acceptance requires the stated interfaces, controls, tests, operational ownership, and evidence to be complete. A document is not complete merely because a stub or implementation exists.

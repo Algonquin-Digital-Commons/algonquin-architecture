@@ -111,3 +111,8 @@ Definition of done includes content, ownership, interfaces, testing, evidence, a
 ## Change control
 
 Change control requires review, impact analysis, linked decisions, and a supersession or migration note where behavior changes.
+## Stable conformance requirement
+
+- **DASM-DAS-001:** The **Documentation Architecture Standard** implementation MUST satisfy its declared interfaces, failure behavior, security boundaries, and acceptance evidence.
+
+

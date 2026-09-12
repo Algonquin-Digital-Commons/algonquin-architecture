@@ -2,7 +2,7 @@
 
 
 > Standard: PSDC-DOC-001
-> Document type: architecture-specification
+> Document type: product-specification
 > Status: Normative
 > Owner: Commons AI Fabric desktop team
 > Accountable maintainer: RedjiJB until delegation
@@ -77,50 +77,6 @@ contract tests, offline behavior, and downstream patch size before release.
 Users obtain the client and authenticate through the flow defined in
 [Institution-Branded Client Distribution and Access](Institution-Branded-Client-Distribution-and-Access.md).
 
-## Purpose and outcome
+## Users, scope, accessibility, privacy, security, and acceptance scenarios
 
-This specification defines the purpose and intended outcome of **OpenWork-Desktop-Client-Foundation** for the institution-neutral Commons ecosystem and its deployment boundaries.
-
-## Scope
-
-The scope includes the capabilities, users, data, lifecycle, and interfaces described here. Institution overlays may configure approved values but MUST preserve the shared contract.
-
-## Out of scope
-
-Out of scope are secrets, unowned implementation internals, unrelated product capabilities, and any integration not named by a versioned contract. Such work requires its owning specification.
-
-## Architecture and ownership
-
-The architecture assigns responsibilities, trust boundaries, and ownership to the components named here. Shared owners retain portable contracts; institution maintainers own local configuration and operations.
-
-## Interfaces and contracts
-
-Interfaces, APIs, events, schemas, and boundary conditions MUST be versioned, validated, and documented for producers and consumers. Private database schemas MUST NOT cross repository boundaries.
-
-## Dependencies and ownership
-
-Dependencies include runtime services, identity, policy, storage, network, upstream source, and operator capabilities named by this specification. Each dependency requires an owner, compatibility expectation, and failure behavior.
-
-## Security, privacy, and safety
-
-Security, privacy, safety, and policy controls MUST enforce least privilege, data classification, tenant separation, provenance, and auditable decisions. Sensitive defaults fail closed.
-
-## Deployment and implementation
-
-Deployment and implementation MUST separate portable source from institution configuration and secrets. The release path requires reproducible artifacts, health checks, observability, and a tested rollback.
-
-## Capacity and scaling
-
-Capacity planning MUST identify workload, latency, throughput, storage, concurrency, and scaling limits. Evidence covers expected peak, recovery margin, and degradation when a dependency saturates.
-
-## Failure and recovery
-
-Failures produce bounded, typed behavior with no secret or protected-content leakage. Operators MUST have detection, quarantine or degradation, recovery, and rollback procedures.
-
-## Testing and evidence
-
-Testing and evidence include contract, integration, authorization, privacy/security, accessibility where applicable, failure, migration, and rollback checks. Evidence is linked to the release or decision record.
-
-## Acceptance criteria
-
-Acceptance requires the stated interfaces, controls, tests, operational ownership, and evidence to be complete. A document is not complete merely because a stub or implementation exists.
+PROD-DESKTOP-001: Learners, faculty, researchers, developers, and authorized staff use the desktop client to supervise local work through visible workspace grants and confirmation receipts. The client MUST support keyboard-only operation, screen readers, scalable text, reduced motion, and accessible diff and command previews. It MUST keep provider credentials out of the client, constrain filesystem and process authority, and redact telemetry. Acceptance covers install, SSO, workspace grant, denied traversal, command preview, cancellation, rollback, offline degradation, update, and revocation.

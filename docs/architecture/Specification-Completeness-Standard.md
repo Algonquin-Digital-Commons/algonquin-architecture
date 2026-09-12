@@ -57,7 +57,7 @@ from MUST or SHALL requires a recorded ADR and compatibility assessment.
 
 Every capability specification inherits these requirements:
 
-- Interfaces SHALL be versioned, documented, authenticated where non-public,
+- **ARCH-SCS-001:** Interfaces SHALL be versioned, documented, authenticated where non-public,
   bounded by timeouts, and testable without a proprietary service.
 - Mutating operations SHALL be idempotent or carry an idempotency key and SHALL
   produce an auditable result.
@@ -132,3 +132,4 @@ Maturity is recorded as proposed, active, accepted, or retired with an accountab
 ## Definition of done
 
 Definition of done includes content, ownership, interfaces, testing, evidence, and rollback where applicable.
+

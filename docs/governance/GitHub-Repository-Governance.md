@@ -126,7 +126,7 @@ Before calling repository governance production-ready:
 
 ## Enforcement
 
-PSDC Architecture Maintainers MUST enforce **GitHub Repository Governance** at the declared policy, identity, repository, gateway, deployment, or moderation enforcement points. A request or change that does not satisfy the normative requirements MUST be denied or quarantined with a stable reason code. Enforcement decisions MUST be attributable, fail closed for authorization failures, and remain independently testable without relying on a proprietary service.
+**GOV-GRG-001:** PSDC Architecture Maintainers MUST enforce **GitHub Repository Governance** at the declared policy, identity, repository, gateway, deployment, or moderation enforcement points. A request or change that does not satisfy the normative requirements MUST be denied or quarantined with a stable reason code. Enforcement decisions MUST be attributable, fail closed for authorization failures, and remain independently testable without relying on a proprietary service.
 
 ## Exceptions
 
@@ -147,3 +147,4 @@ The scope covers the systems, people, data, interfaces, and lifecycle named by t
 ## Normative rules
 
 The requirements in this document are normative. Owners MUST implement them, SHOULD document justified risk trade-offs, and MUST NOT treat an example as an exemption.
+
