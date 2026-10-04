@@ -21,7 +21,8 @@
         "statusPath": { "type": "string", "pattern": "^/" },
         "expectedStatus": { "type": ["string", "number", "boolean", "null"] },
         "reasonPath": { "type": "string", "pattern": "^/" },
-        "expectedReasonCode": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]{2,63}$" }
+        "expectedReasonCode": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]{2,63}$" },
+        "semanticViolation": { "type": "string", "minLength": 1, "maxLength": 200 }
       },
       "dependentRequired": {
         "statusPath": ["expectedStatus"],

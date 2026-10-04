@@ -16,6 +16,18 @@ detached RFC 8785 signed-object envelopes, and the executable state-machine defi
 objects deliberately distinguish reference from existence, authentication from authorization,
 schema validity from signature validity, and an operational decision from permanent authority.
 
+## Reason-code registry
+
+[reason-codes.registry.json](reason-codes.registry.json) lists the registered reason codes for terminal lease
+transitions, usage-receipt outcomes and capability drains. Each code has a category that separates
+owner-driven eviction (`owner_reclaim`), capacity displacement (`capacity_reclaim`), drain expiry
+(`drain_deadline`), revocation for cause, timeouts, faults and normal completion, plus the lease or
+capability statuses it may be used with and the usage outcomes it implies. The runner rejects a terminal
+lease with a missing or unregistered code, a code used on the wrong status, a receipt whose code contradicts
+its outcome, and an outcome `preempted` that lacks an eviction code. Codes are append-only. The
+registry vocabulary lets billing, retry and provider reputation treat "evicted for the owner" differently from
+"revoked for cause"; the policy that applies those treatments is not yet specified.
+
 ## Allowed and prohibited contents
 
 Only cross-domain structural primitives belong here. Domain state-machine *instances*, policy

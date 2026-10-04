@@ -54,9 +54,9 @@ The census is the fabric's authoritative answer to "what compute exists, who vou
 - **CCF-CENSUS-013:** `interactiveUserPresent` and `pressure` are advisory inputs to the idle policy; the census reports them and does not itself decide to evict work.
 - **CCF-CENSUS-014:** The census is a derived view of signed advertisements and SHALL be rebuildable from the event stream ([compute-fabric.asyncapi.json](../../contracts/events/compute-fabric.asyncapi.json)).
 
-**First vertical slice.** The first milestone in `psdc-compute` is a worker that registers an authorized machine and reports CPU, RAM, GPU, VRAM, operating system, network and idle state, with a dashboard of current and aggregate capacity. That report maps onto the capability fields above. Network and operating-system detail is not yet a field in the capability contract and is an open gap (see open questions).
+**First vertical slice.** The first milestone in `psdc-compute` is a worker that registers an authorized machine and reports CPU, RAM, GPU, VRAM, operating system, network and idle state, with a dashboard of current and aggregate capacity. That report maps onto the capability fields above. Operating system (`compute.operatingSystem`) and network capacity (`network`) are optional capability fields, so the slice can report them.
 
-**Open questions.** (1) Where operating-system and network details live, because the capability schema has no such fields. (2) How often advertisements must be refreshed, which determines the practical `expiresAt` window. (3) The enrollment and attestation flow, described in [Node Enrollment and Attestation](Node-Enrollment-and-Attestation.md), which is itself not yet specified.
+**Open questions.** (1) How often advertisements must be refreshed, which determines the practical `expiresAt` window. (2) Which hardware details beyond the capability schema (disk, thermal, power) the census must track. (3) The enrollment and attestation flow, described in [Node Enrollment and Attestation](Node-Enrollment-and-Attestation.md), which is itself not yet specified.
 
 ## Interfaces, APIs, events, and contracts
 

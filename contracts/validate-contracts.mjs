@@ -83,7 +83,7 @@ function validateSemantics(schemaId, instance, relativePath, failures) {
     "urn:psdc:contracts:common:authorization-decision:1": [["/issuedAt", "/expiresAt"]],
     "urn:psdc:contracts:common:signed-object-envelope:1": [["/signedAt", "/expiresAt"]],
     "urn:psdc:contracts:events:event-envelope:1": [["/time", "/expiresat"]],
-    "urn:psdc:contracts:compute:capability:1": [["/observedAt", "/expiresAt"]],
+    "urn:psdc:contracts:compute:capability:1": [["/observedAt", "/expiresAt"], ["/drain/requestedAt", "/observedAt"]],
     "urn:psdc:contracts:compute:workload-manifest:1": [["/submittedAt", "/schedule/deadline"]],
     "urn:psdc:contracts:compute:offer:1": [["/availableFrom", "/expiresAt"]],
     "urn:psdc:contracts:compute:lease:1": [["/issuedAt", "/activateBy", "/expiresAt"], ["/issuedAt", "/activatedAt", "/expiresAt"], ["/issuedAt", "/renewalDeadline", "/expiresAt"]],
@@ -112,6 +112,48 @@ function validateSemantics(schemaId, instance, relativePath, failures) {
   }
 }
 
+const reasonRegistry = readJson(path.join(contractsRoot, "common", "reason-codes.registry.json"));
+const reasonsByCode = new Map(reasonRegistry.codes.map((entry) => [entry.code, entry]));
+const preemptionCategories = new Set(["owner_reclaim", "capacity_reclaim", "drain_deadline"]);
+const leaseReasonStatuses = new Set(["released", "expired", "revoked", "failed"]);
+
+function validateReasonRules(schemaId, instance, relativePath, failures) {
+  if (schemaId === "urn:psdc:contracts:compute:lease:1" && leaseReasonStatuses.has(instance.status)) {
+    const code = instance.reason?.code;
+    const entry = reasonsByCode.get(code);
+    if (!code) failures.push(`${relativePath}: lease in terminal status ${instance.status} requires a reason code`);
+    else if (!entry) failures.push(`${relativePath}: lease reason code ${code} is not in the reason-code registry`);
+    else if (!entry.appliesTo.includes(`lease:${instance.status}`)) failures.push(`${relativePath}: reason code ${code} does not apply to lease status ${instance.status}`);
+  }
+  if (schemaId === "urn:psdc:contracts:compute:usage-receipt:1") {
+    const code = instance.reason?.code;
+    const entry = code === undefined ? undefined : reasonsByCode.get(code);
+    if (code !== undefined && !entry) failures.push(`${relativePath}: receipt reason code ${code} is not in the reason-code registry`);
+    if (entry?.usageOutcomes && !entry.usageOutcomes.includes(instance.outcome)) failures.push(`${relativePath}: reason code ${code} is inconsistent with outcome ${instance.outcome}`);
+    if (instance.outcome === "preempted" && !(entry && preemptionCategories.has(entry.category))) failures.push(`${relativePath}: outcome preempted requires a registered owner_reclaim, capacity_reclaim or drain_deadline reason code`);
+  }
+  if (schemaId === "urn:psdc:contracts:compute:capability:1" && instance.drain) {
+    const entry = reasonsByCode.get(instance.drain.reasonCode);
+    if (!entry || !entry.appliesTo.includes("capability:draining")) failures.push(`${relativePath}: drain.reasonCode ${instance.drain.reasonCode} is not a registered capability drain reason`);
+  }
+}
+
+function validateRegistry(failures) {
+  const seen = new Set();
+  const categories = new Set(["normal", "timeout", "owner_reclaim", "capacity_reclaim", "drain_deadline", "revocation_for_cause", "fault"]);
+  for (const entry of reasonRegistry.codes) {
+    if (!/^[A-Z][A-Z0-9_]{2,63}$/.test(entry.code)) failures.push(`reason-codes.registry.json: invalid code ${entry.code}`);
+    if (seen.has(entry.code)) failures.push(`reason-codes.registry.json: duplicate code ${entry.code}`);
+    seen.add(entry.code);
+    if (!categories.has(entry.category)) failures.push(`reason-codes.registry.json: ${entry.code} has unknown category ${entry.category}`);
+    if (!Array.isArray(entry.appliesTo) || entry.appliesTo.length === 0) failures.push(`reason-codes.registry.json: ${entry.code} must apply to at least one status`);
+    for (const target of entry.appliesTo ?? []) if (!/^(lease|capability):[a-z_]+$/.test(target)) failures.push(`reason-codes.registry.json: ${entry.code} has malformed appliesTo ${target}`);
+    if (preemptionCategories.has(entry.category) && entry.appliesTo.some((t) => t.startsWith("lease:")) && JSON.stringify(entry.usageOutcomes) !== JSON.stringify(["preempted"])) {
+      failures.push(`reason-codes.registry.json: preemption code ${entry.code} must map only to outcome preempted`);
+    }
+  }
+}
+
 // strictRequired is disabled because conditional branches require properties declared on the
 // root object; every other strict-mode check remains enabled.
 const ajv = new Ajv2020({ allErrors: true, strict: true, strictRequired: false, allowUnionTypes: true, validateFormats: true });
@@ -137,6 +179,7 @@ const fixtureIds = new Set();
 const categories = new Set();
 const positiveCoverage = new Set();
 const failures = [];
+validateRegistry(failures);
 
 for (const filePath of fixtureFiles) {
   const fixture = readJson(filePath);
@@ -165,7 +208,16 @@ for (const filePath of fixtureFiles) {
   }
 
   if (fixture.category === "positive" && valid) positiveCoverage.add(fixture.schemaId);
-  if (valid) validateSemantics(fixture.schemaId, fixture.instance, relativePath, failures);
+  if (valid) {
+    const semanticFailures = [];
+    validateSemantics(fixture.schemaId, fixture.instance, relativePath, semanticFailures);
+    validateReasonRules(fixture.schemaId, fixture.instance, relativePath, semanticFailures);
+    const expectedViolation = fixture.expected.semanticViolation;
+    if (expectedViolation === undefined) failures.push(...semanticFailures);
+    else if (!semanticFailures.some((message) => message.includes(expectedViolation))) failures.push(`${relativePath}: expected a semantic violation containing ${JSON.stringify(expectedViolation)}, got ${semanticFailures.length === 0 ? "none" : semanticFailures.join(" | ")}`);
+  } else if (fixture.expected.semanticViolation !== undefined) {
+    failures.push(`${relativePath}: semanticViolation expectation requires a schema-valid instance`);
+  }
 
   const assertions = [
     ["statusPath", "expectedStatus"],

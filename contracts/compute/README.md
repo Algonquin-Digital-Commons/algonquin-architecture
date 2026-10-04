@@ -34,6 +34,14 @@ authority, current time, freshness, capacity transactionality, generation fencin
 and referenced-object existence. `contracts/state-machines/` supplies machine-checked provider,
 capability, offer, lease, and receipt lifecycles.
 
+## Capability additions
+
+A capability advertisement may carry `compute.operatingSystem` (linux, windows, macos, other), `network` uplink
+and downlink bits per second with a metered flag, and a `drain` block (request time, grace seconds, registered
+reason code). A capability with status `draining` MUST carry `drain`. The grace period bounds how long
+running leases may continue before the controller revokes them with `DRAIN_DEADLINE`; the lease expiry still
+applies if it comes first.
+
 ## Allowed and prohibited contents
 
 Provider-neutral compute shapes and synthetic fixtures are allowed. Backend-private database
