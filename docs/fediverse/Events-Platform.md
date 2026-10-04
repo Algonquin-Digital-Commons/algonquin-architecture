@@ -10,6 +10,8 @@
 > Governing decisions: Applicable ADRs and repository governance
 > Domain: fediverse
 
+> **Stub - not yet specified.** The requirements below are generic domain-level placeholders shared with sibling documents; this subject's own interfaces, state, failure behaviour and acceptance evidence have not been written. Do not implement from this document. Replace this notice when subject-specific content is added.
+
 ## Purpose and outcome
 
 This specification defines **Events Platform** as part of the Post Secondary Digital
@@ -45,7 +47,6 @@ only when it satisfies this document, the linked ADRs, and the common
 
 See [Interface controls](../architecture/Domain-Control-Profiles.md#fediverse-profile); local extensions remain normative.
 
-> **Stub - not yet specified.** The requirements below are generic domain-level placeholders shared with sibling documents; this subject's own interfaces, state, failure behaviour and acceptance evidence have not been written. Do not implement from this document. Replace this notice when subject-specific content is added.
 
 ## Dependencies and ownership boundaries
 
