@@ -1,0 +1,16 @@
+{
+  "machineVersion": "1.0", "machineId": "economics.dispute.v1", "contractSchemaId": "urn:psdc:contracts:economics:dispute-case:1", "statePointer": "/properties/status/enum",
+  "initialStates": ["open"], "terminalStates": ["upheld", "rejected", "withdrawn", "expired"],
+  "states": ["open", "evidence_requested", "under_review", "upheld", "rejected", "withdrawn", "expired"],
+  "transitions": [
+    { "from": "open", "to": "evidence_requested", "action": "dispute.request-evidence", "authorizationAction": "economics.dispute.review", "idempotent": true },
+    { "from": "open", "to": "under_review", "action": "dispute.begin-review", "authorizationAction": "economics.dispute.review", "idempotent": true },
+    { "from": "evidence_requested", "to": "under_review", "action": "dispute.accept-evidence", "authorizationAction": "economics.dispute.review", "idempotent": true, "guardCodes": ["EVIDENCE_COMPLETE"] },
+    { "from": "open", "to": "withdrawn", "action": "dispute.withdraw", "authorizationAction": "economics.dispute.withdraw", "idempotent": true, "reasonRequired": true },
+    { "from": "evidence_requested", "to": "withdrawn", "action": "dispute.withdraw", "authorizationAction": "economics.dispute.withdraw", "idempotent": true, "reasonRequired": true },
+    { "from": "under_review", "to": "upheld", "action": "dispute.uphold", "authorizationAction": "economics.dispute.resolve", "idempotent": true, "reasonRequired": true },
+    { "from": "under_review", "to": "rejected", "action": "dispute.reject", "authorizationAction": "economics.dispute.resolve", "idempotent": true, "reasonRequired": true },
+    { "from": "open", "to": "expired", "action": "dispute.expire", "authorizationAction": "economics.dispute.expire", "idempotent": true, "reasonRequired": true },
+    { "from": "evidence_requested", "to": "expired", "action": "dispute.expire", "authorizationAction": "economics.dispute.expire", "idempotent": true, "reasonRequired": true }
+  ]
+}

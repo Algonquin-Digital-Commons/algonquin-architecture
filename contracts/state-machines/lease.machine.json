@@ -1,0 +1,21 @@
+{
+  "machineVersion": "1.0", "machineId": "compute.lease.v1", "contractSchemaId": "urn:psdc:contracts:compute:lease:1", "statePointer": "/properties/status/enum",
+  "initialStates": ["issued"], "terminalStates": ["released", "expired", "revoked", "failed"],
+  "states": ["issued", "active", "renewal_pending", "released", "expired", "revoked", "failed"],
+  "transitions": [
+    { "from": "issued", "to": "active", "action": "lease.activate", "authorizationAction": "compute.lease.activate", "idempotent": true, "guardCodes": ["POLICY_ALLOW", "OFFER_FRESH", "RESERVATIONS_ACTIVE"] },
+    { "from": "issued", "to": "expired", "action": "lease.activation-timeout", "authorizationAction": "compute.lease.expire", "idempotent": true, "reasonRequired": true },
+    { "from": "issued", "to": "revoked", "action": "lease.revoke", "authorizationAction": "compute.lease.revoke", "idempotent": true, "reasonRequired": true },
+    { "from": "issued", "to": "failed", "action": "lease.fail", "authorizationAction": "compute.lease.fail", "idempotent": true, "reasonRequired": true },
+    { "from": "active", "to": "renewal_pending", "action": "lease.request-renewal", "authorizationAction": "compute.lease.renew", "idempotent": true },
+    { "from": "renewal_pending", "to": "active", "action": "lease.renew", "authorizationAction": "compute.lease.renew", "idempotent": true, "guardCodes": ["POLICY_ALLOW", "CAPACITY_FRESH"] },
+    { "from": "active", "to": "released", "action": "lease.release", "authorizationAction": "compute.lease.release", "idempotent": true, "reasonRequired": true },
+    { "from": "renewal_pending", "to": "released", "action": "lease.release", "authorizationAction": "compute.lease.release", "idempotent": true, "reasonRequired": true },
+    { "from": "active", "to": "expired", "action": "lease.expire", "authorizationAction": "compute.lease.expire", "idempotent": true, "reasonRequired": true },
+    { "from": "renewal_pending", "to": "expired", "action": "lease.renewal-timeout", "authorizationAction": "compute.lease.expire", "idempotent": true, "reasonRequired": true },
+    { "from": "active", "to": "revoked", "action": "lease.revoke", "authorizationAction": "compute.lease.revoke", "idempotent": true, "reasonRequired": true },
+    { "from": "renewal_pending", "to": "revoked", "action": "lease.revoke", "authorizationAction": "compute.lease.revoke", "idempotent": true, "reasonRequired": true },
+    { "from": "active", "to": "failed", "action": "lease.fail", "authorizationAction": "compute.lease.fail", "idempotent": true, "reasonRequired": true },
+    { "from": "renewal_pending", "to": "failed", "action": "lease.fail", "authorizationAction": "compute.lease.fail", "idempotent": true, "reasonRequired": true }
+  ]
+}

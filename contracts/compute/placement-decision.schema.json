@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:psdc:contracts:compute:placement-decision:1",
+  "title": "PSDC Placement Decision",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["contractVersion", "decisionId", "requestId", "workloadId", "outcome", "algorithm", "policyDecision", "candidateSetDigest", "inputSnapshotDigest", "candidates", "decidedAt", "reason", "signature"],
+  "properties": {
+    "contractVersion": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/contractVersion" },
+    "decisionId": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/uuid" },
+    "requestId": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/uuid" },
+    "workloadId": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/uuid" },
+    "outcome": { "enum": ["selected", "no_eligible_offer", "denied", "timed_out"] },
+    "algorithm": {
+      "type": "object", "additionalProperties": false, "required": ["id", "version", "objectiveProfile"],
+      "properties": {
+        "id": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/boundedId" },
+        "version": { "type": "string", "minLength": 1, "maxLength": 64 },
+        "objectiveProfile": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/boundedId" }
+      }
+    },
+    "policyDecision": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/policyDecisionRef" },
+    "candidateSetDigest": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/sha256" },
+    "inputSnapshotDigest": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/sha256" },
+    "candidates": {
+      "type": "array", "maxItems": 1000,
+      "items": {
+        "type": "object", "additionalProperties": false, "required": ["offerId", "eligible", "rank", "score", "exclusionReasons"],
+        "properties": {
+          "offerId": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/uuid" },
+          "eligible": { "type": "boolean" },
+          "rank": { "type": "integer", "minimum": 1 },
+          "score": { "type": "string", "pattern": "^-?(0|[1-9][0-9]*)(\\.[0-9]{1,9})?$" },
+          "exclusionReasons": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]{2,63}$" } }
+        }
+      }
+    },
+    "selectedOfferId": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/uuid" },
+    "decidedAt": { "type": "string", "format": "date-time" },
+    "reason": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/reason" },
+    "signature": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/signature" }
+  },
+  "allOf": [
+    { "if": { "properties": { "outcome": { "const": "selected" } }, "required": ["outcome"] }, "then": { "required": ["selectedOfferId"] }, "else": { "not": { "required": ["selectedOfferId"] } } }
+  ]
+}

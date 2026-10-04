@@ -6,7 +6,7 @@
 > Owner: PSDC Governance Working Group
 > Accountable maintainer: RedjiJB until delegation
 > Last reviewed: 2026-09-11
-> Governing decisions: ADR-0001, ADR-0008, ADR-0012, ADR-0013, ADR-0016, and ADR-0024
+> Governing decisions: ADR-0001, ADR-0008, ADR-0012, ADR-0013, ADR-0016, and ADR-0030
 
 ## Purpose
 

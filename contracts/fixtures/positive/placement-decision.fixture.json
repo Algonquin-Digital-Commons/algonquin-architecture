@@ -1,0 +1,24 @@
+{
+  "fixtureVersion": "1.0",
+  "fixtureId": "positive.compute.placement-decision",
+  "category": "positive",
+  "schemaId": "urn:psdc:contracts:compute:placement-decision:1",
+  "description": "Explainable selected provider decision after policy filtering.",
+  "expected": { "schemaValid": true, "semanticOutcome": "accept", "statusPath": "/outcome", "expectedStatus": "selected" },
+  "instance": {
+    "contractVersion": "1.0",
+    "decisionId": "55555555-5555-4555-8555-555555555555",
+    "requestId": "22222222-2222-4222-8222-222222222222",
+    "workloadId": "11111111-1111-4111-8111-111111111111",
+    "outcome": "selected",
+    "algorithm": { "id": "resolver.multi-attribute-auction", "version": "1.0.0", "objectiveProfile": "objective.local-balanced" },
+    "policyDecision": { "decisionId": "33333333-3333-4333-8333-333333333333", "policyId": "policy.compute.admission", "policyVersion": "1.0.0", "outcome": "allow" },
+    "candidateSetDigest": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+    "inputSnapshotDigest": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+    "candidates": [{ "offerId": "44444444-4444-4444-8444-444444444444", "eligible": true, "rank": 1, "score": "0.875", "exclusionReasons": [] }],
+    "selectedOfferId": "44444444-4444-4444-8444-444444444444",
+    "decidedAt": "2026-09-27T14:04:00Z",
+    "reason": { "code": "SELECTED_BEST_ELIGIBLE", "message": "Highest score among policy-eligible offers.", "retryable": false },
+    "signature": { "algorithm": "Ed25519", "keyId": "did:web:algonquin.example#resolver-1", "canonicalization": "RFC8785", "signedAt": "2026-09-27T14:04:00Z", "value": "ZGVjaXNpb24tc2lnbmF0dXJl" }
+  }
+}

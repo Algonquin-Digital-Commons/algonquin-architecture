@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:psdc:contracts:fixtures:case:1",
+  "title": "PSDC Contract Fixture Case",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["fixtureVersion", "fixtureId", "category", "schemaId", "description", "expected", "instance"],
+  "properties": {
+    "fixtureVersion": { "const": "1.0" },
+    "fixtureId": { "type": "string", "pattern": "^[a-z][a-z0-9.-]{2,127}$" },
+    "category": { "enum": ["positive", "negative", "timeout", "retry", "revocation", "failure"] },
+    "schemaId": { "type": "string", "pattern": "^urn:psdc:contracts:" },
+    "description": { "type": "string", "minLength": 1, "maxLength": 500 },
+    "expected": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schemaValid", "semanticOutcome"],
+      "properties": {
+        "schemaValid": { "type": "boolean" },
+        "semanticOutcome": { "enum": ["accept", "reject", "timeout", "retry", "revoked", "failed"] },
+        "statusPath": { "type": "string", "pattern": "^/" },
+        "expectedStatus": { "type": ["string", "number", "boolean", "null"] },
+        "reasonPath": { "type": "string", "pattern": "^/" },
+        "expectedReasonCode": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]{2,63}$" }
+      },
+      "dependentRequired": {
+        "statusPath": ["expectedStatus"],
+        "reasonPath": ["expectedReasonCode"]
+      }
+    },
+    "instance": {}
+  }
+}

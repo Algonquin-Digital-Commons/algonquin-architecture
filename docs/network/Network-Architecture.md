@@ -1,150 +1,287 @@
-# Network Architecture
-
+# Sovereign Campus and Federation Network Architecture
 
 > Standard: PSDC-DOC-001
 > Document type: architecture-specification
 > Status: Normative
 > Owner: PSDC Network Working Group
 > Accountable maintainer: RedjiJB until delegation
-> Last reviewed: 2026-09-11
-> Governing decisions: Applicable ADRs and repository governance
-> Domain: network
+> Last reviewed: 2026-09-25
+> Governing decisions: ADR-0010, ADR-0013, ADR-0026, ADR-0028, ADR-0029
 
-## Purpose and outcome
+## Purpose and measurable outcomes
 
-This specification defines **Network Architecture** as part of the Post Secondary Digital
-Commons. Its required outcome is segmented, observable, policy-controlled campus and federation connectivity without provider lock-in. An implementation conforms
-only when it satisfies this document, the linked ADRs, and the common
-[Specification Completeness Standard](../architecture/Specification-Completeness-Standard.md).
+This specification defines how campus labs, production cells, Kubernetes, OpenStack, Slurm,
+storage, federation and public ingress communicate without forming one flat trust domain.
+The network must allow the market resolver to compare safe paths and reserve capacity while
+keeping each institution's addressing, routing, DNS, PKI and operations sovereign.
 
-## Scope
+Outcomes are default-deny segmentation, authenticated workloads, deterministic address/name
+authority, outbound-safe lab cells, no Layer-2 federation, measurable capacity/QoS, private
+telemetry, tested isolation and disaster-recovery routing.
 
-- **In scope:** behaviour, interfaces, dependencies, data, security, deployment
-  boundaries, capacity, failure handling, observability, validation, and lifecycle
-  requirements for Network Architecture.
-- **Out of scope:** institution-specific hostnames, credentials, physical capacity,
-  named operators, and legal approvals. Those values belong in signed institution
-  deployment manifests and cannot redefine the common contract.
-- **Authority:** the owning domain may make compatible implementation choices.
-  Contract-breaking or cross-domain changes require an ADR and migration plan.
+## Scope, exclusions and prohibited behavior
 
-## Normative requirements
+In scope: address management, VRFs/VLANs, routing, DNS, CNI, Neutron, HPC/RDMA profiles,
+lab cells, ingress/egress, firewalls, PKI/workload identity, mirrors, federation transport,
+telemetry, time, backup/DR paths, capacity and change authority.
 
-- **NET-NA-001:** The Network Architecture capability SHALL provide segmented, observable, policy-controlled campus and federation connectivity without provider lock-in.
-- The capability SHALL have a versioned configuration schema, explicit safe
-  defaults, validation before activation, and a reversible change procedure.
-- User-visible and administrative behaviour SHALL be accessible, explainable,
-  auditable, and bounded by institution policy and user authority.
-- An implementation SHALL expose only the minimum capability required by its
-  callers and SHALL reject unknown, unauthorized, malformed, expired, or
-  unsupported requests with stable machine-readable errors.
-- Institution deployments SHALL be independently operable and SHALL remain
-  compatible with the common contract and conformance suite.
+Out of scope: an institution's exact assigned prefixes, switch models, carrier contracts and
+physical port numbers; those belong in its signed deployment profile. Federation MUST NOT
+depend on overlapping RFC1918 routes, stretched Layer 2, unrestricted east-west access,
+publicly exposed worker agents or unauthenticated storage/content peers.
 
-## Interfaces, APIs, events, and contracts
+## Trust-zone topology
 
-- Required interoperability boundary: IP addressing, DNS, ingress, egress, load balancing, service discovery, network policy, and telemetry contracts.
-- HTTP interfaces SHALL use OpenAPI 3.1, explicit request and response schemas,
-  documented error codes, pagination for collections, and bounded timeouts.
-- Asynchronous interfaces SHALL use versioned schemas and CloudEvents envelopes;
-  delivery semantics, ordering, replay, deduplication, and dead-letter behaviour
-  SHALL be declared per event.
-- Mutations SHALL be idempotent or accept an idempotency key. Long-running work
-  SHALL expose status, cancellation, expiry, and result retrieval.
-- Consumers SHALL depend on contracts rather than another service's database,
-  internal queue, filesystem, or implementation-specific API.
+    public users / partner institutions
+                 |
+        public and federation edge
+          WAF/rate limit/mTLS
+                 |
+    +------------+-------------+
+    |                          |
+ service/production VRF     federation VRF
+    |                          |
+ Kubernetes/OpenStack       federation gateways
+    |
+ control and management VRF ---- out-of-band administration
+    |
+ compute VRFs ---- lab cell gateways ---- outbound-only workers
+    |
+ storage VRF ---- backup VRF ---- isolated recovery copy
+    |
+ observability collectors (one-way/minimized where practical)
 
-## Dependencies and ownership boundaries
+Default traffic between zones is denied. Required flows name source identity/zone,
+destination service/zone, protocol, port, purpose, data class, owner, expiry and evidence.
 
-Inherits [baseline ownership controls](../architecture/Cross-Cutting-Architecture-Requirements.md#ownership-and-dependency-boundaries).
+## Accepted common decisions
 
-## Data, state, residency, and retention
+These are common defaults. An institution supplies concrete values or a stricter compatible
+choice in its signed deployment profile.
 
-- Governed information includes address allocations, routes, names, certificates, policy, flow telemetry, health state, and capacity measurements.
-- Every data class SHALL declare an authoritative owner, purpose, classification,
-  residency, retention, export, correction, archival, and deletion rule in the
-  institution manifest before production activation.
-- Services SHALL minimize copied data, preserve provenance, encrypt protected
-  state and backups, and prevent telemetry from becoming an undeclared secondary
-  record system.
-- Cache and derived data SHALL be rebuildable or explicitly protected by backup
-  and recovery objectives. Deletion SHALL propagate to indexes, caches,
-  derivatives, replicas, and backups according to the declared retention policy.
+| Decision | Accepted default | Institution must supply |
+|---|---|---|
+| campus IP ranges | institution IPAM allocates non-overlapping production ranges; IPv6 uses institution GUA where available plus RFC 4193 ULA for controlled internal use; no universal PSDC RFC1918 range | actual IPv4/IPv6 prefixes and collision check |
+| IPv4/IPv6 order | dual-stack from managed pilot where campus supports it; IPv4 remains required compatibility initially; IPv6 readiness is a production gate and federation prefers DNS names, not literals | routing/firewall/DNS support and retirement date for IPv4-only exceptions |
+| VLAN/VRF layout | separate management, control, production, compute/lab, storage, backup, federation, public edge and observability VRFs; VLANs segment within a VRF | IDs, route targets, gateways and physical mapping |
+| lab networking | cell gateway with outbound-initiated mTLS worker sessions; no unsolicited inbound to desktops; student interactive traffic has priority | lab subnets, gateway location, schedules and NAC integration |
+| IPAM authority | NetBox is the open-source source of truth, synchronized with institution network authority | delegated prefix owners and approval workflow |
+| DNS zones/naming | institution-owned DNS namespace; split-horizon internal zones; DNSSEC on public zones; PowerDNS or BIND authoritative and CoreDNS for cluster service discovery | base domains, delegation and resolver addresses |
+| internal service naming | stable service names, not host IPs; service.environment.institution namespace pattern; Kubernetes cluster DNS stays local | institution suffix and reserved labels |
+| CA hierarchy | offline institution root, separate issuing intermediates, step-ca/cert-manager automation and federation trust bundles | root ceremony, intermediate names and trust approval |
+| workload identity | SPIFFE/SPIRE SVIDs mapped to institution/project/service; short-lived mTLS credentials | trust-domain name and federation mappings |
+| Cilium mode | production managed clusters use native routing with approved BGP integration where campus supports it; pilots/lab cells use VXLAN overlay; Hubble visibility enabled with privacy limits | MTU, BGP peers, pod/service CIDRs and exception |
+| OpenStack Neutron | OVN/OVS-backed tenant networks, security groups and routed provider networks; no flat shared tenant network | physical/provider network mappings and MTU |
+| Slurm/HPC profiles | separate management, compute and storage networks; topology-aware partitions; no general internet on compute nodes | partition prefixes, bandwidth and storage mounts |
+| RDMA/high-speed fabric | optional, not baseline; dedicated approved lossless profile for workloads that declare it; never converged casually with ordinary lab traffic | InfiniBand/RoCE technology, PFC/ECN and operational owner |
+| firewall ownership | network team owns perimeter/VRF policy; platform team owns Cilium/Neutron policy; service owner requests app flows; security approves high-risk exceptions | RACI names and emergency contacts |
+| egress proxy | deny by default for protected/production workloads; authenticated egress gateway/proxy, DNS policy and destination allowlists | allowed destinations, inspection/privacy policy and bypass approver |
+| package/model mirrors | institution mirrors approved OCI artifacts in Harbor; OS/language packages use Pulp or ecosystem-specific OSS mirror; model weights use governed object storage | upstream allowlist, refresh cadence and storage quota |
+| federation gateway protocol | HTTPS/mTLS, OpenAPI for requests, CloudEvents/AsyncAPI for events, signed manifests and SPIFFE/OIDC-bound identity | endpoints, trust mappings and accepted contract versions |
+| institution transport | application-layer mTLS is mandatory; WireGuard site-to-site may protect/standardize transport; no shared L2 or mandatory private WAN | peer addresses, tunnel keys and routes |
+| public ingress protection | Envoy Gateway, Coraza-compatible WAF controls, rate limits, bot/abuse controls and isolated public edge | public VIPs, TLS names, rules and service owners |
+| DDoS ownership | institution network/security owns host/application controls and upstream escalation; volumetric capacity requires campus/ISP cooperation and cannot be solved by application code alone | carrier/escalation path and tested contact |
+| network telemetry retention | raw flow/security metadata 30 days by default; access-controlled aggregate capacity evidence up to 13 months; incident hold by approved policy | stricter legal/privacy limits and approved collectors |
+| flow-log privacy | collect headers/flow metadata only when needed; pseudonymize user/device identities; no payload capture by default | authorized exceptional capture procedure |
+| time synchronization | chrony/NTPsec clients use redundant institution time sources; authenticated NTS where available; isolated infrastructure gets controlled fallback | authoritative servers and drift thresholds |
+| failure/isolation | cross-zone failure defaults closed; cells isolate locally; accepted critical traffic continues on reserved paths; unsafe new placement pauses | local failover routes and emergency policy |
+| backup network | separate VRF, credentials and QoS; not generally routable from workload networks | backup prefixes, targets and windows |
+| DR routing | DNS/service failover and routed L3; no stretched L2; BGP changes remain under institution network change control | DR prefixes, TTLs, advertisements and failback |
+| capacity/QoS | reserve control, critical service, storage repair and backup classes; student interactive use outranks opportunistic lab work; admission prevents unsafe oversubscription | link capacities, class percentages and congestion thresholds |
+| change authority | Git-reviewed intent, generated/configured deployment, staged validation and institution network approval; emergency change is time-limited and retrospectively reviewed | approvers, windows and rollback contacts |
 
-## Security, privacy, safety, and compliance
+## Addressing, routing and naming mechanics
 
-- Domain controls SHALL include default-deny segmentation, authenticated service identity, controlled egress, DDoS protections, certificate rotation, and administrative isolation.
-- Authentication SHALL use the institution-approved identity issuer;
-  authorization SHALL be deny-by-default, least-privilege, policy-driven, and
-  enforced at every trust boundary.
-- Secrets SHALL use institution-controlled secret storage, short-lived credentials
-  where possible, documented rotation, and immediate revocation procedures.
-- Threat modelling SHALL cover misuse, compromised identities, malicious inputs,
-  dependency compromise, data exfiltration, denial of service, and unsafe
-  automation. High-impact actions require explicit confirmation and audit.
-- Logs, traces, diagnostics, and model context SHALL exclude protected content
-  unless explicitly required, minimized, access-controlled, and retained by policy.
+NetBox is the desired-state source for prefixes, VLANs, VRFs, IPs, ASN/route metadata and
+ownership. Automation validates overlap before allocation and deployment. Private addresses
+never appear in federation contracts; services are addressed by DNS and authenticated
+identity. Route leaking between VRFs is explicit through inspected gateways. Default routes
+from compute/storage do not imply egress permission.
 
-## Deployment, environments, and configuration
+IPv6 ULA generation follows RFC 4193 and includes collision checks before federation.
+Globally routable campus IPv6 is preferred for controlled service endpoints when available.
+NAT is a compatibility mechanism, not identity. DNS records, certificates and workload
+identities have coordinated lifecycle and no wildcard certificate spans unrelated trust
+zones.
 
-Inherits [baseline deployment controls](../architecture/Cross-Cutting-Architecture-Requirements.md#deployment-and-configuration).
+## Lab compute-cell networking
 
-## Capacity, scaling, cost, and sustainability
+Forty lab PCs form a compute cell:
 
-Inherits [baseline capacity controls](../architecture/Cross-Cutting-Architecture-Requirements.md#capacity-and-overload).
+1. each worker enrolls through device identity/attestation;
+2. it initiates an mTLS session to the cell gateway; inbound worker ports remain closed;
+3. the gateway advertises aggregate capability and receives task leases;
+4. inputs are fetched by signed object reference through approved cache/storage paths;
+5. tasks run in an isolated local container/VM sandbox;
+6. results and receipts return through the gateway;
+7. idle detection, schedule and student activity preempt or drain work;
+8. cell loss expires/retries tasks without routing through neighbouring desktops.
 
-## Failure, recovery, and compatibility
+The cell is suitable for public/synthetic/approved internal retryable work. It is not a
+production service network or primary protected-data store.
 
-- Required lifecycle behaviour includes redundant paths, health-based routing, capacity thresholds, DNS recovery, certificate renewal, and failure-domain testing.
-- Dependencies SHALL have timeouts, bounded retries with jitter, circuit breakers,
-  health reporting, and documented degraded modes. Security and authorization
-  failures SHALL fail closed.
-- Stateful implementations SHALL meet manifest-declared RPO and RTO values and
-  prove backup restoration before production. Stateless components SHALL be
-  replaceable from source, configuration, and signed artifacts.
-- Releases SHALL support rollback and a compatibility window covering the current
-  major contract version and one prior major version unless an ADR documents a
-  safer domain-specific migration.
+## Kubernetes, OpenStack and Slurm integration
 
-## Observability, testing, and operational readiness
+### Kubernetes
 
-Inherits [baseline evidence controls](../architecture/Cross-Cutting-Architecture-Requirements.md#observability-and-evidence).
+Cilium enforces identity-aware network policy; namespaces are not sufficient isolation.
+NetworkPolicy defaults deny ingress/egress. Native routing/BGP is used after campus
+validation; overlay mode limits early integration impact. MetalLB or approved load-balancer
+integration advertises only authorized VIPs. Envoy Gateway terminates controlled ingress.
 
-## Standards and implementation strategy
+### OpenStack
 
-- Adopted boundary and strategy: IPv4 and IPv6, DNSSEC where supported, TLS, BGP or institution routing standards, Kubernetes networking, and OpenTelemetry.
-- Implementations SHALL follow **adopt → extend → compatible fork → build**.
-  Building a new primitive requires an ADR demonstrating that mature alternatives
-  fail the requirements and that long-term maintenance is funded.
-- Product selection is replaceable behind the contract. Product-specific APIs
-  SHALL remain inside adapters and SHALL NOT leak into portable clients or domain
-  contracts.
+Neutron with OVN/OVS provides tenant networks, security groups, routers and provider-network
+attachments. Projects do not attach VMs directly to management/storage/backup networks.
+Provider networks are predeclared and policy-gated; floating/public IPs require ingress
+approval and lifecycle ownership.
 
-## Settled architecture constraints
+### Slurm/HPC
 
-- Networking uses standard IP, DNS, TLS/mTLS, routing, load-balancing, VPN, and service-connectivity mechanisms.
-- Network design must support portable workloads without exposing private campus topology in public contracts.
-- Any exception follows the adopt → extend → compatible fork → build hierarchy and requires an ADR with evidence.
+Login/control, compute and storage paths are separate. Compute nodes have minimal egress and
+obtain packages/containers/models through mirrors. MPI placement consumes a topology/RDMA
+profile. RDMA is enabled only on a managed dedicated fabric with congestion and security
+controls; opportunistic lab nodes do not advertise RDMA merely because hardware supports it.
 
-## Decision traceability
+## Market-aware path selection
 
-- ADR-0001: Standards-First / Buy-Borrow-Build
-- ADR-0005: Standard Platform Primitives
-- ADR-0012: Tenant-Neutral Post-Secondary Digital Commons
-- ADR-0013: Institution-First Federation Locality
-- ADR-0016: Accepted Project Defaults
-- ADR-0017: OpenTofu Default Infrastructure-as-Code Toolchain
+The network controller exports abstract path capabilities: endpoints/zones, bandwidth,
+latency, loss, trust, egress class, cost/IRUs, energy signal and expiry. The market resolver
+computes candidate paths, hard-filters segmentation/trust/capacity/latency, then includes
+path cost and data-movement time in placement ranking. A selected compute/storage plan and
+its network reservation commit atomically or not at all.
 
-## Acceptance criteria
+The network reservation token identifies the path class and capacity, never the packet
+payload or permission to call the application.
 
-Inherits [baseline acceptance gates](../architecture/Cross-Cutting-Architecture-Requirements.md#observability-and-evidence); every local requirement MUST also pass.
+## Interfaces and API boundaries
+
+NetBox exports desired-state inventory; DNS, PKI/SPIRE, Cilium, Neutron, Slurm and gateways
+expose only their approved control APIs. The resolver consumes an abstract path-capability
+contract and never receives switch credentials or protected topology.
+
+## Ingress, egress and federation
+
+Public traffic passes public DNS, DDoS/upstream controls, rate limiting/WAF and Envoy to an
+authorized service. Production egress passes an identity-aware gateway with DNS/destination
+policy; direct uncontrolled internet access is denied. Package/model mirrors reduce
+dependency, data leakage and repeated egress.
+
+Federation is application-layer. Gateways validate peer institution trust, contract
+version, workload/data policy and signed manifests. WireGuard may secure routes but does not
+grant application access. Each institution can disconnect federation and continue locally.
+
+## Data, telemetry and privacy
+
+IPAM and DNS state are configuration records. Flows, identities and device locations can be
+personal/security-sensitive. Raw logs are restricted, minimized, encrypted and expire at
+the default 30-day window unless an approved incident/legal hold applies. Capacity reports
+aggregate/pseudonymize and may remain 13 months for seasonal planning. Payload capture is
+off by default and requires incident authority, scope, notice where required and deletion.
+
+## Capacity and QoS
+
+Links maintain measured headroom and class reservations:
+
+1. control/identity/key traffic;
+2. critical service traffic;
+3. storage replication/repair and database replication;
+4. student interactive/teaching traffic;
+5. standard workloads;
+6. opportunistic batch;
+7. scheduled backup/bulk transfer.
+
+Percentages are local values. Hard service minima and anti-starvation apply; lower classes
+cannot crowd out identity, control or student interactive use. Market cost may reflect
+congestion, but payment cannot override a protected reservation.
+
+## Failure and isolation matrix
+
+| Failure | Required behavior |
+|---|---|
+| one lab worker/cell lost | expire/retry eligible tasks; no lateral failover into desktops |
+| Cilium/Neutron control degraded | existing safe data plane may continue; unsafe new policy/attachment stops |
+| DNS internal failure | local caches within TTL; failover authoritative service; no hard-coded IP workaround |
+| federation tunnel/gateway lost | queue bounded exchange; institution remains independently operational |
+| egress proxy lost | protected egress fails closed; critical allowlisted dependency uses approved HA path |
+| public ingress attack | rate/WAF/isolate service; preserve management/internal networks |
+| time drift | quarantine signing/lease-sensitive node at threshold |
+| telemetry unavailable | retain bounded local evidence; do not remove network policy |
+| backup link saturated | QoS protects control/critical traffic; backup extends or pauses |
+| route leak | prefix/max-route/filter controls reject; isolate and execute routing incident runbook |
+| primary site lost | activate DR DNS/routed advertisements after health and authority gate |
+
+## Security and operational ownership
+
+Administrative planes require dedicated access, MFA, short-lived privilege and audited
+jump/management paths. Device and workload identities are distinct. Switch/router secrets
+and certificates use OpenBao/KMS. Firewall rules and routes have owner, purpose, ticket/PR,
+expiry and rollback. High-risk changes need independent institutional approval once staff
+exists; current role overlap is disclosed.
+
+## Observability
+
+Metrics include link utilization, loss, latency, jitter, errors, drops, policy denies,
+conntrack/NAT capacity, DNS health, route changes, certificate expiry, tunnel state, flow
+volume, Cilium/Neutron health, RDMA counters and reservation variance. Synthetic probes test
+user, service, storage, federation and DR paths. Dashboards avoid exposing internal topology
+to unauthorized users.
+
+## Alternatives and trade-offs
+
+A flat campus network is easier initially but creates lateral movement and ambiguous
+ownership. One overlay everywhere hides campus integration but adds MTU/encapsulation and
+troubleshooting burden. Native routing everywhere offers visibility/performance but raises
+pilot risk. PSDC uses overlay for early/lab cells, native routed production after validation,
+and application-layer federation rather than a cross-institution network fabric.
+
+## Implementation sequence, migration and rollback
+
+1. populate NetBox and validate existing ranges/routes/DNS;
+2. deploy management/control and lab cell gateway with outbound-only workers;
+3. establish production/storage/backup zones and default-deny policy;
+4. deploy Kubernetes overlay pilot, then validated native routing/BGP;
+5. integrate Neutron and Slurm profiles;
+6. add ingress/egress/mirrors and federation gateway;
+7. test isolation, congestion, provider/path placement and site DR.
+
+Every change captures pre/post routes, policy, connectivity and capacity. Rollback restores
+the last accepted Git/network snapshot and withdraws new advertisements. Emergency rules
+expire automatically. Address renumbering uses dual-address/DNS transition and never relies
+on an untracked NAT forever.
+
+## Testing and evidence
+
+Evidence includes configuration snapshots, reachability/denial matrices, path reservations,
+MTU/capacity measurements, privacy retention checks and DR/failback results.
+
+## Binary acceptance criteria
+
+These testing and evidence gates are required before network production acceptance.
+
+- **NET-NA-ACC-001:** automated overlap and forbidden-route tests pass for institution,
+  Kubernetes, OpenStack, Slurm, backup and federation prefixes;
+- **NET-NA-ACC-002:** every zone pair is denied by default and each allowed flow has owner,
+  purpose, identity, data class and expiry;
+- **NET-NA-ACC-003:** a lab worker accepts no unsolicited inbound connection and is drained
+  when student activity begins;
+- **NET-NA-ACC-004:** Kubernetes, OpenStack and Slurm fixtures reach only declared networks
+  and preserve MTU/performance objectives;
+- **NET-NA-ACC-005:** resolver selects only a path meeting trust/capacity/latency and the
+  path reservation commits or fails atomically with the lease;
+- **NET-NA-ACC-006:** federation continues over public Internet plus mTLS without shared L2
+  and local services continue after federation isolation;
+- **NET-NA-ACC-007:** raw flow data expires at policy while aggregate planning data remains
+  useful and no payload is collected by default;
+- **NET-NA-ACC-008:** primary-site failure and failback meet declared RTO without route leak
+  or simultaneous writers;
+- **NET-NA-ACC-009:** volumetric DDoS exercise documents the exact campus/ISP escalation
+  boundary rather than claiming application software can absorb upstream saturation.
 
 ## References
 
-- [Specification Completeness Standard](../architecture/Specification-Completeness-Standard.md)
-- [Technology Defaults and Alternatives](../vision/13-Technology-Defaults-and-Alternatives.md)
-- [Human Choices and Decisions Register](../governance/Human-Choices-and-Decisions-Register.md)
-- [ADR-0001: Standards First](../architecture/architecture-decision-records/ADR-0001-standards-first-buy-borrow-build.md)
-- [ADR-0012: Post Secondary Digital Commons](../architecture/architecture-decision-records/ADR-0012-post-secondary-digital-commons.md)
-- [ADR-0017: OpenTofu Default](../architecture/architecture-decision-records/ADR-0017-opentofu-default.md)
-
+- [Campus Compute Network](Campus-Compute-Network.md)
+- [Network Segmentation](../security/Network-Segmentation.md)
+- [Scheduling Algorithm](../campus-compute-fabric/Scheduling-Algorithm.md)
+- [Storage Architecture](../storage/Storage-Architecture.md)
+- [KMS](../security/KMS.md)

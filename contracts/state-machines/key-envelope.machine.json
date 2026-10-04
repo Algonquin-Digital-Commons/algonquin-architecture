@@ -1,0 +1,8 @@
+{
+  "machineVersion": "1.0", "machineId": "security.key-envelope.v1", "contractSchemaId": "urn:psdc:contracts:security:key-envelope:1", "statePointer": "/properties/status/enum",
+  "initialStates": ["active"], "terminalStates": ["rotated", "revoked"], "states": ["active", "rotated", "revoked"],
+  "transitions": [
+    { "from": "active", "to": "rotated", "action": "envelope.rotate", "authorizationAction": "security.key-envelope.rotate", "idempotent": true, "reasonRequired": true },
+    { "from": "active", "to": "revoked", "action": "envelope.revoke", "authorizationAction": "security.key-envelope.revoke", "idempotent": true, "reasonRequired": true }
+  ]
+}

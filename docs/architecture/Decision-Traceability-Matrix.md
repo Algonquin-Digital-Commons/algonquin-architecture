@@ -6,7 +6,7 @@
 > Status: Normative
 > Owner: PSDC Architecture Maintainers
 > Accountable maintainer: RedjiJB until delegation
-> Last reviewed: 2026-09-11
+> Last reviewed: 2026-09-25
 > Governing decisions: Applicable ADRs and repository governance
 
 | Decision | Primary documents | Platform-wide effect |
@@ -34,8 +34,14 @@
 | ADR-0021 Institution-branded client access | Web, desktop, mobile, manifest, signing, OIDC, distribution and pairing | Institution portal/account/endpoints; neutral shared code; no upstream-vendor or global Commons account |
 | ADR-0022 Polyrepo ecosystem | Git boundaries, releases, ownership, clients, deployment overlays and developer workspace | Independent repositories per bounded product; Happy-style package workspaces only within one cohesive product |
 | ADR-0023 Institution fork model | GitHub organizations, white-labelling, upstream synchronization and institution release ownership | Repository-by-repository thin forks; institution `origin`, Commons `upstream`, deployment-manifest configuration |
-| ADR-0024 Permissive license and contribution policy | Licensing, patents, notices, commercial use and upstream contribution | Apache-2.0 default; upstream-first governance and separate participant agreements, not a non-OSI license condition |
+| ADR-0024 Permissive license and contribution policy | Historical licensing decision | Superseded by ADR-0030; remains relevant to artifacts not lawfully migrated |
 | ADR-0025 Independent web client repository | `psdc-web`, institutional web forks, client discovery, Web BFF, browser security and releases | Browser/PWA ownership is independent from the AI service repository and follows the same thin-fork model as desktop and mobile |
+| ADR-0026 Sovereign derived fabric | Compute, storage and ledger framework composition | PSDC authority and contracts govern bounded upstream-derived mechanisms; public networks are explicit adapters |
+| ADR-0027 Portable identity | Institutional identity, W3C DIDs, VCs, wallets and transfer | Portable claims accompany but never replace local authentication and authorization |
+| ADR-0028 Six-tier storage | Object manifests, placement, custody, repair, federation and public archive | Protected content remains encrypted/off-ledger; Tier 4 is governed federation and Tier 5 intentional public permanence |
+| ADR-0029 Unified resource metering | Compute, storage and network leases, receipts and institutional credits | One non-transferable accountable resource model across backends |
+| ADR-0030 Network copyleft and commercial contribution | PSDC service/client/contract license boundaries and participant agreements | AGPL target for services, open interoperability contracts, and mandatory upstream offers for recognized participants |
+| ADR-0031 Off-chain operations and on-chain settlement | PostgreSQL, evidence storage, batch builder, Cosmos-derived ledger and reconciliation | Fast mutable local operation with deterministic federated settlement; the ledger is not the scheduler database |
 
 ## Required use
 

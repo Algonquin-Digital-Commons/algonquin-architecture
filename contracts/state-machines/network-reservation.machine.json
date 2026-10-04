@@ -1,0 +1,14 @@
+{
+  "machineVersion": "1.0", "machineId": "network.reservation.v1", "contractSchemaId": "urn:psdc:contracts:network:reservation:1", "statePointer": "/properties/status/enum",
+  "initialStates": ["issued"], "terminalStates": ["released", "expired", "revoked", "failed"], "states": ["issued", "active", "released", "expired", "revoked", "failed"],
+  "transitions": [
+    { "from": "issued", "to": "active", "action": "reservation.activate", "authorizationAction": "network.reservation.activate", "idempotent": true, "guardCodes": ["PATH_FRESH", "CAPACITY_RESERVED"] },
+    { "from": "issued", "to": "expired", "action": "reservation.activation-timeout", "authorizationAction": "network.reservation.expire", "idempotent": true, "reasonRequired": true },
+    { "from": "active", "to": "released", "action": "reservation.release", "authorizationAction": "network.reservation.release", "idempotent": true, "reasonRequired": true },
+    { "from": "active", "to": "expired", "action": "reservation.expire", "authorizationAction": "network.reservation.expire", "idempotent": true, "reasonRequired": true },
+    { "from": "issued", "to": "revoked", "action": "reservation.revoke", "authorizationAction": "network.reservation.revoke", "idempotent": true, "reasonRequired": true },
+    { "from": "active", "to": "revoked", "action": "reservation.revoke", "authorizationAction": "network.reservation.revoke", "idempotent": true, "reasonRequired": true },
+    { "from": "issued", "to": "failed", "action": "reservation.fail", "authorizationAction": "network.reservation.fail", "idempotent": true, "reasonRequired": true },
+    { "from": "active", "to": "failed", "action": "reservation.fail", "authorizationAction": "network.reservation.fail", "idempotent": true, "reasonRequired": true }
+  ]
+}

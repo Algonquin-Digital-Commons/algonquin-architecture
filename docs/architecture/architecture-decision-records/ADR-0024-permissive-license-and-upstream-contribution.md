@@ -3,15 +3,19 @@
 
 > Standard: PSDC-DOC-001
 > Document type: adr
-> Status: Accepted
+> Status: Superseded
 > Owner: PSDC Architecture Maintainers
 > Accountable maintainer: RedjiJB until delegation
 > Last reviewed: 2026-09-11
-> Governing decisions: Applicable ADRs and repository governance
+> Governing decisions: Superseded by ADR-0030
 
 > Date: 2026-09-11
 > Scope: PSDC-authored code, configuration and documentation
 > Decision owner: Project founder; legal review required before public release
+
+> Historical notice: ADR-0030 replaces this decision for future PSDC-authored work. This
+> record remains authoritative for the rationale and for artifacts that have not completed a
+> lawful repository-specific license migration.
 
 ## Context
 

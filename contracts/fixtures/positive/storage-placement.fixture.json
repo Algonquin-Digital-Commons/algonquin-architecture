@@ -1,0 +1,28 @@
+{
+  "fixtureVersion": "1.0",
+  "fixtureId": "positive.storage.placement",
+  "category": "positive",
+  "schemaId": "urn:psdc:contracts:storage:placement:1",
+  "description": "Active encrypted Tier 1 erasure-coded placement.",
+  "expected": { "schemaValid": true, "semanticOutcome": "accept", "statusPath": "/status", "expectedStatus": "active" },
+  "instance": {
+    "contractVersion": "1.0",
+    "placementTokenId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+    "objectId": "88888888-8888-4888-8888-888888888888",
+    "objectDigest": "1414141414141414141414141414141414141414141414141414141414141414",
+    "tier": 1,
+    "authorityInstitutionId": "algonquin.example",
+    "status": "active",
+    "issuedAt": "2026-09-27T14:01:00Z",
+    "expiresAt": "2027-09-27T14:01:00Z",
+    "providers": [
+      { "providerId": "storage.provider-a", "zoneId": "zone.dc-a", "role": "data_shard", "shardIndex": 0, "custodyReceiptRequired": true },
+      { "providerId": "storage.provider-b", "zoneId": "zone.dc-b", "role": "parity_shard", "shardIndex": 1, "custodyReceiptRequired": true }
+    ],
+    "durability": { "mode": "erasure_coding", "dataShards": 1, "parityShards": 1, "minimumHealthyProviders": 1 },
+    "encryptionEnvelopeRef": { "kind": "key-envelope", "id": "99999999-9999-4999-8999-999999999999" },
+    "repairPolicy": { "repairThreshold": 1, "targetHealthyProviders": 2, "maximumRepairDelaySeconds": 3600 },
+    "policyDecision": { "decisionId": "abababab-abab-4bab-8bab-abababababab", "policyId": "policy.storage.placement", "policyVersion": "1.0.0", "outcome": "allow" },
+    "signature": { "algorithm": "Ed25519", "keyId": "did:web:algonquin.example#storage-authority-1", "canonicalization": "RFC8785", "signedAt": "2026-09-27T14:01:00Z", "value": "c3RvcmFnZS1wbGFjZW1lbnQtc2ln" }
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:psdc:contracts:economics:settlement-batch:1",
+  "title": "PSDC Settlement Batch",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["contractVersion", "batchId", "scope", "sequenceRange", "previousBatchRoot", "window", "versions", "receiptCount", "receiptsMerkleRoot", "resourceAggregates", "balanceDeltas", "evidence", "builderId", "createdAt", "disputeDeadline", "status", "signature"],
+  "properties": {
+    "contractVersion": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/contractVersion" },
+    "batchId": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/uuid" },
+    "scope": {
+      "type": "object", "additionalProperties": false, "required": ["kind", "institutionIds"],
+      "properties": {
+        "kind": { "enum": ["institution", "federation"] },
+        "institutionIds": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/institutionId" } }
+      }
+    },
+    "sequenceRange": {
+      "type": "object", "additionalProperties": false, "required": ["start", "end"],
+      "properties": { "start": { "type": "integer", "minimum": 1 }, "end": { "type": "integer", "minimum": 1 } }
+    },
+    "previousBatchRoot": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/sha256" },
+    "window": {
+      "type": "object", "additionalProperties": false, "required": ["startedAt", "endedAt"],
+      "properties": { "startedAt": { "type": "string", "format": "date-time" }, "endedAt": { "type": "string", "format": "date-time" } }
+    },
+    "versions": {
+      "type": "object", "additionalProperties": false, "required": ["canonicalization", "schema", "meter", "pricing", "policy"],
+      "properties": {
+        "canonicalization": { "const": "RFC8785" },
+        "schema": { "type": "string", "minLength": 1, "maxLength": 64 },
+        "meter": { "type": "string", "minLength": 1, "maxLength": 64 },
+        "pricing": { "type": "string", "minLength": 1, "maxLength": 64 },
+        "policy": { "type": "string", "minLength": 1, "maxLength": 64 }
+      }
+    },
+    "receiptCount": { "type": "integer", "minimum": 1 },
+    "receiptsMerkleRoot": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/sha256" },
+    "resourceAggregates": { "type": "array", "minItems": 1, "maxItems": 256, "items": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/measurement" } },
+    "balanceDeltas": {
+      "type": "array", "minItems": 1, "maxItems": 10000,
+      "items": {
+        "type": "object", "additionalProperties": false, "required": ["accountId", "delta"],
+        "properties": {
+          "accountId": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/boundedId" },
+          "delta": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/creditAmount" }
+        }
+      }
+    },
+    "evidence": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/evidenceRef" },
+    "builderId": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/boundedId" },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "disputeDeadline": { "type": "string", "format": "date-time" },
+    "status": { "enum": ["built", "submitted", "finalized", "disputed", "rejected"] },
+    "commitmentId": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/uuid" },
+    "reason": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/reason" },
+    "signature": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/signature" }
+  },
+  "allOf": [
+    { "if": { "properties": { "status": { "const": "finalized" } }, "required": ["status"] }, "then": { "required": ["commitmentId"] } },
+    { "if": { "properties": { "status": { "enum": ["disputed", "rejected"] } }, "required": ["status"] }, "then": { "required": ["reason"] } }
+  ]
+}

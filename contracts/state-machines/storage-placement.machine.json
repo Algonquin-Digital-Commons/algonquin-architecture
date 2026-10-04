@@ -1,0 +1,17 @@
+{
+  "machineVersion": "1.0", "machineId": "storage.placement.v1", "contractSchemaId": "urn:psdc:contracts:storage:placement:1", "statePointer": "/properties/status/enum",
+  "initialStates": ["issued"], "terminalStates": ["expired", "revoked", "failed"], "states": ["issued", "active", "repairing", "expired", "revoked", "failed"],
+  "transitions": [
+    { "from": "issued", "to": "active", "action": "placement.activate", "authorizationAction": "storage.placement.activate", "idempotent": true, "guardCodes": ["CUSTODY_ACKNOWLEDGED", "DURABILITY_SATISFIED"] },
+    { "from": "active", "to": "repairing", "action": "placement.begin-repair", "authorizationAction": "storage.placement.repair", "idempotent": true, "guardCodes": ["REPAIR_THRESHOLD_REACHED"] },
+    { "from": "repairing", "to": "active", "action": "placement.complete-repair", "authorizationAction": "storage.placement.repair", "idempotent": true, "guardCodes": ["DURABILITY_SATISFIED"] },
+    { "from": "issued", "to": "expired", "action": "placement.expire", "authorizationAction": "storage.placement.expire", "idempotent": true, "reasonRequired": true },
+    { "from": "active", "to": "expired", "action": "placement.expire", "authorizationAction": "storage.placement.expire", "idempotent": true, "reasonRequired": true },
+    { "from": "repairing", "to": "expired", "action": "placement.expire", "authorizationAction": "storage.placement.expire", "idempotent": true, "reasonRequired": true },
+    { "from": "issued", "to": "revoked", "action": "placement.revoke", "authorizationAction": "storage.placement.revoke", "idempotent": true, "reasonRequired": true },
+    { "from": "active", "to": "revoked", "action": "placement.revoke", "authorizationAction": "storage.placement.revoke", "idempotent": true, "reasonRequired": true },
+    { "from": "repairing", "to": "failed", "action": "placement.fail", "authorizationAction": "storage.placement.fail", "idempotent": true, "reasonRequired": true },
+    { "from": "issued", "to": "failed", "action": "placement.fail", "authorizationAction": "storage.placement.fail", "idempotent": true, "reasonRequired": true },
+    { "from": "active", "to": "failed", "action": "placement.fail", "authorizationAction": "storage.placement.fail", "idempotent": true, "reasonRequired": true }
+  ]
+}

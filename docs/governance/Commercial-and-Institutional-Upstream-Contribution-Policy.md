@@ -3,19 +3,20 @@
 
 > Standard: PSDC-DOC-001
 > Document type: policy-standard
-> Status: Accepted
+> Status: Normative
 > Owner: PSDC Architecture Maintainers
 > Accountable maintainer: RedjiJB until delegation
-> Last reviewed: 2026-09-11
-> Governing decisions: Applicable ADRs and repository governance
+> Last reviewed: 2026-09-25
+> Governing decisions: ADR-0030
 
-> Governing decision: ADR-0024
+> Governing decision: ADR-0030; ADR-0024 is superseded
 
-PSDC is permissively licensed so institutions, researchers, students and
-businesses can adopt it without a mandatory vendor relationship. The project asks
-all downstream users to return reusable fixes, security improvements,
-accessibility work, integrations and performance improvements to the owning
-Commons repository.
+PSDC remains OSI open source so institutions, researchers, students, and businesses
+can adopt it without a mandatory vendor relationship. Service copyleft requires
+corresponding source where its license applies; recognized commercial and
+institutional participants also have a contractual duty to offer reusable fixes,
+security improvements, accessibility work, integrations, and performance
+improvements to the owning Commons repository.
 
 ## Required for recognized participants
 
@@ -29,9 +30,25 @@ support must sign a separate participation agreement requiring it to:
 4. disclose incompatible private patches in its compatibility report; and
 5. preserve confidential institutional data and secrets when contributing.
 
-This obligation comes from the participation agreement, not the Apache-2.0 public
-license. General users who have not signed such an agreement are strongly
-encouraged—but not legally compelled—to contribute modifications.
+This upstream-offer obligation comes from the participation agreement, not from a
+commercial-use restriction in the public license. General users who have not
+signed such an agreement still obey the applicable Apache, MPL, GPL, or AGPL
+license. AGPL corresponding-source compliance is not the same thing as submitting
+or assigning a contribution to PSDC.
+
+## Commercial participant lifecycle
+
+The agreement defines the recognized participant, covered products and services,
+upstream repositories, review cadence, confidential exclusions, contribution
+license, security-disclosure path, cure period, dispute process, and consequences
+for certification, marks, federation services, shared release access, or support.
+It must not purport to revoke open-source rights the participant already received.
+
+An upstream offer contains the source change, provenance, applicable license,
+tests, migration impact, security context, and enough documentation for review.
+PSDC may accept, request revision, or reject the proposal without erasing the
+participant's duty to make the offer. Institution secrets and protected records
+must be removed before submission.
 
 ## Fork policy
 

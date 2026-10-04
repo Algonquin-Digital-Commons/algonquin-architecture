@@ -6,8 +6,8 @@
 > Status: Accepted
 > Owner: PSDC Architecture Maintainers
 > Accountable maintainer: RedjiJB until delegation
-> Last reviewed: 2026-09-11
-> Governing decisions: ADR-0008, ADR-0009, ADR-0010, ADR-0016, ADR-0017, ADR-0018, ADR-0019
+> Last reviewed: 2026-09-25
+> Governing decisions: ADR-0008, ADR-0009, ADR-0010, ADR-0016, ADR-0017, ADR-0018, ADR-0019, ADR-0026, ADR-0027, ADR-0028, ADR-0029, ADR-0030, ADR-0031
 
 > Date: 2026-09-10
 
@@ -35,7 +35,9 @@ accessibility, export path and operational ownership.
 | Bare-metal load balancer | MetalLB | Yes; Apache-2.0 | PureLB | Hardware appliances stay behind standard APIs |
 | Gateway/ingress | Envoy Gateway | Yes; Apache-2.0 | Traefik; ingress-nginx | Common north-south baseline |
 | Service mesh | None initially; Cilium features first | No additional component | Linkerd; Istio | Add only from measured need |
-| Block/file/object storage | Ceph RBD + CephFS + Ceph RGW | Yes; open source | Longhorn; Garage; SeaweedFS | S3-compatible object boundary |
+| Storage semantic plane | PSDC six-tier manifest/placement/key/custody contract | PSDC service and contract boundary licenses follow ADR-0030 | bounded Tier 0/1 pilot profile | Tier 0 ephemeral through Tier 5 public permanence |
+| Tier 1/3 block/file/object provider | Ceph RBD + CephFS + Ceph RGW where justified | Yes; open source | Longhorn; Garage; SeaweedFS | Replaceable physical backend; avoid double erasure |
+| Tier 2 private content distribution | Kubo + IPFS Cluster in private institution-controlled mode | Kubo dual Apache-2.0/MIT; verify IPFS Cluster release | OCI/object caches where CID/IPLD is unnecessary | No public DHT by default; CID is not authorization |
 | Infrastructure as code | OpenTofu + Ansible | Yes; MPL-2.0 and GPL-3.0-or-later | Pulumi Community after language/runtime review; Crossplane for API-driven cases | ADR-0017; Terraform is not the default |
 | IaC state | Institution-controlled encrypted backend | Architecture pattern | PostgreSQL/S3-compatible backends supported by approved tooling | Locking, backup and restore tests required |
 | GitOps | Argo CD | Yes; Apache-2.0 | Flux | Pull-based signed promotion |
@@ -81,6 +83,8 @@ accessibility, export path and operational ownership.
 | Dashboards | Grafana OSS | Yes; AGPL-3.0 | Perses | Dashboards remain versioned/exportable |
 | Logs | Loki | Yes; AGPL-3.0 | OpenSearch | Structured, classified and redacted |
 | Traces | Tempo | Yes; AGPL-3.0 | Jaeger | End-to-end OpenTelemetry context |
+| Scheduler operational state | PostgreSQL + transactional outbox; NATS JetStream events; Valkey cache only | Yes | another open transactional database after conformance ADR | Live queues/leases never depend on chain finality |
+| Institutional settlement ledger | bounded Cosmos SDK/CometBFT-derived core | Apache-2.0 core only; source-available enterprise paths excluded | signed transparency log plus settlement export | Commitments/governance/settlement, not content or hot-path state |
 
 ## AI, agents, academic and campus compute
 
@@ -93,7 +97,12 @@ accessibility, export path and operational ownership.
 | Embeddings/reranking | Gateway-managed open model adapters | Code is OSS; **model-specific** | Text Embeddings Inference; llama.cpp-compatible models | Approve every model/data license |
 | RAG | PostgreSQL + pgvector | Yes | Qdrant; Milvus | Authorized sources and provenance |
 | Model metadata/tracking | Content-addressed manifests + MLflow | Yes; MLflow Apache-2.0 | Kubeflow components; DVC after review | Weights stay outside Git |
-| Campus batch scheduling | HTCondor interoperability model | Yes | Slurm; Kubernetes Kueue | Commons Compute Fabric adds trust/idle/topology policy |
+| Cross-backend market resolver | PSDC policy-gated multi-attribute reverse auction and placement | AGPL-3.0-or-later target after repository migration gate | deterministic static placement fallback | Policy filters precede price/performance |
+| Opportunistic/DAG tasks | sovereign Golem-derived task service | Yagna is GPL-3.0; separate service or clean design-derived core | HTCondor adapter; Kubernetes Jobs/Argo | Common leases/receipts; no public GLM dependency |
+| Long-running container service | Kubernetes selected through PSDC resolver | Yes; Apache-2.0 | OKD or small Podman/systemd profile | Kubernetes remains the backend reconciler |
+| VM workloads | OpenStack selected through PSDC resolver | Yes; verify exact OpenStack projects | Apache CloudStack; OpenNebula; Proxmox adapter | Nova/Neutron/Cinder behind common contracts |
+| Tightly coupled HPC | Slurm | GPL-2.0 | another HPC scheduler through conformance ADR | Slurm owns topology, gang scheduling and backfill |
+| Service offer/deployment market | sovereign Akash-derived offer, reverse-auction and lease mechanisms | Akash node/provider observed Apache-2.0; exact paths verified before import | clean PSDC implementation | No public Akash or public-token dependency |
 | Distributed Python | None until measured; Ray if required | Yes; Apache-2.0 | Dask | Not a baseline for simple inference |
 | Workload isolation | OCI/containerd; gVisor for compatible higher-risk jobs | Yes | Kata Containers; dedicated KVM VM | Follows trust/data class |
 | Agent workflows | Temporal-backed deterministic action services | Yes | Plain application workflow; Argo Workflows for batch | Models propose; services authorize/execute |

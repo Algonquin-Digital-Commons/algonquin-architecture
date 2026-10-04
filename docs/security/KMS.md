@@ -1,153 +1,229 @@
-# KMS
-
+# Key Management and Cryptographic Authority
 
 > Standard: PSDC-DOC-001
-> Document type: policy-standard
+> Document type: architecture-specification
 > Status: Normative
 > Owner: PSDC Security Working Group
 > Accountable maintainer: RedjiJB until delegation
-> Last reviewed: 2026-09-11
-> Governing decisions: Applicable ADRs and repository governance
-> Domain: security
+> Last reviewed: 2026-09-25
+> Governing decisions: ADR-0002, ADR-0010, ADR-0013, ADR-0027, ADR-0028
 
-## Purpose and outcome
+## Purpose and measurable outcomes
 
-This specification defines **KMS** as part of the Post Secondary Digital
-Commons. Its required outcome is defence in depth across identity, software supply chain, workloads, data, networks, clients, federation, and incident response. An implementation conforms
-only when it satisfies this document, the linked ADRs, and the common
-[Specification Completeness Standard](../architecture/Specification-Completeness-Standard.md).
+This specification defines institution-controlled cryptographic authority for storage,
+workload identity, credentials, signing, backups and federation. It ensures that loss of a
+storage provider does not lose keys, compromise of a provider does not reveal plaintext, and
+federation does not require a shared consortium master key.
 
-## Scope
+Outcomes are non-exportable root/KEK protection where practical, least-privilege
+operation-scoped grants, rehearsed recovery, deterministic rotation/revocation, complete
+key-use evidence and independent institutional operation.
 
-- **In scope:** behaviour, interfaces, dependencies, data, security, deployment
-  boundaries, capacity, failure handling, observability, validation, and lifecycle
-  requirements for KMS.
-- **Out of scope:** institution-specific hostnames, credentials, physical capacity,
-  named operators, and legal approvals. Those values belong in signed institution
-  deployment manifests and cannot redefine the common contract.
-- **Authority:** the owning domain may make compatible implementation choices.
-  Contract-breaking or cross-domain changes require an ADR and migration plan.
+## Scope, exclusions and prohibited behavior
 
-## Normative requirements
+In scope: trust roots, HSM/PKCS#11 boundary, OpenBao services, envelope encryption, key
+classes, issuance, wrapping, rotation, revocation, backup, recovery, deletion, federation
+and audit.
 
-- The KMS capability SHALL provide defence in depth across identity, software supply chain, workloads, data, networks, clients, federation, and incident response.
-- The capability SHALL have a versioned configuration schema, explicit safe
-  defaults, validation before activation, and a reversible change procedure.
-- User-visible and administrative behaviour SHALL be accessible, explainable,
-  auditable, and bounded by institution policy and user authority.
-- An implementation SHALL expose only the minimum capability required by its
-  callers and SHALL reject unknown, unauthorized, malformed, expired, or
-  unsupported requests with stable machine-readable errors.
-- Institution deployments SHALL be independently operable and SHALL remain
-  compatible with the common contract and conformance suite.
+Out of scope: business authorization, data classification and deciding who should receive a
+credential. The key service enforces a signed policy decision but does not invent one. Root
+keys, KEKs, issuer keys and validator keys MUST NOT be committed to Git, embedded in images,
+placed in ledger transactions, shared between institutions or exposed to storage providers.
 
-## Interfaces, APIs, events, and contracts
+## Technology default and boundary
 
-See [Interface controls](../architecture/Domain-Control-Profiles.md#security-profile); local extensions remain normative.
+- OpenBao is the self-hosted secrets and transit/key-service control plane.
+- Production cryptographic roots and high-impact signing/KEKs use an institution-controlled
+  HSM or hardware-backed PKCS#11 provider where risk and budget justify it.
+- step-ca and cert-manager handle certificate issuance; SPIRE handles workload identities.
+- SOPS plus age may protect GitOps bootstrap material, but is not the runtime KMS.
+- Applications use versioned key APIs and envelope formats, not product-specific storage.
 
-## Dependencies and ownership boundaries
+OpenBao, HSM, PKI and SPIRE are separate roles. One product compromise must not expose every
+key class.
 
-Inherits [baseline ownership controls](../architecture/Cross-Cutting-Architecture-Requirements.md#ownership-and-dependency-boundaries).
+## Authority and key hierarchy
 
-## Data, state, residency, and retention
+    offline institution recovery/root authority
+                 |
+       +---------+----------+
+       |                    |
+    PKI roots          KMS recovery quorum
+       |                    |
+    issuing CAs       HSM-backed KEKs/signing keys
+       |                    |
+ workload certs       wrapped DEKs / signed records
 
-See [Data controls](../architecture/Domain-Control-Profiles.md#security-profile); local extensions remain normative.
+Each institution has independent roots. Federation trust bundles contain approved public
+keys/certificates and constraints, never private roots. Cross-institution storage transfer
+rewraps a DEK to a recipient-controlled key or streams data through an authorized ephemeral
+transfer session.
 
-## Security, privacy, safety, and compliance
+## Architecture and ownership boundaries
 
-See [Security controls](../architecture/Domain-Control-Profiles.md#security-profile); local extensions remain normative.
+Security authority owns roots and policy; custodians perform ceremonies; OpenBao/HSM owns
+key operations; PKI/SPIRE owns certificate/workload issuance; callers own business purpose.
 
-## Deployment, environments, and configuration
+## Security, privacy and policy
 
-Inherits [baseline deployment controls](../architecture/Cross-Cutting-Architecture-Requirements.md#deployment-and-configuration).
+Keys and operations are least-privilege, purpose-bound, minimized and audited. Logs reveal
+identifiers and outcomes, never key material or plaintext.
 
-## Capacity, scaling, cost, and sustainability
+## Key classes and ownership
 
-Inherits [baseline capacity controls](../architecture/Cross-Cutting-Architecture-Requirements.md#capacity-and-overload).
+| Class | Owner | Default handling | Rotation trigger |
+|---|---|---|---|
+| offline root/recovery | institutional security authority | offline, quorum-controlled, geographically separated evidence | planned ceremony or compromise |
+| intermediate CA | PKI operations | HSM-backed where practical; short-lived issued certs | scheduled, policy or incident |
+| workload identity | SPIRE/cert-manager | short-lived and automatically renewed | frequent automatic rotation |
+| storage KEK | storage key authority | HSM/OpenBao transit; non-exportable where possible | scheduled, staff/provider change, compromise |
+| object DEK | generated per object or bounded group | random, wrapped, never stored plaintext | object version/reclassification or cryptographic event |
+| VC issuer key | credential authority | separated signing service and HSM profile | published key lifecycle and credential window |
+| artifact/evidence signer | release/evidence authority | separate key and identity from issuer/ledger | release policy or compromise |
+| ledger validator/proposer | ledger operations | separate host/HSM profile | validator rotation/governance |
+| backup encryption | backup authority | separate credential/failure domain | scheduled or restore/incident |
+| developer/test | environment owner | synthetic and isolated | frequent; never promoted |
 
-## Failure, recovery, and compatibility
+## Envelope encryption
 
-See [Failure controls](../architecture/Domain-Control-Profiles.md#security-profile); local extensions remain normative.
+1. The caller authenticates with a short-lived workload identity.
+2. Policy authorizes a purpose, object, operation and duration.
+3. A cryptographically secure DEK is generated.
+4. Content is encrypted locally or in an authorized gateway boundary.
+5. The KMS wraps the DEK under the current KEK and returns an envelope containing key ID,
+   version, algorithm, nonce/parameters and wrapped DEK.
+6. Storage receives ciphertext and envelope reference, not the plaintext DEK.
+7. Retrieval obtains a short-lived unwrap/decrypt operation only after fresh authorization.
 
-## Observability, testing, and operational readiness
+Authenticated encryption is required. Algorithm suites are versioned and cryptographically
+agile; institution/FIPS requirements are deployment-profile choices. Custom cryptographic
+algorithms are prohibited.
 
-Inherits [baseline evidence controls](../architecture/Cross-Cutting-Architecture-Requirements.md#observability-and-evidence).
+## Interfaces
 
-## Standards and implementation strategy
+- Encrypt/wrap, decrypt/unwrap, sign, verify, issue, revoke and metadata operations use
+  authenticated versioned APIs with explicit purpose and object binding.
+- Workloads authenticate through SPIFFE identities or approved equivalent, not static root
+  tokens.
+- Every request has an idempotency key where replay could duplicate state and a trace ID that
+  does not reveal protected content.
+- Key aliases resolve to immutable versions; ciphertext records the exact version.
+- Error responses distinguish policy denial, unavailable service, invalid ciphertext,
+  revoked version and rate limit without becoming an oracle for unauthorized callers.
 
-See [Standards controls](../architecture/Domain-Control-Profiles.md#security-profile); local extensions remain normative.
+## Authorization and separation of duties
 
-## Settled architecture constraints
+No single routine operator can create a production root, change key policy, export recovery
+material and erase audit evidence. Required roles are security authority, key custodian,
+service owner, recovery approver and auditor. During the current one-maintainer phase,
+procedural role overlap is documented and high-impact ceremonies require recorded
+two-person/quorum participation from authorized institutional staff before production.
 
-- Security uses standard TLS/mTLS, PKI, identity, secret-management, signing, SBOM, and supply-chain mechanisms.
-- Any custom policy or enforcement component must integrate established engines or standards before proposing a new language.
-- Any exception follows the adopt → extend → compatible fork → build hierarchy and requires an ADR with evidence.
+Break-glass grants are purpose-bound, time-limited, separately approved where personnel
+exists, heavily audited and automatically revoked. Break-glass cannot export non-exportable
+keys or bypass legal holds.
 
-## Subject-specific control contract
+## Rotation, revocation and cryptographic erasure
 
-| Dimension | Required definition |
+- certificate/workload keys rotate automatically before expiry;
+- KEK rotation normally rewraps DEKs without re-encrypting large data;
+- algorithm or DEK compromise requires decrypt/re-encrypt migration;
+- issuer-key rotation preserves verification metadata for still-valid credentials;
+- revocation propagates to gateways, workloads, federation trust and caches within the
+  declared objective;
+- cryptographic erasure destroys all authorized wrapped DEKs/KEKs only after retention,
+  hold, replica and recovery policy checks and records the limitation that previously
+  disclosed plaintext cannot be recalled.
+
+## Backup and recovery
+
+Recovery material is quorum-split or multi-custodian, encrypted, offline and held in
+separate physical/administrative failure domains. Backups include configuration, policies,
+key metadata and necessary protected state but not an undocumented plaintext export of HSM
+keys. Recovery exercises rebuild a clean key service, restore policy, verify a controlled
+fixture, rotate affected credentials and demonstrate audit continuity.
+
+## Federation
+
+Federation gateways mutually authenticate, validate institution trust and use recipient
+public keys. The sender issues a manifest-bound transfer grant and rewraps or transfers the
+DEK only for the approved recipient/purpose/expiry. Recipient acceptance creates its local
+custody and key reference. Revocation cannot erase a recipient's already decrypted copy;
+contracts, retention and evidence govern that reality.
+
+## Failure and threat matrix
+
+| Failure/threat | Required behavior |
 |---|---|
-| Owned responsibility | cryptographic-key generation, custody, use, rotation, and destruction |
-| Authoritative input | authorized cryptographic operation, workload identity, key policy, and purpose |
-| Authoritative output | operation result plus immutable key-version and access evidence |
-| Primary trust boundary | applications request operations without receiving raw private key material |
-| Unsafe failure to prevent | a compromised identity can export, reuse, or prevent rotation of protected key material |
+| OpenBao node loss | fail over HA cluster; no static emergency root in applications |
+| HSM unavailable | bounded outage/degraded verification as designed; no software key copy |
+| policy engine unavailable | deny new unwrap/sign operations except explicit offline-safe verification |
+| root/KEK suspected compromise | stop affected operations, activate incident plan, rotate hierarchy and inventory exposure |
+| workload identity stolen | revoke identity, deny new grants, expire short-lived credentials and investigate uses |
+| rollback to old ciphertext/key metadata | authenticated version and manifest digest reject mismatch |
+| audit sink unavailable | bounded local protected buffer; high-impact operations stop at threshold |
+| recovery shares lost | report loss and re-establish ceremony before redundancy falls below threshold |
+| malicious custodian | quorum and separation prevent unilateral recovery/export |
 
-- **SEC-KMS-001:** The owner MUST implement the responsibility and preserve the input-to-output evidence chain shown above.
-- **SEC-KMS-002:** The enforcement point MUST fail closed when identity, policy version, integrity, freshness, or required context cannot be verified.
-- **SEC-KMS-003:** A release MUST include a positive conformance case, an unauthorized or malformed case, a dependency-loss case, and a regression case for the unsafe failure.
-- **SEC-KMS-004:** Exceptions MUST identify scope, compensating controls, approver, expiry, monitoring, and a removal plan; permanent undocumented bypasses are prohibited.
+## Deployment, capacity and observability
 
-Institution forks MUST bind these controls to local identity, policy, evidence retention, and incident routes without weakening the common contract.
+Production uses HA across at least two power/network failure domains, dedicated management
+access, sealed bootstrap, protected audit export and rate limits per identity/key class.
+Capacity planning covers peak unwrap/sign operations, federation bursts, rotation and mass
+recovery. Metrics expose availability, latency, denial reasons, grant count, version age,
+rotation status, revocation propagation, HSM health and recovery readiness—never key
+material or plaintext.
 
-### Verification scenarios
+## Alternatives and trade-offs
 
-1. Exercise cryptographic-key generation, custody, use, rotation, and destruction | with authorized cryptographic operation, workload identity, key policy, and purpose | and prove the recorded result is operation result plus immutable key-version and access evidence |.
-2. Remove or alter one required input and prove the request is denied without exposing protected diagnostic content.
-3. Simulate the dependency or authority failure that could cause a compromised identity can export, reuse, or prevent rotation of protected key material |; prove the declared safe state, revocation, and evidence are produced.
-## Decision traceability
+Cloud-hosted KMS reduces operations but violates the no-required-vendor and standalone goals.
+Software-only keys are cheaper but weaker against host compromise. One shared consortium
+root simplifies federation but creates catastrophic common authority. Per-institution roots
+plus constrained trust bundles add governance work and preserve sovereignty. Client-only
+keys maximize user control but cannot alone meet institutional recovery, service and records
+obligations; PSDC supports user-held keys for appropriate personal data alongside
+institutional classes.
 
-- ADR-0001: Standards-First / Buy-Borrow-Build
-- ADR-0005: Standard Platform Primitives
-- ADR-0012: Tenant-Neutral Post-Secondary Digital Commons
-- ADR-0013: Institution-First Federation Locality
-- ADR-0016: Accepted Project Defaults
-- ADR-0017: OpenTofu Default Infrastructure-as-Code Toolchain
+## Implementation sequence, migration and rollback
 
-## Acceptance criteria
+1. define key classes, policies, envelope schema and synthetic fixtures;
+2. deploy development OpenBao and workload identity with synthetic keys;
+3. perform production root/recovery ceremony and HSM evaluation;
+4. integrate storage envelopes and artifact/evidence signing;
+5. add VC issuer and federation profiles after separate approval;
+6. rehearse compromise, restore, rewrap, revocation and total-site recovery.
 
-Inherits [baseline acceptance gates](../architecture/Cross-Cutting-Architecture-Requirements.md#observability-and-evidence); every local requirement MUST also pass.
+Rollback restores the prior accepted service/configuration while retaining new key versions
+for decrypt compatibility. Never roll back by reactivating a compromised key. Ciphertext
+migration remains resumable and evidence-preserving.
 
-## Enforcement
+## Testing and evidence
 
-PSDC Security Working Group MUST enforce **KMS** at the declared policy, identity, repository, gateway, deployment, or moderation enforcement points. A request or change that does not satisfy the normative requirements MUST be denied or quarantined with a stable reason code. Enforcement decisions MUST be attributable, fail closed for authorization failures, and remain independently testable without relying on a proprietary service.
+Tests cover authorization denial, envelope integrity, rotation, compromise, quorum recovery,
+federation rewrap and deletion evidence without exposing key material.
 
-## Exceptions
+## Binary acceptance criteria
 
-An exception to **KMS** requires a written reason, affected scope, risk assessment, compensating control, approving role, start date, and expiry date. The subject owner MUST NOT self-approve a high-impact exception. Expired exceptions MUST stop applying automatically; renewal requires new evidence and review.
+These testing and evidence gates are mandatory before production key custody.
 
-## Audit evidence
-
-Conformance evidence for **KMS** MUST record the policy version, actor or service, decision, reason code, affected object or boundary, timestamp, outcome, and reviewer where applicable. Evidence MUST minimize protected data, be access-controlled, be exportable to the institution, and be retained according to the governing data policy. The owner MUST be able to demonstrate both an allowed and a denied case.
-
-## Purpose
-
-This policy defines the required outcome, actors, and decision boundary for **KMS**. It applies to all implementations and institution overlays that claim conformance.
-
-## Normative rules
-
-The requirements in this document are normative. Owners MUST implement them, SHOULD document justified risk trade-offs, and MUST NOT treat an example as an exemption.
-
-## Acceptance and review
-
-Acceptance requires the documented controls, tests, operator ownership, and evidence to be complete. The owner reviews this policy on material architecture change and at least once per release cycle.
+- **SEC-KMS-ACC-001:** storage providers and database dumps contain no plaintext DEK/KEK;
+- **SEC-KMS-ACC-002:** an unauthorized workload, wrong purpose, expired grant, revoked key
+  and altered envelope each fail closed with stable evidence;
+- **SEC-KMS-ACC-003:** KEK rotation rewraps controlled fixtures and both migration and
+  rollback behavior are proven;
+- **SEC-KMS-ACC-004:** clean-site recovery restores authorized fixture access within RTO
+  without one custodian acting alone;
+- **SEC-KMS-ACC-005:** compromise exercise identifies affected objects/credentials, revokes
+  access and rotates within declared objectives;
+- **SEC-KMS-ACC-006:** two institutions exchange an approved encrypted object without
+  sharing private roots or leaving the sender key generally usable;
+- **SEC-KMS-ACC-007:** cryptographic deletion records every key/placement/backup decision and
+  accurately states unverifiable prior copies.
 
 ## References
 
-- [Specification Completeness Standard](../architecture/Specification-Completeness-Standard.md)
-- [Technology Defaults and Alternatives](../vision/13-Technology-Defaults-and-Alternatives.md)
-- [Human Choices and Decisions Register](../governance/Human-Choices-and-Decisions-Register.md)
-- [ADR-0001: Standards First](../architecture/architecture-decision-records/ADR-0001-standards-first-buy-borrow-build.md)
-- [ADR-0012: Post Secondary Digital Commons](../architecture/architecture-decision-records/ADR-0012-post-secondary-digital-commons.md)
-- [ADR-0017: OpenTofu Default](../architecture/architecture-decision-records/ADR-0017-opentofu-default.md)
-
+- [Storage Architecture](../storage/Storage-Architecture.md)
+- [PKI](PKI.md)
+- [Secrets Management](Secrets-Management.md)
+- [Key Rotation Runbook](../runbooks/Key-Rotation.md)
+- [ADR-0028](../architecture/architecture-decision-records/ADR-0028-private-content-and-storage-fabric.md)

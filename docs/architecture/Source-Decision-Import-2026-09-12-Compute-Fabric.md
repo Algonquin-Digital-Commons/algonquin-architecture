@@ -213,6 +213,8 @@ artifact, network, privacy, and physical-safety controls.
 | `Node-Enrollment-and-Attestation.md` | Separate initial enrollment proof from recurring capability and posture verification |
 | `Distributed-Inference-Backend-Interface.md` | Generalize the executor/backend boundary without hiding model-specific capability and topology requirements |
 | `HTCondor-Interoperability.md` | Map Commons requests, offerings, leases, and outcomes to HTCondor without making it the canonical state model |
+| `Implementation-Framework-Composition-Study.md` | Record the evidence-backed adopt/adapt/adapter/fork/custom disposition for established OSI/FOSS frameworks and their replacement paths |
+| `Custom-Control-Plane-and-Worker-Scope.md` | Specify the PSDC-owned contract, lease, evidence, worker-supervisor, adapter, and conformance surface that remains after framework composition |
 
 The rewrite should also introduce focused specifications for capability offerings
 and leases, controller reconciliation, event causality, execution adapters, and
@@ -237,6 +239,8 @@ current authorities include:
 - [Cross-Cutting Architecture Requirements](Cross-Cutting-Architecture-Requirements.md)
 - [Domain Control Profiles](Domain-Control-Profiles.md#campus-compute-fabric-profile)
 - [Commons Compute Fabric Architecture](../campus-compute-fabric/Campus-Compute-Fabric-Architecture.md)
+- [Implementation Framework Composition Study](../campus-compute-fabric/Implementation-Framework-Composition-Study.md)
+- [Custom Control Plane and Worker Scope](../campus-compute-fabric/Custom-Control-Plane-and-Worker-Scope.md)
 - [Specification Completeness Standard](Specification-Completeness-Standard.md)
 
 ## Validation, staleness, and contradiction handling
@@ -247,4 +251,3 @@ requirements and tests in each owner, common-to-Algonquin synchronization, and a
 semantic audit showing the rewritten specifications are no longer title-only
 clones. Any conflict is resolved in favor of accepted PSDC ADRs and institutional
 sovereignty; a deliberate change requires a superseding ADR.
-
