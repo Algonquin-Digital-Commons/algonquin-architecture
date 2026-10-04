@@ -1,0 +1,25 @@
+{
+  "fixtureVersion": "1.0",
+  "fixtureId": "timeout.compute.offer-expired",
+  "category": "timeout",
+  "schemaId": "urn:psdc:contracts:compute:offer:1",
+  "description": "Structurally valid expired offer that the resolver must exclude.",
+  "expected": { "schemaValid": true, "semanticOutcome": "timeout", "statusPath": "/status", "expectedStatus": "expired", "reasonPath": "/reason/code", "expectedReasonCode": "OFFER_EXPIRED" },
+  "instance": {
+    "contractVersion": "1.0",
+    "offerId": "50505050-5050-4050-8050-505050505050",
+    "requestId": "22222222-2222-4222-8222-222222222222",
+    "providerId": "provider.algonquin.lab-a",
+    "capabilityId": "capability.lab-a.gpu",
+    "sequence": 8,
+    "status": "expired",
+    "availableFrom": "2026-09-27T13:00:00Z",
+    "expiresAt": "2026-09-27T13:05:00Z",
+    "resources": { "cpuMillis": 2000, "memoryBytes": 4294967296 },
+    "prices": [{ "metric": "cpu_seconds", "billingUnit": "second", "price": { "unit": "IRU", "amount": "0.001" } }],
+    "healthSnapshotDigest": "5050505050505050505050505050505050505050505050505050505050505050",
+    "policySnapshotDigest": "5151515151515151515151515151515151515151515151515151515151515151",
+    "reason": { "code": "OFFER_EXPIRED", "message": "Offer validity elapsed before selection.", "retryable": true, "retryAfterSeconds": 30 },
+    "signature": { "algorithm": "Ed25519", "keyId": "did:web:algonquin.example#provider-1", "canonicalization": "RFC8785", "signedAt": "2026-09-27T13:05:01Z", "value": "ZXhwaXJlZC1vZmZlci1zaWduYXR1cmU" }
+  }
+}

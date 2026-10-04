@@ -1,0 +1,11 @@
+{
+  "machineVersion": "1.0", "machineId": "compute.offer.v1", "contractSchemaId": "urn:psdc:contracts:compute:offer:1", "statePointer": "/properties/status/enum",
+  "initialStates": ["submitted"], "terminalStates": ["withdrawn", "expired", "accepted", "rejected"],
+  "states": ["submitted", "withdrawn", "expired", "accepted", "rejected"],
+  "transitions": [
+    { "from": "submitted", "to": "withdrawn", "action": "offer.withdraw", "authorizationAction": "compute.offer.withdraw", "idempotent": true, "reasonRequired": true },
+    { "from": "submitted", "to": "expired", "action": "offer.expire", "authorizationAction": "compute.offer.expire", "idempotent": true, "reasonRequired": true },
+    { "from": "submitted", "to": "accepted", "action": "offer.accept", "authorizationAction": "compute.offer.accept", "idempotent": true, "guardCodes": ["POLICY_ALLOW", "OFFER_FRESH", "CAPACITY_FRESH"] },
+    { "from": "submitted", "to": "rejected", "action": "offer.reject", "authorizationAction": "compute.offer.reject", "idempotent": true, "reasonRequired": true }
+  ]
+}

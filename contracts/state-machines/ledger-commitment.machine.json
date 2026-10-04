@@ -1,0 +1,8 @@
+{
+  "machineVersion": "1.0", "machineId": "economics.ledger-commitment.v1", "contractSchemaId": "urn:psdc:contracts:economics:ledger-commitment:1", "statePointer": "/properties/status/enum",
+  "initialStates": ["submitted", "superseded"], "terminalStates": ["finalized", "rejected", "superseded"], "states": ["submitted", "finalized", "rejected", "superseded"],
+  "transitions": [
+    { "from": "submitted", "to": "finalized", "action": "commitment.finalize", "authorizationAction": "economics.commitment.finalize", "idempotent": true, "guardCodes": ["CONSENSUS_FINAL", "BATCH_ROOT_MATCH"] },
+    { "from": "submitted", "to": "rejected", "action": "commitment.reject", "authorizationAction": "economics.commitment.reject", "idempotent": true, "reasonRequired": true }
+  ]
+}

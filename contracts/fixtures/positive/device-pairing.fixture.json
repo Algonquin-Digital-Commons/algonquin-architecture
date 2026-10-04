@@ -1,0 +1,19 @@
+{
+  "fixtureVersion": "1.0",
+  "fixtureId": "positive.agent-sessions.device-pairing",
+  "category": "positive",
+  "schemaId": "urn:psdc:contracts:agent-sessions:device-pairing:1",
+  "description": "Existing device-pairing contract remains covered by the unified runner.",
+  "expected": { "schemaValid": true, "semanticOutcome": "accept" },
+  "instance": {
+    "contractVersion": "1.0",
+    "pairingId": "a1a1a1a1-a1a1-41a1-81a1-a1a1a1a1a1a1",
+    "hostId": "a2a2a2a2-a2a2-42a2-82a2-a2a2a2a2a2a2",
+    "challenge": "Y2hhbGxlbmdl",
+    "hostPublicKey": "cHVibGljLWtleQ==",
+    "createdAt": "2026-09-27T12:00:00Z",
+    "expiresAt": "2026-09-27T12:05:00Z",
+    "relayProfile": "institution-e2ee-v1",
+    "requestedScopes": ["session.read", "session.message"]
+  }
+}

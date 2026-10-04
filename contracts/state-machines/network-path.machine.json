@@ -1,0 +1,14 @@
+{
+  "machineVersion": "1.0", "machineId": "network.path.v1", "contractSchemaId": "urn:psdc:contracts:network:path:1", "statePointer": "/properties/status/enum",
+  "initialStates": ["available", "unavailable"], "terminalStates": ["revoked"], "states": ["available", "degraded", "unavailable", "revoked"],
+  "transitions": [
+    { "from": "available", "to": "degraded", "action": "path.degrade", "authorizationAction": "network.path.publish", "idempotent": true },
+    { "from": "degraded", "to": "available", "action": "path.restore", "authorizationAction": "network.path.publish", "idempotent": true, "guardCodes": ["TELEMETRY_FRESH"] },
+    { "from": "degraded", "to": "unavailable", "action": "path.disable", "authorizationAction": "network.path.publish", "idempotent": true, "reasonRequired": true },
+    { "from": "available", "to": "unavailable", "action": "path.disable", "authorizationAction": "network.path.publish", "idempotent": true, "reasonRequired": true },
+    { "from": "unavailable", "to": "available", "action": "path.restore", "authorizationAction": "network.path.publish", "idempotent": true, "guardCodes": ["TELEMETRY_FRESH", "POLICY_ALLOW"] },
+    { "from": "available", "to": "revoked", "action": "path.revoke", "authorizationAction": "network.path.revoke", "idempotent": true, "reasonRequired": true },
+    { "from": "degraded", "to": "revoked", "action": "path.revoke", "authorizationAction": "network.path.revoke", "idempotent": true, "reasonRequired": true },
+    { "from": "unavailable", "to": "revoked", "action": "path.revoke", "authorizationAction": "network.path.revoke", "idempotent": true, "reasonRequired": true }
+  ]
+}

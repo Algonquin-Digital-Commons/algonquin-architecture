@@ -3,7 +3,7 @@
 
 > Standard: PSDC-DOC-001
 > Document type: architecture-specification
-> Status: Normative
+> Status: Normative; subject-specific section is contract-backed, open questions listed
 > Owner: PSDC Campus Compute Fabric Working Group
 > Accountable maintainer: RedjiJB until delegation
 > Last reviewed: 2026-09-11
@@ -40,6 +40,21 @@ only when it satisfies this document, the linked ADRs, and the common
   unsupported requests with stable machine-readable errors.
 - Institution deployments SHALL be independently operable and SHALL remain
   compatible with the common contract and conformance suite.
+
+## Subject-specific specification
+
+GPU Fabric is the part of the compute fabric that offers accelerator capacity. It adds no new contract. GPUs are described, matched and leased through the same capability, offer, placement and lease records as CPU capacity.
+
+- **What a GPU looks like.** Each capability advertisement lists `accelerators` entries ([capability.schema.json](../../contracts/compute/capability.schema.json)): `kind` (gpu, npu, fpga), `modelClass`, `count`, `memoryBytes` and `partitioning` (none, mig, sriov, timeslice). Up to 16 entries per resource.
+- **Who asks for one.** A workload manifest ([workload-manifest.schema.json](../../contracts/compute/workload-manifest.schema.json)) states resources and a `workloadClass`. `ai_inference` and `ai_service` are the classes that normally need accelerators; `backendPreferences` names acceptable runtime backends.
+- **How it is granted.** A provider answers with an offer ([offer.schema.json](../../contracts/compute/offer.schema.json)), the scheduler records a placement decision, and the lease `allocatedResources` fixes exactly what was granted ([lease.schema.json](../../contracts/compute/lease.schema.json)).
+
+- **CCF-GPU-010:** A lease SHALL NOT allocate more accelerator memory or devices than the advertisement `available` quantity at the time the offer was made.
+- **CCF-GPU-011:** A partitioned device (`mig`, `sriov`, `timeslice`) SHALL be advertised and leased by its partition capability, not as a whole device, so two leases cannot silently claim the same hardware.
+- **CCF-GPU-012:** GPUs on machines with `interactiveUserPresent` true SHALL be treated under the idle policy and are subject to drain; see [Preemption and Drain](Preemption-and-Drain.md).
+- **CCF-GPU-013:** Usage on accelerators SHALL be reported through the signed usage receipt ([usage-receipt.schema.json](../../contracts/compute/usage-receipt.schema.json)) so metering and settlement do not depend on provider self-reporting alone.
+
+**Not covered by the contracts yet (open questions).** Interconnect and topology between devices, which matters for multi-GPU and distributed inference; model-cache locality; driver and runtime version compatibility; and fairness between inference and batch work. These must be decided before multi-GPU scheduling. The first slice only needs single-node census and leasing.
 
 ## Interfaces, APIs, events, and contracts
 

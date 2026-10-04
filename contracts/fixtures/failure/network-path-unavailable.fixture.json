@@ -1,0 +1,28 @@
+{
+  "fixtureVersion": "1.0",
+  "fixtureId": "failure.network.path-unavailable",
+  "category": "failure",
+  "schemaId": "urn:psdc:contracts:network:path:1",
+  "description": "Unavailable path after telemetry dependency failure.",
+  "expected": { "schemaValid": true, "semanticOutcome": "failed", "statusPath": "/status", "expectedStatus": "unavailable", "reasonPath": "/reason/code", "expectedReasonCode": "TELEMETRY_STALE" },
+  "instance": {
+    "contractVersion": "1.0",
+    "pathId": "path.lab-a.dc-a",
+    "providerId": "network.algonquin.core",
+    "sequence": 13,
+    "sourceZoneId": "zone.lab-a",
+    "destinationZoneId": "zone.dc-a",
+    "status": "unavailable",
+    "observedAt": "2026-09-27T14:10:00Z",
+    "expiresAt": "2026-09-27T14:11:00Z",
+    "transport": "dual_stack",
+    "isolation": "vrf",
+    "bandwidth": { "capacityMbps": 10000, "availableMbps": 0 },
+    "latencyClass": "campus_low",
+    "encryption": { "required": true, "modes": ["mTLS"] },
+    "egressMode": "institution_proxy",
+    "federation": { "crossInstitution": false, "approvedPeerIds": [] },
+    "reason": { "code": "TELEMETRY_STALE", "message": "Fresh path evidence is unavailable.", "retryable": true, "retryAfterSeconds": 60 },
+    "signature": { "algorithm": "Ed25519", "keyId": "did:web:algonquin.example#network-1", "canonicalization": "RFC8785", "signedAt": "2026-09-27T14:10:00Z", "value": "dW5hdmFpbGFibGUtcGF0aC1zaWc" }
+  }
+}

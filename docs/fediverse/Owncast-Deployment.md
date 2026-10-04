@@ -3,12 +3,14 @@
 
 > Standard: PSDC-DOC-001
 > Document type: architecture-specification
-> Status: Normative
+> Status: Stub; not yet specified
 > Owner: PSDC Fediverse Working Group
 > Accountable maintainer: RedjiJB until delegation
 > Last reviewed: 2026-09-11
 > Governing decisions: Applicable ADRs and repository governance
 > Domain: fediverse
+
+> **Stub - not yet specified.** The requirements below are generic domain-level placeholders shared with sibling documents; this subject's own interfaces, state, failure behaviour and acceptance evidence have not been written. Do not implement from this document. Replace this notice when subject-specific content is added.
 
 ## Purpose and outcome
 
@@ -44,6 +46,7 @@ only when it satisfies this document, the linked ADRs, and the common
 ## Interfaces, APIs, events, and contracts
 
 See [Interface controls](../architecture/Domain-Control-Profiles.md#fediverse-profile); local extensions remain normative.
+
 
 ## Dependencies and ownership boundaries
 

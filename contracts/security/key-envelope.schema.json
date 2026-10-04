@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:psdc:contracts:security:key-envelope:1",
+  "title": "PSDC Wrapped Data-Key Envelope",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["contractVersion", "envelopeId", "objectRef", "wrappingKeyRef", "wrappingKeyVersion", "wrappingAlgorithm", "contentEncryptionAlgorithm", "wrappedDataKey", "aadDigest", "encryptedAt", "status", "signature"],
+  "properties": {
+    "contractVersion": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/contractVersion" },
+    "envelopeId": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/uuid" },
+    "objectRef": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/resourceRef" },
+    "wrappingKeyRef": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/resourceRef" },
+    "wrappingKeyVersion": { "type": "integer", "minimum": 1 },
+    "wrappingAlgorithm": { "enum": ["A256KW", "RSA-OAEP-256", "HPKE-Base-X25519-SHA256-AES256GCM"] },
+    "contentEncryptionAlgorithm": { "enum": ["AES-256-GCM", "XChaCha20-Poly1305"] },
+    "wrappedDataKey": { "type": "string", "pattern": "^[A-Za-z0-9_-]{32,8192}$" },
+    "aadDigest": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/sha256" },
+    "encryptedAt": { "type": "string", "format": "date-time" },
+    "expiresAt": { "type": "string", "format": "date-time" },
+    "status": { "enum": ["active", "rotated", "revoked"] },
+    "previousEnvelopeId": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/uuid" },
+    "reason": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/reason" },
+    "signature": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/signature" }
+  },
+  "allOf": [
+    { "if": { "properties": { "status": { "enum": ["rotated", "revoked"] } }, "required": ["status"] }, "then": { "required": ["reason"] } },
+    { "if": { "properties": { "status": { "const": "rotated" } }, "required": ["status"] }, "then": { "required": ["previousEnvelopeId"] } }
+  ]
+}

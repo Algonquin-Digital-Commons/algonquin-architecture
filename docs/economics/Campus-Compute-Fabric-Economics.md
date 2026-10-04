@@ -40,6 +40,17 @@ only when it satisfies this document, the linked ADRs, and the common
   unsupported requests with stable machine-readable errors.
 - Institution deployments SHALL be independently operable and SHALL remain
   compatible with the common contract and conformance suite.
+- **ECON-CCFE-002:** Kubernetes/container, OpenStack/VM, Slurm/HPC,
+  Akash-derived deployment and Golem-derived task backends SHALL emit the common
+  PSDC usage receipt and consume institution-controlled credits, budgets, quotas
+  or approved federation settlement units.
+- **ECON-CCFE-003:** Credits SHALL represent institutional capacity allocation and
+  accounting by default. They SHALL NOT be public cryptocurrency, automatic
+  authorization, or a substitute for policy, procurement or financial controls.
+- **ECON-CCFE-004:** A common receipt SHALL retain workload, lease, provider,
+  project, policy version, resource profile, measured usage, storage tier,
+  evidence and accounting result; backend-specific measurements SHALL remain
+  available for reconciliation.
 
 ## Interfaces, APIs, events, and contracts
 

@@ -1,0 +1,15 @@
+{
+  "machineVersion": "1.0", "machineId": "compute.provider.v1", "contractSchemaId": "urn:psdc:contracts:compute:provider:1", "statePointer": "/properties/status/enum",
+  "initialStates": ["pending"], "terminalStates": ["revoked", "retired"],
+  "states": ["pending", "active", "suspended", "revoked", "retired"],
+  "transitions": [
+    { "from": "pending", "to": "active", "action": "provider.approve", "authorizationAction": "compute.provider.approve", "idempotent": true, "guardCodes": ["IDENTITY_VERIFIED", "POLICY_ALLOW"] },
+    { "from": "pending", "to": "revoked", "action": "provider.reject", "authorizationAction": "compute.provider.revoke", "idempotent": true, "reasonRequired": true },
+    { "from": "active", "to": "suspended", "action": "provider.suspend", "authorizationAction": "compute.provider.suspend", "idempotent": true, "reasonRequired": true },
+    { "from": "suspended", "to": "active", "action": "provider.restore", "authorizationAction": "compute.provider.restore", "idempotent": true, "guardCodes": ["REMEDIATION_VERIFIED", "POLICY_ALLOW"] },
+    { "from": "active", "to": "revoked", "action": "provider.revoke", "authorizationAction": "compute.provider.revoke", "idempotent": true, "reasonRequired": true },
+    { "from": "suspended", "to": "revoked", "action": "provider.revoke", "authorizationAction": "compute.provider.revoke", "idempotent": true, "reasonRequired": true },
+    { "from": "active", "to": "retired", "action": "provider.retire", "authorizationAction": "compute.provider.retire", "idempotent": true, "reasonRequired": true },
+    { "from": "suspended", "to": "retired", "action": "provider.retire", "authorizationAction": "compute.provider.retire", "idempotent": true, "reasonRequired": true }
+  ]
+}

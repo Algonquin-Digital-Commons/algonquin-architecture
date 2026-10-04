@@ -3,7 +3,7 @@
 
 > Standard: PSDC-DOC-001
 > Document type: architecture-specification
-> Status: Normative
+> Status: Normative; subject-specific section is contract-backed, open questions listed
 > Owner: PSDC Campus Compute Fabric Working Group
 > Accountable maintainer: RedjiJB until delegation
 > Last reviewed: 2026-09-11
@@ -40,6 +40,22 @@ only when it satisfies this document, the linked ADRs, and the common
   unsupported requests with stable machine-readable errors.
 - Institution deployments SHALL be independently operable and SHALL remain
   compatible with the common contract and conformance suite.
+
+## Subject-specific specification
+
+Sandboxing decides what a workload is allowed to touch on a donor machine. The contracts fix the inputs to that decision. They do not choose the isolation technology.
+
+- **What is pinned.** The workload manifest requires an image digest (`runtime.imageDigest`, SHA-256), so the thing that runs is the thing that was classified. The lease binds the same `manifestDigest` ([lease.schema.json](../../contracts/compute/lease.schema.json)), and the classification record carries it too ([classification-record.schema.json](../../contracts/compute/classification-record.schema.json)).
+- **What limits it.** Classification outputs `dataClassification`, `eligibleBackends`, `institutionScope` (local_only, approved_federation, approved_external) and `riskLevel` (low, moderate, high, prohibited). Placement constraints add `minimumTrustTier`, allowed providers and zones, and residency countries.
+- **What it does not do.** A classification record does not itself authorize placement; authorization is a separate signed decision.
+
+- **CCF-SANDBOX-010:** A workload with `riskLevel` `prohibited` SHALL NOT be placed on any provider.
+- **CCF-SANDBOX-011:** A provider SHALL refuse to start a workload whose image digest differs from the lease `manifestDigest` binding, and SHALL report the refusal as a lease failure.
+- **CCF-SANDBOX-012:** A workload SHALL run only on a provider whose trust tier meets the manifest `minimumTrustTier` and whose attestation status is `valid` or `not_required` ([capability.schema.json](../../contracts/compute/capability.schema.json)).
+- **CCF-SANDBOX-013:** Workloads SHALL run without privileged access by default; any privileged mode requires an explicit classification outcome and an audit event.
+- **CCF-SANDBOX-014:** Stronger isolation SHALL apply as `dataClassification` rises or trust tier falls; the mapping from those inputs to a required isolation level is a policy decision recorded in the institution manifest.
+
+**Open decisions (not settled by any contract or ADR).** The isolation technology (container hardening, user-space kernel, microVM) and its per-class mapping; network egress rules for jobs; handling of untrusted code on student-owned or volunteer machines; and resource-limit enforcement and escape detection. Until these are decided, only low-risk, local-only, institution-trusted workloads should be considered for any pilot.
 
 ## Interfaces, APIs, events, and contracts
 

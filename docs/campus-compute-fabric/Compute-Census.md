@@ -3,7 +3,7 @@
 
 > Standard: PSDC-DOC-001
 > Document type: architecture-specification
-> Status: Normative
+> Status: Normative; subject-specific section is contract-backed, open questions listed
 > Owner: PSDC Campus Compute Fabric Working Group
 > Accountable maintainer: RedjiJB until delegation
 > Last reviewed: 2026-09-11
@@ -40,6 +40,23 @@ only when it satisfies this document, the linked ADRs, and the common
   unsupported requests with stable machine-readable errors.
 - Institution deployments SHALL be independently operable and SHALL remain
   compatible with the common contract and conformance suite.
+
+## Subject-specific specification
+
+The census is the fabric's authoritative answer to "what compute exists, who vouches for it, and is it usable right now". It is built from two signed record types, not from a free-form inventory table.
+
+- **Provider record** ([provider.schema.json](../../contracts/compute/provider.schema.json)): one per institution-operated or partner provider. Lifecycle `pending -> active -> suspended -> revoked | retired` ([provider.machine.json](../../contracts/state-machines/provider.machine.json)). Carries `providerType`, `trustTier` (development, pilot, production, federated), `scopes`, a monotonic `sequence` and an expiry.
+- **Capability advertisement** ([capability.schema.json](../../contracts/compute/capability.schema.json)): one per resource. Carries `architecture` (amd64, arm64), `backends`, `runtimes`, `accelerators`, `available` quantity, locality (institution, zone, country, campus class), `trust.attestationStatus`, `pressure` (low to critical), `interactiveUserPresent`, `observedAt`, `expiresAt` and a signature. Lifecycle `available / draining / unavailable / revoked` ([capability.machine.json](../../contracts/state-machines/capability.machine.json)).
+
+- **CCF-CENSUS-010:** A capability advertisement SHALL be treated as `unavailable` for scheduling once `expiresAt` has passed, without waiting for an explicit transition.
+- **CCF-CENSUS-011:** A consumer SHALL ignore an advertisement whose `sequence` is not greater than the latest accepted sequence for the same `resourceId`; replays and reordered deliveries must not roll the census back.
+- **CCF-CENSUS-012:** A revoked provider or capability SHALL be removed from placement eligibility immediately, and existing leases on it are handled by the lease revocation path in [Preemption and Drain](Preemption-and-Drain.md).
+- **CCF-CENSUS-013:** `interactiveUserPresent` and `pressure` are advisory inputs to the idle policy; the census reports them and does not itself decide to evict work.
+- **CCF-CENSUS-014:** The census is a derived view of signed advertisements and SHALL be rebuildable from the event stream ([compute-fabric.asyncapi.json](../../contracts/events/compute-fabric.asyncapi.json)).
+
+**First vertical slice.** The first milestone in `psdc-compute` is a worker that registers an authorized machine and reports CPU, RAM, GPU, VRAM, operating system, network and idle state, with a dashboard of current and aggregate capacity. That report maps onto the capability fields above. Operating system (`compute.operatingSystem`) and network capacity (`network`) are optional capability fields, so the slice can report them.
+
+**Open questions.** (1) How often advertisements must be refreshed, which determines the practical `expiresAt` window. (2) Which hardware details beyond the capability schema (disk, thermal, power) the census must track. (3) The enrollment and attestation flow, described in [Node Enrollment and Attestation](Node-Enrollment-and-Attestation.md), which is itself not yet specified.
 
 ## Interfaces, APIs, events, and contracts
 

@@ -3,7 +3,7 @@
 
 > Standard: PSDC-DOC-001
 > Document type: architecture-specification
-> Status: Normative
+> Status: Normative; subject-specific section is contract-backed, open questions listed
 > Owner: PSDC Campus Compute Fabric Working Group
 > Accountable maintainer: RedjiJB until delegation
 > Last reviewed: 2026-09-11
@@ -40,6 +40,28 @@ only when it satisfies this document, the linked ADRs, and the common
   unsupported requests with stable machine-readable errors.
 - Institution deployments SHALL be independently operable and SHALL remain
   compatible with the common contract and conformance suite.
+
+## Subject-specific specification
+
+Preemption and drain describe how running work is stopped or moved when a donor machine needs its resources back, is retired, or loses trust. The contracts already provide the building blocks.
+
+- **Drain starts at the capability.** A capability moves `available -> draining` (`capability.drain`), then `draining -> unavailable`, or back to `available` if the drain is cancelled ([capability.machine.json](../../contracts/state-machines/capability.machine.json)). A draining resource takes no new leases.
+- **Eviction ends at the lease.** The lease has no "preempting" state. A running lease ends through `active | renewal_pending -> released | expired | revoked | failed` ([lease.machine.json](../../contracts/state-machines/lease.machine.json)). Each ending requires a reason, is idempotent, and is fenced by the lease `generation`, so a stale controller cannot act on a lease that has already moved on.
+- **What the workload asked for.** The manifest `schedule` carries `priority`, `preemptible`, `maxRuntimeSeconds` and `checkpointIntervalSeconds`; `retryPolicy` carries `maxAttempts`, backoff and `retryableReasonCodes` ([workload-manifest.schema.json](../../contracts/compute/workload-manifest.schema.json)).
+- **What gets billed.** The usage receipt records an `outcome` of `preempted` (as well as succeeded, failed, cancelled, lost) so partial runs are metered honestly ([usage-receipt.schema.json](../../contracts/compute/usage-receipt.schema.json)).
+
+- **CCF-PREEMPT-010:** Only a lease whose workload set `preemptible` true MAY be ended by an idle-policy or capacity eviction. Other leases end only by release, expiry, revocation for cause, or failure.
+- **CCF-PREEMPT-011:** A preemptive end SHALL be recorded as a lease transition with a reason code, and the resulting usage receipt SHALL carry outcome `preempted`.
+- **CCF-PREEMPT-012:** A controller SHALL supply the expected lease `generation` on every transition; a mismatch SHALL be rejected rather than applied.
+- **CCF-PREEMPT-013:** Where a workload declares `checkpointIntervalSeconds`, the drain procedure SHALL allow time for one checkpoint before forced termination, bounded by the lease expiry.
+- **CCF-PREEMPT-014:** A preempted workload is retried only if its `retryableReasonCodes` include the preemption reason and `maxAttempts` is not exhausted.
+- **CCF-PREEMPT-016:** Every terminal lease transition SHALL carry a code from the [reason-code registry](../../contracts/common/reason-codes.registry.json). Eviction for the machine owner (`OWNER_RECLAIM`), capacity displacement (`CAPACITY_RECLAIM`) and drain expiry (`DRAIN_DEADLINE`) are distinct from revocation for cause (`PROVIDER_REVOKED`, `TRUST_LOST`, `POLICY_REVOKED`) and from faults (`WORKER_LOST`, `WORKLOAD_FAILED`); only the first three map to usage outcome `preempted`.
+- **CCF-PREEMPT-017:** A capability in status `draining` SHALL state the drain request time, a grace period in seconds and a registered drain reason. When the grace period ends before a lease finishes or checkpoints, the lease is revoked with `DRAIN_DEADLINE`.
+- **CCF-PREEMPT-015:** Revoking a provider or capability SHALL end its active leases through `lease.revoke` with a reason, and SHALL NOT silently drop them.
+
+**Resolved in the contracts.** The reason-code registry now separates owner eviction from revocation for cause, and the capability `drain` block carries the grace period. The validator enforces both.
+
+**Open questions.** (1) The billing, retry and provider-reputation policy that consumes these codes is not written; the registry only supplies the vocabulary. (2) A sensible default and maximum grace period per trust tier. (3) Checkpoint and migration mechanics belong to [Checkpoint and Migration](Checkpoint-and-Migration.md), which is a stub.
 
 ## Interfaces, APIs, events, and contracts
 

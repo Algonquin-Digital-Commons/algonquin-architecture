@@ -1,0 +1,15 @@
+{
+  "fixtureVersion": "1.0",
+  "fixtureId": "positive.common.resource-reference",
+  "category": "positive",
+  "schemaId": "urn:psdc:contracts:common:resource-reference:1",
+  "description": "Institution-scoped immutable workload reference.",
+  "expected": { "schemaValid": true, "semanticOutcome": "accept" },
+  "instance": {
+    "contractVersion": "1.0",
+    "institutionId": "institution.example",
+    "resource": { "kind": "workload", "id": "workload.synthetic.1", "digest": "1111111111111111111111111111111111111111111111111111111111111111" },
+    "authority": "https://authority.institution.example/resources",
+    "classification": "internal"
+  }
+}

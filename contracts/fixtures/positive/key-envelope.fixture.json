@@ -1,0 +1,23 @@
+{
+  "fixtureVersion": "1.0",
+  "fixtureId": "positive.security.key-envelope",
+  "category": "positive",
+  "schemaId": "urn:psdc:contracts:security:key-envelope:1",
+  "description": "Wrapped data key with bound associated-data digest; no plaintext key material.",
+  "expected": { "schemaValid": true, "semanticOutcome": "accept", "statusPath": "/status", "expectedStatus": "active" },
+  "instance": {
+    "contractVersion": "1.0",
+    "envelopeId": "99999999-9999-4999-8999-999999999999",
+    "objectRef": { "kind": "object", "id": "88888888-8888-4888-8888-888888888888", "digest": "1414141414141414141414141414141414141414141414141414141414141414" },
+    "wrappingKeyRef": { "kind": "kek", "id": "kek.storage.project-vs01", "version": "3" },
+    "wrappingKeyVersion": 3,
+    "wrappingAlgorithm": "A256KW",
+    "contentEncryptionAlgorithm": "AES-256-GCM",
+    "wrappedDataKey": "V3JhcHBlZERhdGFLZXlGaXh0dXJlMDEyMzQ1Njc4OQ",
+    "aadDigest": "1515151515151515151515151515151515151515151515151515151515151515",
+    "encryptedAt": "2026-09-27T14:00:00Z",
+    "expiresAt": "2027-09-27T14:00:00Z",
+    "status": "active",
+    "signature": { "algorithm": "Ed25519", "keyId": "did:web:algonquin.example#kms-authority-1", "canonicalization": "RFC8785", "signedAt": "2026-09-27T14:00:00Z", "value": "a2V5LWVudmVsb3BlLXNpZ25hdHVyZQ" }
+  }
+}

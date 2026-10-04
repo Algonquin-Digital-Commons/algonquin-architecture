@@ -1,0 +1,20 @@
+{
+  "fixtureVersion": "1.0",
+  "fixtureId": "positive.agent-sessions.permission-request",
+  "category": "positive",
+  "schemaId": "urn:psdc:contracts:agent-sessions:permission-request:1",
+  "description": "Existing permission-request contract remains covered by the unified runner.",
+  "expected": { "schemaValid": true, "semanticOutcome": "accept" },
+  "instance": {
+    "contractVersion": "1.0",
+    "requestId": "a3a3a3a3-a3a3-43a3-83a3-a3a3a3a3a3a3",
+    "sessionId": "a4a4a4a4-a4a4-44a4-84a4-a4a4a4a4a4a4",
+    "actionKind": "tool",
+    "actionDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "summary": "Read the synthetic fixture.",
+    "risk": "low",
+    "requestedAt": "2026-09-27T12:00:00Z",
+    "expiresAt": "2026-09-27T12:05:00Z",
+    "allowedDecisions": ["allow_once", "deny"]
+  }
+}
