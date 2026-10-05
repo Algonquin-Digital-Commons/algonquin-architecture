@@ -1,7 +1,14 @@
 # OpenWork Desktop Client Foundation
 
-> Status: Normative foundation; source import authorized only at the implementation provenance gate
+
+> Standard: PSDC-DOC-001
+> Document type: product-specification
+> Status: Normative
 > Owner: Commons AI Fabric desktop team
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+
 > Governing decision: ADR-0018
 
 ## Product role
@@ -69,3 +76,7 @@ contract tests, offline behavior, and downstream patch size before release.
 
 Users obtain the client and authenticate through the flow defined in
 [Institution-Branded Client Distribution and Access](Institution-Branded-Client-Distribution-and-Access.md).
+
+## Users, scope, accessibility, privacy, security, and acceptance scenarios
+
+PROD-DESKTOP-001: Learners, faculty, researchers, developers, and authorized staff use the desktop client to supervise local work through visible workspace grants and confirmation receipts. The client MUST support keyboard-only operation, screen readers, scalable text, reduced motion, and accessible diff and command previews. It MUST keep provider credentials out of the client, constrain filesystem and process authority, and redact telemetry. Acceptance covers install, SSO, workspace grant, denied traversal, command preview, cancellation, rollback, offline degradation, update, and revocation.

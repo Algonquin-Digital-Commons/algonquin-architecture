@@ -1,8 +1,15 @@
 # Human Choices and Decisions Register
 
-> Status: Normative decision register; all project-controlled defaults accepted
+
+> Standard: PSDC-DOC-001
+> Document type: policy-standard
+> Status: Accepted
 > Owner: Platform governance
-> Last updated: 2026-09-11
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-25
+> Governing decisions: ADR-0001 through ADR-0029 and repository governance
+
+> Last updated: 2026-09-25
 > Purpose: Consolidate decisions that cannot be safely inferred or delegated to
 > software, an AI agent, a vendor, or an individual contributor
 
@@ -59,8 +66,14 @@ Decision states:
 | A-021 | Shared clients are institution-branded, signed and authenticated; no upstream-vendor or global Commons account is required | ADR-0021 |
 | A-022 | Use independent repositories per fabric, client and institution deployment; allow Happy-style package workspaces only inside one cohesive product | ADR-0022 |
 | A-023 | Commons and institution code live in separate GitHub organizations; each institution repository is a thin fork of its Commons counterpart | ADR-0023 |
-| A-024 | New PSDC-authored material defaults to Apache-2.0 with upstream-first institutional and commercial contribution policy | ADR-0024 |
+| A-024 | Historical Apache-2.0 universal default is superseded; existing artifacts retain their valid license until migrated | ADR-0024, superseded by ADR-0030 |
 | A-025 | The browser and PWA product is an independent `psdc-web` repository with a thin institution fork, beginning with `algonquin-web` | ADR-0025 |
+| A-026 | Sovereign PSDC contracts govern bounded Akash-, Golem-, Kubo-, storage- and Cosmos-derived mechanisms; public networks remain explicit adapters | ADR-0026 |
+| A-027 | W3C DID and Verifiable Credential portability is standard alongside institution identity; credentials never grant authorization by themselves | ADR-0027 |
+| A-028 | Storage uses six governed tiers with encrypted data off-ledger and placement/custody evidence in the control plane | ADR-0028 |
+| A-029 | Compute, storage and network use non-transferable institutional resource units, leases and receipts with policy-gated market placement | ADR-0029 |
+| A-030 | PSDC network services target AGPL, interoperability contracts remain permissive, and recognized commercial/institutional participants must offer reusable improvements upstream | ADR-0030 |
+| A-031 | PostgreSQL/outbox owns live operational state, governed object storage owns evidence, and the Cosmos-derived ledger owns finalized settlement commitments | ADR-0031 |
 
 ## 1. Mission, governance, and institutional ownership
 
@@ -73,7 +86,7 @@ Decision states:
 | GOV-005 | Service RACI for every ecosystem | One accountable owner per service and contract | Program steering group | Before implementation |
 | GOV-006 | Repository model | Polyrepo by bounded product; a workspace/vault repository coordinates checkouts but contains no product source | Architecture council | Accepted by ADR-0022; verify migration before retiring source checkout |
 | GOV-007 | Naming, domains and trademarks | Institution deployment names, domains and marks require local approval | College communications/legal | Before public branding |
-| GOV-008 | Code and documentation license | Apache-2.0 for new PSDC-authored code, configuration and documentation; imported material retains its original approved license | Governance + legal | Accepted by ADR-0024; legal review before first public release |
+| GOV-008 | Code and documentation license | Boundary-specific OSI licenses per ADR-0030: AGPL services, reciprocal worker/client decisions, Apache-2.0 contracts/docs, and exact upstream licenses | Governance + legal | Architecture default accepted; copyright and legal migration before repository release |
 | GOV-009 | Contribution governance and code of conduct | Public, documented, student-accessible process | Club governance | Before public repository |
 | GOV-010 | Funding and budget authority | Transparent annual infrastructure and operations budget | Sponsor + finance owner | Before procurement |
 | GOV-011 | Data stewards by domain | Named steward for identity, academic, media, social and telemetry data | Institutional owners | Before real data |
@@ -148,6 +161,42 @@ Decision states:
 | CLD-018 | GitOps engine | Argo CD; Flux is the open exit path | Platform + SRE | Accepted default; exact release before shared environments |
 | CLD-019 | IaC tools and module policy | OpenTofu + Ansible; OSI-licensed providers/modules preferred | Infrastructure team + legal | Accepted by ADR-0017; concrete backend before reproducible environment |
 | CLD-020 | Search service | OpenSearch only when PostgreSQL search is insufficient | Data architecture | Before adding search cluster |
+
+### 4.1 Accepted networking implementation profile
+
+The common architecture now selects safe defaults for every formerly open networking
+category. Institutions still supply concrete prefixes, domains, VLAN/VRF identifiers,
+capacities and named authorities; those are deployment values, not unresolved common
+architecture choices.
+
+| ID | Human choice | Accepted project default | Decision authority | Gate |
+|---|---|---|---|---|
+| NET-001 | Campus IP ranges | Institution IPAM allocates non-overlapping ranges; use campus GUA and controlled RFC 4193 ULA for IPv6; no universal PSDC RFC1918 block | Institution network | Exact prefixes before pilot |
+| NET-002 | IPv4/IPv6 order | Dual-stack from managed pilot where supported; IPv4 compatibility initially; IPv6 readiness before production | Network + security | Campus capability validation |
+| NET-003 | VLAN/VRF layout | Separate management, control, production, compute/lab, storage, backup, federation, public edge and observability zones | Network + security | IDs and routes before deployment |
+| NET-004 | Lab networking | Outbound-only worker mTLS through a cell gateway; no unsolicited inbound; interactive use has priority | Lab owner + network | Before worker pilot |
+| NET-005 | IPAM authority | NetBox desired-state source synchronized with institution network authority | Network operations | Before automated allocation |
+| NET-006 | DNS and naming | Institution-owned split DNS; DNSSEC for public zones; stable service names instead of IP contracts | DNS owner + platform | Domains/delegations before ingress |
+| NET-007 | Internal service names | service.environment.institution pattern with local Kubernetes DNS beneath it | Platform + DNS owner | Naming profile before APIs |
+| NET-008 | CA hierarchy | Offline institution root, separate issuing intermediates, step-ca/cert-manager and constrained federation trust bundles | Security + institution PKI | Root ceremony before real credentials |
+| NET-009 | Workload identity | SPIFFE/SPIRE short-lived SVIDs mapped to institution/project/service | Security + platform | Trust-domain profile before services |
+| NET-010 | Cilium mode | VXLAN for pilot/lab; validated native routing with approved BGP for managed production; Hubble with privacy limits | Network + Kubernetes | MTU/BGP test before production |
+| NET-011 | OpenStack Neutron | OVN/OVS tenant networks, security groups and routed provider networks; no flat shared tenant network | OpenStack + network | Physical mappings before VM pilot |
+| NET-012 | Slurm/HPC network | Separate management, compute and storage paths; topology-aware partitions; minimal compute-node egress | HPC + network | Profile before HPC jobs |
+| NET-013 | RDMA/high-speed fabric | Optional dedicated managed profile only after workload evidence; not baseline | HPC + network + facilities | Explicit design/test before RDMA |
+| NET-014 | Firewall ownership | Network owns perimeter/VRF, platform owns Cilium/Neutron, service owner requests flows, security approves high-risk exception | Institution RACI | Named owners before production |
+| NET-015 | Egress proxy | Deny by default for protected/production; identity-aware gateway, DNS policy and destination allowlists | Security + service owner | Allowlist before egress |
+| NET-016 | Package/model mirrors | Harbor plus open package mirrors; model weights in governed object storage | Release + AI/storage | Allowlist and refresh process before workloads |
+| NET-017 | Federation gateway | HTTPS/mTLS, OpenAPI, CloudEvents/AsyncAPI, signed manifests and SPIFFE/OIDC-bound trust | Federation + security | Contract/trust test before peer |
+| NET-018 | Inter-institution transport | Application mTLS mandatory; optional WireGuard; no shared Layer 2 | Federation network owners | Peer profile before connection |
+| NET-019 | Public ingress and DDoS | Envoy Gateway, Coraza-compatible WAF/rate controls; institution owns escalation and ISP handles upstream volumetric boundary | Network + security | Tested contacts before public launch |
+| NET-020 | Telemetry retention/privacy | Raw flow/security metadata 30 days; access-controlled aggregate capacity up to 13 months; no payload by default | Privacy + security + SRE | Retention approval before collection |
+| NET-021 | Time synchronization | Redundant institution chrony/NTPsec sources; NTS where available; quarantine beyond drift threshold | Infrastructure + security | Sources/thresholds before signed leases |
+| NET-022 | Failure and isolation | Cross-zone failure closes; cells isolate; accepted critical paths continue; unsafe new placement pauses | Network + SRE | Failure exercises before production |
+| NET-023 | Backup network | Separate VRF, credentials and QoS, not generally routable from workload networks | Backup + network | Restore test before protected data |
+| NET-024 | DR routing | DNS/service failover and routed Layer 3; no stretched Layer 2; BGP under institution change control | Network + SRE | Site plan and failback test |
+| NET-025 | Capacity and QoS | Reserved control/critical/storage classes; student interactive traffic outranks opportunistic batch; admission prevents unsafe oversubscription | Capacity + network | Measured link profile before scale |
+| NET-026 | Network change authority | Git-reviewed intent, staged validation, institution approval, tested rollback and expiring emergency changes | Institution network owner | RACI/change process before production |
 
 ## 5. Identity, privacy, and institutional adapters
 
@@ -266,7 +315,7 @@ Decision states:
 | FED-015 | Federation interoperability certification | Controlled test peers and release gate | QA + Fediverse operators | Before public launch |
 | FED-016 | Social federation protocol | ActivityPub/ActivityStreams and related Fediverse standards | Fediverse architecture | Accepted by ADR-0014 |
 | FED-017 | Federation scopes | Institution, regional, provincial, Canadian and public scopes with separate trust policy | Federation governance | Before cross-institution pilot |
-| FED-018 | Compute/resource settlement | Auditable contribution/consumption ledger; no cryptocurrency requirement | Consortium finance + federation operators | Before shared capacity |
+| FED-018 | Compute/resource settlement | Non-transferable Institutional Resource Units and bilateral/consortium settlement; operational state in PostgreSQL and periodic commitments in the Cosmos-derived ledger | Consortium finance + federation operators | Schemas, reconciliation and finance approval before shared capacity |
 
 ## 10. Academic and student-life integration
 
@@ -323,7 +372,7 @@ Decision states:
 | SEC-003 | Egress policy | Deny or allowlist by workload/data class | Security + domain owners | Before production |
 | SEC-004 | Vulnerability remediation targets | Severity-based SLAs and emergency process | Security + service owners | Before release |
 | SEC-005 | Artifact signing and verification | Sign images, packages, manifests and releases | Supply-chain security | Before releases |
-| SEC-006 | Secret rotation cadence | Risk-based automatic rotation where possible | Security + operations | Before production |
+| SEC-006 | Key and secret architecture | OpenBao runtime control plane; hardware-backed roots/KEKs where risk warrants; envelope DEKs; separate PKI/SPIRE/issuer/ledger key classes; quorum recovery | Security + operations | Root ceremony, rotation and recovery exercise before production |
 | SEC-007 | Audit-event scope and access | Record privileged/security actions; minimize user-content exposure | Security + privacy | Before audit logging |
 | SEC-008 | Incident authority and communications | Named commander, privacy/legal paths and student-safe process | Institutional sponsor | Before pilot |
 | SEC-009 | Penetration testing scope | Independent review before public/federated exposure | Security leadership | Before public launch |
@@ -336,8 +385,9 @@ Decision states:
 | OPS-006 | RPO/RTO by service | Choose from business impact analysis | Service owner + institution | Before HA procurement |
 | OPS-007 | Maintenance windows and notice | Published windows plus emergency change path | Operations governance | Before pilot |
 | OPS-008 | Capacity headroom | Set CPU/GPU/storage/network thresholds and queue policy | Capacity owners | Before broad access |
-| OPS-009 | Disaster recovery site/topology | Decide after failure-domain and data-residency analysis | Institution + SRE | Before production |
+| OPS-009 | Disaster recovery site/topology | Independent routed Layer-3 site, DNS/service failover, no stretched Layer 2; exact site follows failure-domain and residency evidence | Institution + SRE | Exact site, prefixes and failback exercise before production |
 | OPS-010 | Chaos and recovery exercises | Scheduled tests with safe scope and evidence | SRE + security | Before production certification |
+| OPS-011 | Production dynamic placement | All services may be optimized, but critical services only inside prequalified reserved production pools with failure-domain, data, network, restore and stable-fallback gates | Service owners + SRE + security | Shadow and failure tests before enforcement |
 
 ## 13. Hardware, facilities, cost, and sustainability
 
@@ -406,7 +456,7 @@ external-authority actions are required by implementation and release gates; non
 changes the architecture unless its result triggers a new ADR:
 
 1. Appoint governance, sponsor and production owners and ratify operating responsibility for the accepted repository model.
-2. Complete legal review of Apache-2.0, DCO and the separate participant upstream-contribution agreement; automate the open-source admission policy.
+2. Complete copyright inventory and legal review of the ADR-0030 license matrix, DCO, source-offer process, and participant upstream-contribution agreement; migrate each repository only after its gate passes.
 3. Confirm the first integrated MVP's accountable owner and pilot audience.
 4. Validate the accepted host OS, Kubernetes, ingress, CNI and development topology.
 5. Choose the Keycloak realm/claim model and obtain approval for the production
@@ -421,3 +471,31 @@ changes the architecture unless its result triggers a new ADR:
     accessibility, operations and contracts.
 12. Select the exact OpenTofu release, state backend and provider/module allowlist.
 13. Define the second-institution pilot and federation trust agreement.
+
+## Enforcement
+
+Platform governance MUST enforce **Human Choices and Decisions Register** at the declared policy, identity, repository, gateway, deployment, or moderation enforcement points. A request or change that does not satisfy the normative requirements MUST be denied or quarantined with a stable reason code. Enforcement decisions MUST be attributable, fail closed for authorization failures, and remain independently testable without relying on a proprietary service.
+
+## Exceptions
+
+An exception to **Human Choices and Decisions Register** requires a written reason, affected scope, risk assessment, compensating control, approving role, start date, and expiry date. The subject owner MUST NOT self-approve a high-impact exception. Expired exceptions MUST stop applying automatically; renewal requires new evidence and review.
+
+## Audit evidence
+
+Conformance evidence for **Human Choices and Decisions Register** MUST record the policy version, actor or service, decision, reason code, affected object or boundary, timestamp, outcome, and reviewer where applicable. Evidence MUST minimize protected data, be access-controlled, be exportable to the institution, and be retained according to the governing data policy. The owner MUST be able to demonstrate both an allowed and a denied case.
+
+## Acceptance and review
+
+The policy is accepted only when positive, negative, authorization, exception-expiry, audit-retrieval, failure, and recovery tests pass for **Human Choices and Decisions Register**. Platform governance MUST review it at least annually and whenever an ADR, contract, threat model, legal requirement, or material incident changes its assumptions. Review output MUST record the decision, evidence, and next review trigger.
+
+## Purpose
+
+This policy defines the required outcome, actors, and decision boundary for **Human-Choices-and-Decisions-Register**. It applies to all implementations and institution overlays that claim conformance.
+
+## Scope
+
+The scope covers the systems, people, data, interfaces, and lifecycle named by this policy. Local values may tighten these rules but MUST NOT weaken shared safety, privacy, or audit requirements.
+
+## Normative rules
+
+The requirements in this document are normative. Owners MUST implement them, SHOULD document justified risk trade-offs, and MUST NOT treat an example as an exemption.

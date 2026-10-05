@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:psdc:contracts:common:authorization-decision:1",
+  "title": "PSDC Authorization Decision",
+  "description": "A signed point-in-time policy result. Consumers must also enforce expiry, revocation, obligations, and current resource state.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["contractVersion", "decisionId", "institutionId", "policyId", "policyVersion", "outcome", "subject", "action", "resource", "contextDigest", "issuedAt", "expiresAt", "reason", "signature"],
+  "properties": {
+    "contractVersion": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/contractVersion" },
+    "decisionId": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/uuid" },
+    "institutionId": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/institutionId" },
+    "policyId": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/boundedId" },
+    "policyVersion": { "type": "string", "minLength": 1, "maxLength": 64 },
+    "outcome": { "enum": ["allow", "deny"] },
+    "subject": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/resourceRef" },
+    "action": { "type": "string", "pattern": "^[a-z][a-z0-9_.:-]{2,127}$" },
+    "resource": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/resourceRef" },
+    "contextDigest": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/sha256" },
+    "issuedAt": { "type": "string", "format": "date-time" },
+    "expiresAt": { "type": "string", "format": "date-time" },
+    "obligations": {
+      "type": "array", "maxItems": 64,
+      "items": {
+        "type": "object", "additionalProperties": false, "required": ["type", "parametersDigest"],
+        "properties": {
+          "type": { "type": "string", "pattern": "^[a-z][a-z0-9_.-]{2,63}$" },
+          "parametersDigest": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/sha256" }
+        }
+      }
+    },
+    "reason": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/reason" },
+    "signature": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/signature" }
+  }
+}

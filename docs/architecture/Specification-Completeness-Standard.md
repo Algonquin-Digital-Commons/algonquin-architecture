@@ -1,7 +1,14 @@
 # Specification Completeness Standard
 
-> Status: Normative specification
+
+> Standard: PSDC-DOC-001
+> Document type: governance-standard
+> Status: Normative
 > Owner: PSDC Architecture Maintainer
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+
 > Effective: 2026-09-11
 
 ## Purpose
@@ -10,6 +17,11 @@ This standard defines when Post Secondary Digital Commons architecture and
 scope documentation is complete enough to authorize implementation. It prevents
 empty outlines from being treated as architecture while keeping measured
 deployment evidence separate from design decisions.
+
+This specification-focused standard is subordinate to the ecosystem-wide
+[Documentation Quality and Scope Standard](../standards/Ecosystem-Documentation-Quality-Standard.md),
+which defines document types, domain-specific depth, anti-boilerplate rules,
+maturity levels, and machine-enforceable conformance.
 
 ## Completion rule
 
@@ -45,7 +57,7 @@ from MUST or SHALL requires a recorded ADR and compatibility assessment.
 
 Every capability specification inherits these requirements:
 
-- Interfaces SHALL be versioned, documented, authenticated where non-public,
+- **ARCH-SCS-001:** Interfaces SHALL be versioned, documented, authenticated where non-public,
   bounded by timeouts, and testable without a proprietary service.
 - Mutating operations SHALL be idempotent or carry an idempotency key and SHALL
   produce an auditable result.
@@ -108,3 +120,16 @@ security-boundary changes, new mandatory dependencies, licensing changes, or
 federation-policy changes require an ADR. Institution overlays MAY tighten local
 policy but SHALL NOT weaken common security, portability, accessibility, or
 protocol-compatibility requirements.
+
+## Required controls
+
+Implementations MUST satisfy the required controls and provide evidence before claiming conformance.
+
+## Maturity
+
+Maturity is recorded as proposed, active, accepted, or retired with an accountable owner.
+
+## Definition of done
+
+Definition of done includes content, ownership, interfaces, testing, evidence, and rollback where applicable.
+

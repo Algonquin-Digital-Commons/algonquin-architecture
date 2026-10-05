@@ -1,6 +1,14 @@
 # Open-Source-Only Technology Policy
 
-> Status: Adopted baseline implementing ADR-0008 and ADR-0017
+
+> Standard: PSDC-DOC-001
+> Document type: policy-standard
+> Status: Normative
+> Owner: PSDC Architecture Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+
 > Applies to: code, infrastructure, control planes, data stores, clients, build
 > systems, observability, AI runtimes, media pipelines, and federation
 
@@ -74,3 +82,7 @@ Obsidian plugin.
 - Review exceptions at least annually and before major upgrades.
 - Reject changes that introduce mandatory vendor control without an approved ADR.
 - Test OpenTofu modules, provider locks, plans and state recovery at each supported release.
+
+## Purpose, scope, normative rules, enforcement, exceptions, audit evidence, and acceptance review
+
+POL-OSS-001: This policy covers every mandatory runtime, build, deployment, client, model, dataset, and operational dependency. Required software MUST be OSI-licensed, self-hostable, independently obtainable, operable without vendor control, and replaceable through an open contract and export. Dependency and release gates enforce it. Exceptions are optional adapters with owner, data boundary, fallback, expiry, and exit test. Acceptance evidence includes SPDX and SBOM, provenance, feature review, standalone operation, export and restore, and replacement rehearsal.

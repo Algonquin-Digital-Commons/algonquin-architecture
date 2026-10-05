@@ -1,6 +1,14 @@
 # ADR-0015: Use CA$30 per Enrolled Student-Month as the Funding Assumption
 
-> Status: Accepted planning assumption
+
+> Standard: PSDC-DOC-001
+> Document type: adr
+> Status: Accepted
+> Owner: PSDC Architecture Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+
 > Date: 2026-09-10
 > Scope: Business-case and capacity scenarios
 > External approval: Not granted
@@ -35,3 +43,24 @@ Student governance, College leadership, finance, legal, accessibility/equity,
 privacy, procurement, and any applicable provincial authority must approve the
 actual funding model before collection or public claims.
 
+## Alternatives and evidence
+
+For **ADR-0015: Use CA$30 per Enrolled Student-Month as the Funding Assumption**, the decision record considered: retain the prior approach; adopt a mature compatible standard or open-source implementation; and build or fork a new primitive. The selected decision is preferred under the stated constraints. A change trigger is new security, licensing, interoperability, sovereignty, cost, or operational evidence; a new option requires an ADR update rather than an undocumented exception.
+
+## Migration and rollback
+
+A change implementing **ADR-0015: Use CA$30 per Enrolled Student-Month as the Funding Assumption** MUST preserve the current contract during the declared compatibility window, publish a versioned migration plan, and rehearse rollback before production promotion. Migration evidence includes inventory, data/state transformation, operator communication, and verification. Rollback is triggered by failed acceptance, security regression, loss of institution control, or unrecoverable compatibility failure; it restores the last accepted artifact and preserves audit history. If no migration is currently required, the owner MUST record that as a reviewed no-op and revisit it when the decision changes.
+
+## Alternatives
+
+Considered alternatives include retaining the prior approach, adopting a mature open implementation, and building a local adapter. The selected decision is preferred under the stated requirements, constraints, sovereignty, and maintenance capacity; a new option requires a superseding ADR.
+
+## Context
+
+The funding assumption is recorded so implementation and public claims do not
+silently depend on an unapproved commercial, institutional, or grant commitment.
+
+## Consequences
+
+Funding-sensitive capabilities remain optional and uncertain until governance
+approves a model; no collection or support promise follows from this ADR alone.

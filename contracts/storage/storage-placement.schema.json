@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:psdc:contracts:storage:placement:1",
+  "title": "PSDC Storage Placement Token",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["contractVersion", "placementTokenId", "objectId", "objectDigest", "tier", "authorityInstitutionId", "status", "issuedAt", "expiresAt", "providers", "durability", "encryptionEnvelopeRef", "repairPolicy", "policyDecision", "signature"],
+  "properties": {
+    "contractVersion": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/contractVersion" },
+    "placementTokenId": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/uuid" },
+    "objectId": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/uuid" },
+    "objectDigest": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/sha256" },
+    "tier": { "type": "integer", "minimum": 0, "maximum": 5 },
+    "authorityInstitutionId": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/institutionId" },
+    "status": { "enum": ["issued", "active", "repairing", "expired", "revoked", "failed"] },
+    "issuedAt": { "type": "string", "format": "date-time" },
+    "expiresAt": { "type": "string", "format": "date-time" },
+    "providers": {
+      "type": "array", "minItems": 1, "maxItems": 256,
+      "items": {
+        "type": "object", "additionalProperties": false, "required": ["providerId", "zoneId", "role"],
+        "properties": {
+          "providerId": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/boundedId" },
+          "zoneId": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/boundedId" },
+          "role": { "enum": ["replica", "data_shard", "parity_shard", "cache", "archive"] },
+          "shardIndex": { "type": "integer", "minimum": 0 },
+          "custodyReceiptRequired": { "type": "boolean" }
+        }
+      }
+    },
+    "durability": {
+      "type": "object", "additionalProperties": false, "required": ["mode", "minimumHealthyProviders"],
+      "properties": {
+        "mode": { "enum": ["replication", "erasure_coding", "single_ephemeral"] },
+        "replicaCount": { "type": "integer", "minimum": 1, "maximum": 64 },
+        "dataShards": { "type": "integer", "minimum": 1, "maximum": 255 },
+        "parityShards": { "type": "integer", "minimum": 1, "maximum": 255 },
+        "minimumHealthyProviders": { "type": "integer", "minimum": 1, "maximum": 255 }
+      }
+    },
+    "encryptionEnvelopeRef": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/resourceRef" },
+    "repairPolicy": {
+      "type": "object", "additionalProperties": false, "required": ["repairThreshold", "targetHealthyProviders", "maximumRepairDelaySeconds"],
+      "properties": {
+        "repairThreshold": { "type": "integer", "minimum": 1, "maximum": 255 },
+        "targetHealthyProviders": { "type": "integer", "minimum": 1, "maximum": 255 },
+        "maximumRepairDelaySeconds": { "type": "integer", "minimum": 1, "maximum": 2592000 }
+      }
+    },
+    "policyDecision": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/policyDecisionRef" },
+    "reason": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/reason" },
+    "signature": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/signature" }
+  },
+  "allOf": [
+    { "if": { "properties": { "status": { "enum": ["expired", "revoked", "failed"] } }, "required": ["status"] }, "then": { "required": ["reason"] } }
+  ]
+}

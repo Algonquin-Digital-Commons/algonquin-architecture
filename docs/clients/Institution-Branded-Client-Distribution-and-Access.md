@@ -1,8 +1,15 @@
 # Institution-Branded Client Distribution and Access
 
-> Status: Normative distribution architecture; implementation gated
-> Applies to: OpenWork-derived desktop, Happy-derived mobile and web companion
+
+> Standard: PSDC-DOC-001
+> Document type: product-specification
+> Status: Normative
+> Owner: PSDC Architecture Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
 > Governing decisions: ADR-0002, ADR-0008, ADR-0018, ADR-0019, ADR-0020, ADR-0021
+
+> Applies to: OpenWork-derived desktop, Happy-derived mobile and web companion
 
 ## Access model
 
@@ -155,3 +162,7 @@ A user chooses a home deployment and may add another institution only through an
 explicit account/link invitation. Tokens, device registrations, session keys and
 workspaces remain scoped to one deployment. Federation does not merge accounts or
 create a global identity.
+
+## Scope, accessibility, and acceptance scenarios
+
+PROD-DIST-001: Scope includes signed web, desktop, and mobile artifacts; branding; managed-campus rollout; personal-device downloads; store or direct channels; update, rollback, revocation, and support. Install and sign-in instructions MUST be accessible without a proprietary account except where an optional public store requires one. Acceptance proves signature and provenance verification, managed and personal installation, update and rollback, revoked-build blocking, multi-institution profile separation, and a documented non-store path.

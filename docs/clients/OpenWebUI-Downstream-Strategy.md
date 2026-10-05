@@ -1,9 +1,14 @@
 # Open WebUI Baseline and License Boundary
 
-> Status: Normative supporting policy for ADR-0009
-> Domain: clients
+
+> Standard: PSDC-DOC-001
+> Document type: provenance-record
+> Status: Normative
 > Owner: Commons AI Fabric client team and open-source review
+> Accountable maintainer: RedjiJB until delegation
 > Last reviewed: 2026-09-10
+> Governing decisions: Applicable ADRs and repository governance
+> Domain: clients
 
 ## Purpose
 
@@ -56,9 +61,14 @@ client remains the exit path if that burden becomes unsafe or unsustainable.
 - ADR-0008: Open-Source, Self-Hosted Core
 - ADR-0009: PSDC Web Foundation
 
+## Upstream, candidate tag commit, license, included and excluded scope, and import state
+
+Import state: no source imported. Upstream is the canonical Open WebUI repository. The only candidate baseline is tag v0.6.5 under separately verified BSD-3-Clause terms; its immutable commit, archive checksum, and file-level inventory MUST be recorded in the import pull request. Included scope is limited to reviewed eligible browser-client files and notices. Excluded scope includes later source-available material, hosted control planes, trademarks, analytics, secrets, generated state, and unclear files. PROV-OWUI-001: Failed license, security, accessibility, or maintenance review leaves import state unchanged.
+
 ## References
 
 - [PSDC Web Foundation](./PSDC-Web-Foundation.md)
 - `psdc-web:docs/upstream/Open-WebUI-Provenance-Policy.md`
 - [Open WebUI license explanation](https://docs.openwebui.com/license/)
 - [Open WebUI license notice](https://github.com/open-webui/open-webui/blob/main/LICENSE_NOTICE)
+

@@ -1,6 +1,19 @@
 # Ecosystem Implementation Readiness — 2026-09-11
 
-> Status: Architecture and scope complete; implementation not started
+
+> Standard: PSDC-DOC-001
+> Document type: historical-record
+> Status: Superseded
+> Owner: PSDC Architecture Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+
+> Source date: 2026-09-11
+> Superseded by: ../architecture/Documentation-Semantic-Audit-2026-09-11.md
+> Retention reason: preserves the previous implementation-readiness claim and its
+> rationale while the stronger semantic review resolves the newly exposed gaps.
+
 > Repository scope: one workspace, ten common products, ten Algonquin forks
 
 ## Executive finding
@@ -77,3 +90,27 @@ Architecture is considered complete for implementation because every capability
 has a defined owner, scope, contract boundary, data and security policy, failure
 model, open-source default, acceptance gate and change process. Production
 readiness cannot be claimed until the corresponding implementation evidence exists.
+
+## Outcome
+
+The roadmap outcome is a usable vertical slice with stable contracts, operational ownership, and evidence sufficient to start the next phase.
+
+## Dependencies
+
+Dependencies are phase gates, not suggestions. Each dependency has an owner, compatibility expectation, and fallback; unmet dependencies keep work in the current phase.
+
+## Phase
+
+Each numbered phase defines the capability and evidence to produce. Phase work MUST preserve the documented order unless a superseding ADR records the change.
+
+## Exit criteria
+
+Exit criteria include passing tests, security/privacy review, operator runbook, rollback rehearsal, and accountable ownership for the next dependency.
+
+## Risk
+
+Risks include lock-in, authority escalation, privacy leakage, upstream drift, capacity, and contract instability. Mitigations and residual risk are recorded with the phase.
+
+## Evidence
+
+Evidence includes contract tests, threat/privacy reviews, provenance/SBOM, capacity/failure results, runbooks, approvals, and a signed phase decision.

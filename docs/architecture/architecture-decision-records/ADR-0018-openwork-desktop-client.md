@@ -1,6 +1,14 @@
 # ADR-0018: OpenWork MIT Core Is the Desktop AI Client Foundation
 
+
+> Standard: PSDC-DOC-001
+> Document type: adr
 > Status: Accepted
+> Owner: PSDC Architecture Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+
 > Date: 2026-09-10
 > Scope: PSDC desktop client
 > Decision owner: Project founder; exact-source import requires legal and security review
@@ -69,8 +77,13 @@ OpenWork accelerates the desktop experience without defining platform APIs. The
 project accepts the cost of maintaining a constrained downstream and may move to
 Tauri or a native client if the gate or patch budget fails.
 
+## Migration and rollback
+
+A change implementing **ADR-0018: OpenWork MIT Core Is the Desktop AI Client Foundation** MUST preserve the current contract during the declared compatibility window, publish a versioned migration plan, and rehearse rollback before production promotion. Migration evidence includes inventory, data/state transformation, operator communication, and verification. Rollback is triggered by failed acceptance, security regression, loss of institution control, or unrecoverable compatibility failure; it restores the last accepted artifact and preserves audit history. If no migration is currently required, the owner MUST record that as a reviewed no-op and revisit it when the decision changes.
+
 ## References
 
 - [OpenWork repository](https://github.com/different-ai/openwork)
 - [OpenWork MIT license for the core](https://github.com/different-ai/openwork/blob/dev/LICENSE)
 - [OpenWork EE license](https://github.com/different-ai/openwork/blob/dev/ee/LICENSE)
+

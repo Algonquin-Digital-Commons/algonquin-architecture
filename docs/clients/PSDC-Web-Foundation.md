@@ -1,7 +1,14 @@
 # PSDC Web Foundation
 
-> Status: Normative web foundation; implementation gated
+
+> Standard: PSDC-DOC-001
+> Document type: provenance-record
+> Status: Normative
 > Owner: PSDC Web Working Group
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+
 > Decisions: ADR-0009 and ADR-0025
 
 ## Architectural identity
@@ -78,3 +85,7 @@ Replace the baseline when its security debt, framework age, accessibility gap, o
 maintenance cost exceeds the measured cost of another OSI-licensed client or a
 fully native implementation. The gateway contract makes that replacement local to
 `psdc-web`.
+
+## Upstream candidate tag and commit, license, included and excluded scope, and import state
+
+Import state: no source imported. The candidate upstream is the canonical Open WebUI repository at separately verified tag v0.6.5; the immutable commit and checksums remain unset until the import review records them. Candidate license is BSD-3-Clause subject to file-level confirmation and notices. Included scope is the minimum eligible browser foundation. Excluded scope is provider routing, identity authority, data stores, hosted services, post-v0.6.5 restricted material, trademarks, telemetry, secrets, and unreviewed dependencies. PROV-WEB-001: No code enters psdc-web until the provenance manifest, SBOM, exact inventory, security and accessibility review, and rollback decision are accepted.

@@ -1,8 +1,15 @@
 # Federated Social Governance Policy
 
-> Status: Normative common policy; each institution ratifies its local enforcement profile before public federation
-> Scope: Commons Social Fabric and every ActivityPub-enabled social product
+
+> Standard: PSDC-DOC-001
+> Document type: policy-standard
+> Status: Normative
+> Owner: PSDC Architecture Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
 > Governing decisions: ADR-0002, ADR-0008, ADR-0012, ADR-0014, ADR-0020
+
+> Scope: Commons Social Fabric and every ActivityPub-enabled social product
 
 ## Are the social products federated?
 
@@ -102,3 +109,7 @@ Before public federation: named policy/moderation/security owners, approved code
 of conduct and privacy notice, allowlist, abuse mailbox, coverage model, threat
 model, key rotation, remote media controls, backups, moderation drills, appeals,
 incident runbook, interoperability tests and a controlled peer exercise.
+
+## Purpose, scope, normative rules, enforcement, exceptions, audit evidence, and acceptance review
+
+POL-FEDSOC-001: This policy governs ActivityPub peer admission, audiences, moderation, reports, blocks, appeals, media, deletion attempts, and suspension. Each institution owns peer and moderation decisions while preserving protocol conformance. Servers MUST deny disallowed peers and unsafe activities before delivery, isolate remote failure, and retain safe local service. Exceptions cannot bypass user blocks or legal and privacy controls. Acceptance requires abuse simulations, block-report-appeal journeys, signature and replay tests, deletion evidence, transparency reporting, and moderator approval.

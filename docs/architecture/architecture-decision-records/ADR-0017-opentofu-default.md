@@ -1,6 +1,14 @@
 # ADR-0017: OpenTofu Is the Default Infrastructure-as-Code CLI
 
-> Status: Accepted; supersedes ADR-0011
+
+> Standard: PSDC-DOC-001
+> Document type: adr
+> Status: Historical
+> Owner: PSDC Architecture Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+
 > Date: 2026-09-10
 > Scope: Infrastructure provisioning toolchain
 > Decision owner: Project founder
@@ -40,7 +48,20 @@ OpenTofu plus Ansible is the default infrastructure-as-code toolchain.
 - Existing Terraform-language ecosystem familiarity can usually be reused, but
   OpenTofu behavior and provider compatibility remain the tested authority.
 
+## Alternatives and evidence
+
+For **ADR-0017: OpenTofu Is the Default Infrastructure-as-Code CLI**, the decision record considered: retain the prior approach; adopt a mature compatible standard or open-source implementation; and build or fork a new primitive. The selected decision is preferred under the stated constraints. A change trigger is new security, licensing, interoperability, sovereignty, cost, or operational evidence; a new option requires an ADR update rather than an undocumented exception.
+
+## Migration and rollback
+
+A change implementing **ADR-0017: OpenTofu Is the Default Infrastructure-as-Code CLI** MUST preserve the current contract during the declared compatibility window, publish a versioned migration plan, and rehearse rollback before production promotion. Migration evidence includes inventory, data/state transformation, operator communication, and verification. Rollback is triggered by failed acceptance, security regression, loss of institution control, or unrecoverable compatibility failure; it restores the last accepted artifact and preserves audit history. If no migration is currently required, the owner MUST record that as a reviewed no-op and revisit it when the decision changes.
+
+## Alternatives
+
+Considered alternatives include retaining the prior approach, adopting a mature open implementation, and building a local adapter. The selected decision is preferred under the stated requirements, constraints, sovereignty, and maintenance capacity; a new option requires a superseding ADR.
+
 ## References
 
 - [OpenTofu repository](https://github.com/opentofu/opentofu)
 - [OpenTofu MPL-2.0 license](https://github.com/opentofu/opentofu/blob/main/LICENSE)
+

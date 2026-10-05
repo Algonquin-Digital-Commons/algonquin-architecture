@@ -1,6 +1,14 @@
 # ADR-0014: The Social Fabric Is Fediverse- and ActivityPub-Based
 
+
+> Standard: PSDC-DOC-001
+> Document type: adr
 > Status: Accepted
+> Owner: PSDC Architecture Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+
 > Date: 2026-09-10
 > Scope: Social, photos, video, communities, blogs, live media, and inter-campus collaboration
 
@@ -29,3 +37,19 @@ institutional identity data to federation peers.
   levels with different policies.
 - Compatibility and abuse-resistance testing precede public federation.
 
+## Alternatives and evidence
+
+For **ADR-0014: The Social Fabric Is Fediverse- and ActivityPub-Based**, the decision record considered: retain the prior approach; adopt a mature compatible standard or open-source implementation; and build or fork a new primitive. The selected decision is preferred under the stated constraints. A change trigger is new security, licensing, interoperability, sovereignty, cost, or operational evidence; a new option requires an ADR update rather than an undocumented exception.
+
+## Migration and rollback
+
+A change implementing **ADR-0014: The Social Fabric Is Fediverse- and ActivityPub-Based** MUST preserve the current contract during the declared compatibility window, publish a versioned migration plan, and rehearse rollback before production promotion. Migration evidence includes inventory, data/state transformation, operator communication, and verification. Rollback is triggered by failed acceptance, security regression, loss of institution control, or unrecoverable compatibility failure; it restores the last accepted artifact and preserves audit history. If no migration is currently required, the owner MUST record that as a reviewed no-op and revisit it when the decision changes.
+
+## Alternatives
+
+Considered alternatives include retaining the prior approach, adopting a mature open implementation, and building a local adapter. The selected decision is preferred under the stated requirements, constraints, sovereignty, and maintenance capacity; a new option requires a superseding ADR.
+
+## Context
+
+The decision establishes the federation boundary for institution-controlled social
+services while preserving user safety, moderation authority, and interoperability.

@@ -1,6 +1,14 @@
 # Post-Secondary Digital Commons Funding Model
 
-> Status: Accepted planning assumption; external approval required
+
+> Standard: PSDC-DOC-001
+> Document type: policy-standard
+> Status: Accepted
+> Owner: PSDC Architecture Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+
 > Date: 2026-09-10
 > Governing decision: ADR-0015
 
@@ -68,3 +76,7 @@ Before this assumption becomes an operating program, name accountable owners and
 obtain required student, academic, finance, legal, privacy, security, accessibility,
 procurement, institutional and government approvals. Publish the approved service
 scope, budget, measurement rules, audit method, complaint path and annual review.
+
+## Purpose, scope, normative rules, enforcement, exceptions, audit evidence, and acceptance review
+
+POL-FUND-001: This policy allocates shared development, infrastructure, support, reserve, and federation costs without transferring institutional sovereignty. Forecasts MUST expose assumptions, unit costs, demand bands, reserve, and sensitivity; an estimate never authorizes spending. Funding approval and procurement remain with each institution. Unfunded mandatory operations block the affected phase. Exceptions require approver, amount, duration, risk, controls, and expiry. Acceptance evidence is a reproducible calculation, independent input review, recorded commitments, and a phase gate proving operations and maintenance are funded.

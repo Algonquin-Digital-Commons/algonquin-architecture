@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:psdc:contracts:common:signed-object-envelope:1",
+  "title": "PSDC Signed Object Envelope",
+  "description": "Detached signature envelope. payloadDigest is SHA-256 of the RFC 8785 canonical bytes of payload; schema validation does not verify that digest or signature.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["contractVersion", "envelopeId", "payloadSchemaId", "payloadDigest", "canonicalization", "payload", "signer", "signedAt", "nonce", "signature"],
+  "properties": {
+    "contractVersion": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/contractVersion" },
+    "envelopeId": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/uuid" },
+    "payloadSchemaId": { "type": "string", "pattern": "^urn:psdc:contracts:" },
+    "payloadDigest": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/sha256" },
+    "canonicalization": { "const": "RFC8785" },
+    "payload": { "type": ["object", "array", "string", "number", "boolean", "null"] },
+    "signer": {
+      "type": "object", "additionalProperties": false, "required": ["subjectId", "keyId"],
+      "properties": {
+        "subjectId": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/boundedId" },
+        "keyId": { "type": "string", "minLength": 3, "maxLength": 512 }
+      }
+    },
+    "signedAt": { "type": "string", "format": "date-time" },
+    "expiresAt": { "type": "string", "format": "date-time" },
+    "nonce": { "type": "string", "pattern": "^[A-Za-z0-9_-]{16,128}$" },
+    "signature": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/signature" }
+  }
+}

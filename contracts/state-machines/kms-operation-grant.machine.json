@@ -1,0 +1,8 @@
+{
+  "machineVersion": "1.0", "machineId": "security.kms-operation-grant.v1", "contractSchemaId": "urn:psdc:contracts:security:kms-operation-grant:1", "statePointer": "/properties/status/enum",
+  "initialStates": ["active"], "terminalStates": ["revoked", "expired"], "states": ["active", "revoked", "expired"],
+  "transitions": [
+    { "from": "active", "to": "revoked", "action": "grant.revoke", "authorizationAction": "security.kms-grant.revoke", "idempotent": true, "reasonRequired": true },
+    { "from": "active", "to": "expired", "action": "grant.expire", "authorizationAction": "security.kms-grant.expire", "idempotent": true, "reasonRequired": true }
+  ]
+}

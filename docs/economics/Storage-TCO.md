@@ -1,193 +1,181 @@
-# Storage TCO
+# Storage Cost-Benefit and Total-Cost Model
 
-> Status: Normative specification; implementation gated
-> Domain: economics
-> Owner: PSDC Economics Working Group; accountable maintainer RedjiJB until delegation
-> Last reviewed: 2026-09-11
+> Standard: PSDC-DOC-001
+> Document type: architecture-specification
+> Status: Normative
+> Owner: PSDC Economics and Storage Working Groups
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-25
+> Governing decisions: ADR-0026, ADR-0028, ADR-0029
 
-## Purpose and outcome
+## Purpose and measurable outcome
 
-This specification defines **Storage TCO** as part of the Post Secondary Digital
-Commons. Its required outcome is transparent capacity, cost, funding, quota, power, cooling, storage, network, and sustainability decisions. An implementation conforms
-only when it satisfies this document, the linked ADRs, and the common
-[Specification Completeness Standard](../architecture/Specification-Completeness-Standard.md).
+This specification makes storage-tier choices economically transparent without reducing
+privacy, residency, durability or deletion to a price score. It defines the costs, benefits,
+risk premiums and evidence needed to compare providers. A conformant cost model produces
+the same evaluated cost from the same versioned inputs and exposes which policy constraint,
+not merely which price, caused a placement.
 
-## Scope
+## Scope and exclusions
 
-- **In scope:** behaviour, interfaces, dependencies, data, security, deployment
-  boundaries, capacity, failure handling, observability, validation, and lifecycle
-  requirements for Storage TCO.
-- **Out of scope:** institution-specific hostnames, credentials, physical capacity,
-  named operators, and legal approvals. Those values belong in signed institution
-  deployment manifests and cannot redefine the common contract.
-- **Authority:** the owning domain may make compatible implementation choices.
-  Contract-breaking or cross-domain changes require an ADR and migration plan.
+The model covers capital, energy, operations, network, replication/erasure, repair, proof,
+key, backup, federation and exit costs. It does not authorize data, set retention law,
+release keys or decide that public permanence is appropriate. The cheapest provider that
+fails a hard requirement is not a candidate.
 
-## Normative requirements
+## Out of scope
 
-- The Storage TCO capability SHALL provide transparent capacity, cost, funding, quota, power, cooling, storage, network, and sustainability decisions.
-- The capability SHALL have a versioned configuration schema, explicit safe
-  defaults, validation before activation, and a reversible change procedure.
-- User-visible and administrative behaviour SHALL be accessible, explainable,
-  auditable, and bounded by institution policy and user authority.
-- An implementation SHALL expose only the minimum capability required by its
-  callers and SHALL reject unknown, unauthorized, malformed, expired, or
-  unsupported requests with stable machine-readable errors.
-- Institution deployments SHALL be independently operable and SHALL remain
-  compatible with the common contract and conformance suite.
+Legal retention, object authorization, key release and provider certification are inputs
+owned by governance, storage and security—not outputs of the economic model.
 
-## Interfaces, APIs, events, and contracts
+## Interfaces, dependencies, adapters and ownership
 
-- Required interoperability boundary: metering exports, budget and quota policies, capacity forecasts, showback reports, and procurement-neutral cost models.
-- HTTP interfaces SHALL use OpenAPI 3.1, explicit request and response schemas,
-  documented error codes, pagination for collections, and bounded timeouts.
-- Asynchronous interfaces SHALL use versioned schemas and CloudEvents envelopes;
-  delivery semantics, ordering, replay, deduplication, and dead-letter behaviour
-  SHALL be declared per event.
-- Mutations SHALL be idempotent or accept an idempotency key. Long-running work
-  SHALL expose status, cancellation, expiry, and result retrieval.
-- Consumers SHALL depend on contracts rather than another service's database,
-  internal queue, filesystem, or implementation-specific API.
+The model consumes versioned provider offers, capacity/energy/network telemetry, storage
+manifests and risk profiles. It emits evaluated cost and receipts through open schemas; the
+storage authority owns placement and providers own native measurement adapters.
 
-## Dependencies and ownership boundaries
+## Capacity, scaling and routing effects
 
-- This domain owns its schemas, policy enforcement points, migrations, service
-  metadata, and compatibility tests.
-- Identity, authorization, secrets, telemetry, object storage, notifications,
-  and gateway functions SHALL be consumed through their owning common contracts.
-- Mandatory runtime dependencies SHALL be open-source and self-hostable. An
-  external or proprietary service MAY be an optional adapter with a tested local
-  replacement and SHALL NOT be required for standalone institutional operation.
-- Circular synchronous dependencies are prohibited. Cross-domain workflows SHALL
-  define a coordinating owner and compensating behaviour.
+Cost evaluation includes usable rather than raw capacity, solver batch size, repair and
+federation bandwidth, path congestion, cache locality and admission headroom.
 
-## Data, state, residency, and retention
+## Tier cost-benefit chart
 
-- Governed information includes measured utilization, energy, capacity, depreciation, support effort, lifecycle, forecast, and allocation records.
-- Every data class SHALL declare an authoritative owner, purpose, classification,
-  residency, retention, export, correction, archival, and deletion rule in the
-  institution manifest before production activation.
-- Services SHALL minimize copied data, preserve provenance, encrypt protected
-  state and backups, and prevent telemetry from becoming an undeclared secondary
-  record system.
-- Cache and derived data SHALL be rebuildable or explicitly protected by backup
-  and recovery objectives. Deletion SHALL propagate to indexes, caches,
-  derivatives, replicas, and backups according to the declared retention policy.
+| Tier | Primary benefit | Main cost | Best fit | Main warning |
+|---|---|---|---|---|
+| 0 ephemeral | lowest latency and cost; local scratch | recomputation and loss risk | temporary execution data | deletion must still be verified where possible |
+| 1 private hot | fast governed access, mutable application semantics | always-on capacity, replication, KMS and backup | active private records and user/application data | highest routine operational responsibility |
+| 2 private content-addressed | deduplication, digest verification and peer distribution | pin/replication control, metadata privacy and cache capacity | immutable images, weights, datasets, CAR/IPLD artifacts | CID is not authorization; do not use public DHT by default |
+| 3 verified durable | contractual durability, independent failure domains, proof and repair | extra providers, proof traffic, audit and long retention | archives, backups and high-value artifacts | proof of possession is not proof of correctness or permission |
+| 4 governed federation | controlled portability and shared research/service workflows | egress, re-encryption, duplicate custody, receiving validation and policy coordination | approved cross-institution copies | this is a transfer/custody boundary, not one shared disk tier |
+| 5 public permanent | durable publication and broad public retrieval | irreversible disclosure, permanent fees and loss of deletion | public releases, research and transparency artifacts | prohibited for protected or deletion-eligible data |
 
-## Security, privacy, safety, and compliance
+## Architecture choice comparison
 
-- Domain controls SHALL include aggregated reporting, restricted financial details, tamper-evident measurements, and separation of usage data from unrelated profiling.
-- Authentication SHALL use the institution-approved identity issuer;
-  authorization SHALL be deny-by-default, least-privilege, policy-driven, and
-  enforced at every trust boundary.
-- Secrets SHALL use institution-controlled secret storage, short-lived credentials
-  where possible, documented rotation, and immediate revocation procedures.
-- Threat modelling SHALL cover misuse, compromised identities, malicious inputs,
-  dependency compromise, data exfiltration, denial of service, and unsafe
-  automation. High-impact actions require explicit confirmation and audit.
-- Logs, traces, diagnostics, and model context SHALL exclude protected content
-  unless explicitly required, minimized, access-controlled, and retained by policy.
+| Choice | Benefits | Costs/risks | PSDC use |
+|---|---|---|---|
+| Ceph RBD/CephFS/RGW | unified block/file/object, mature internal control | operational complexity, failure-domain planning, possible double erasure | physical Tier 1/3 backend where team capacity supports it |
+| Garage/SeaweedFS | focused object service, simpler footprint | narrower feature/operational ecosystem | smaller institution object backend |
+| private Kubo + IPFS Cluster | content addressing, peer distribution, CAR/IPLD compatibility | membership, pin policy, metadata and repair operations | Tier 2 only by default |
+| Tahoe-LAFS code | least-authority design and robust erasure concepts | GPL/TGPPL licensing, separate operational model | design input or isolated reviewed component; not copied into Apache core |
+| Storj code | mature encryption/erasure/repair concepts | AGPL service obligations and upstream complexity | design input or separately deployed compliant service |
+| Sia renter/storage code | permissive components and storage-contract ideas | public-chain assumptions differ; repository licenses vary | exact-component review, design-derived contracts |
+| public Filecoin/Arweave | external durability/permanence | public metadata/economics, deletion and sovereignty risks | explicit Tier 5 or approved public/burst adapter only |
 
-## Deployment, environments, and configuration
+## Total-cost formula
 
-- The common repository SHALL contain portable schemas, reference configuration,
-  conformance tests, and reusable OpenTofu, Helm, Kubernetes, or container assets.
-- Each institution fork SHALL contain only branding, adapters, policy overlays,
-  release configuration, and signed site values. Secrets SHALL never be committed.
-- Development SHALL use synthetic data. Staging SHALL exercise production-like
-  identity, policy, backup, upgrade, and failure behaviour without production data.
-- Production changes SHALL use reviewed GitOps promotion, immutable versioned
-  artifacts, health gates, rollback, and recorded provenance.
+For a compliant placement plan, annualized evaluated cost is:
 
-## Capacity, scaling, cost, and sustainability
+    media and hardware depreciation
+  + power and cooling
+  + rack/network/facility allocation
+  + usable-capacity overhead from replication or erasure
+  + read/write/operation and egress cost
+  + encryption, key and HSM operation
+  + monitoring, patching, on-call and incident labour
+  + proof, audit, repair and rebalance traffic
+  + backup, restore testing and disaster-recovery reserve
+  + upstream/fork maintenance and license compliance
+  + migration and exit reserve
+  + expected loss = probability of failure * impact
+  - measured reuse, deduplication and locality savings
 
-- Capacity SHALL be controlled by quotas, concurrency limits, bounded queues,
-  admission control, backpressure, and per-tenant fairness.
-- The institution manifest SHALL declare demand assumptions, normal and peak
-  capacity, saturation thresholds, scale limits, resource budgets, and service
-  objectives using the common schema.
-- Scale-out SHALL preserve authorization, ordering, idempotency, data consistency,
-  and auditability. Overload SHALL degrade optional work before protected or
-  interactive work and SHALL never bypass security controls.
-- Resource and energy consumption SHALL be observable and included in lifecycle
-  and capacity decisions.
+The model reports both currency and Institutional Resource Units. It never turns a low
+expected-loss estimate into permission to violate a hard control.
 
-## Failure, recovery, and compatibility
+## Placement and storage tokens
 
-- Required lifecycle behaviour includes quarterly forecast review, variance thresholds, capacity triggers, lifecycle reserves, and documented subsidy and fairness policies.
-- Dependencies SHALL have timeouts, bounded retries with jitter, circuit breakers,
-  health reporting, and documented degraded modes. Security and authorization
-  failures SHALL fail closed.
-- Stateful implementations SHALL meet manifest-declared RPO and RTO values and
-  prove backup restoration before production. Stateless components SHALL be
-  replaceable from source, configuration, and signed artifacts.
-- Releases SHALL support rollback and a compatibility window covering the current
-  major contract version and one prior major version unless an ADR documents a
-  safer domain-specific migration.
+Providers bid on an eligible placement request containing tier, usable capacity, duration,
+I/O profile, network locality, durability, failure domains, proof schedule and lifecycle.
+The winning plan issues a storage placement token containing only governed references,
+obligations, price/credit ceiling and expiry. Actual content remains encrypted off-ledger;
+keys remain in the key plane. Measured GiB-time, requests, transfer, repair and proof events
+produce receipts.
 
-## Observability, testing, and operational readiness
+## Required cost and risk inputs
 
-- Implementations SHALL publish health, readiness, structured logs, metrics,
-  traces, security events, usage, latency, error, and saturation signals through
-  OpenTelemetry-compatible boundaries without exposing protected data.
-- Required tests include unit, schema, contract, authorization, privacy, failure,
-  upgrade, rollback, accessibility where user-facing, performance, and
-  institution-standalone conformance tests.
-- A release requires a named owner, runbook, threat model, dependency lock,
-  license inventory, SBOM, vulnerability and secret scans, signed provenance,
-  recovery evidence, and passing acceptance tests.
+- raw and usable capacity; replication factor or erasure k/m parameters;
+- drive/media failure, provider correlation and replacement lead time;
+- ingress, egress, intra-cluster, federation and repair bandwidth;
+- latency, throughput, operation rate and cache hit rate;
+- energy, cooling and carbon signals;
+- staffing, hardware lifecycle, spares and support;
+- key/HSM, backup, proof, audit and compliance cost;
+- RPO/RTO, durability target, retention and deletion obligations;
+- migration bandwidth, format portability and provider exit time;
+- upstream patch/upgrade effort and license obligations.
 
-## Standards and implementation strategy
+Unknown mandatory inputs use a conservative bound or make the plan ineligible; they do not
+default to zero.
 
-- Adopted boundary and strategy: open measurement formats, auditable formulas, reproducible assumptions, and no dependency on proprietary billing telemetry.
-- Implementations SHALL follow **adopt → extend → compatible fork → build**.
-  Building a new primitive requires an ADR demonstrating that mature alternatives
-  fail the requirements and that long-term maintenance is funded.
-- Product selection is replaceable behind the contract. Product-specific APIs
-  SHALL remain inside adapters and SHALL NOT leak into portable clients or domain
-  contracts.
+## Worked comparison
 
-## Settled architecture constraints
+For 100 TiB of active protected data:
 
-- Cost models include upstream maintenance, integration, fork drift, operations, migration, and custom-protocol lock-in.
-- Build decisions compare total lifecycle cost against adopting or extending mature projects.
-- Any exception follows the adopt → extend → compatible fork → build hierarchy and requires an ADR with evidence.
+- three full replicas require roughly 300 TiB before filesystem and backup overhead;
+- a 10+4 erasure profile requires roughly 140 TiB for encoded payload but adds encoding,
+  fragment placement, repair traffic and small-object complexity;
+- applying Ceph erasure coding and then a second application-level 10+4 code multiplies
+  overhead and recovery complexity and is prohibited unless explicitly modelled.
 
-## Decision traceability
+The erasure plan wins only if its failure-domain independence, repair time, performance and
+operator complexity meet the workload objectives. Raw-capacity efficiency alone is not a
+decision.
 
-- ADR-0001: Standards-First / Buy-Borrow-Build
-- ADR-0005: Standard Platform Primitives
-- ADR-0012: Tenant-Neutral Post-Secondary Digital Commons
-- ADR-0013: Institution-First Federation Locality
-- ADR-0016: Accepted Project Defaults
-- ADR-0017: OpenTofu Default Infrastructure-as-Code Toolchain
+## Data, privacy and retention
 
-## Acceptance criteria
+Cost records use project/object references and aggregated measurements. They exclude content,
+keys and user-level access paths. Raw provider and object-level telemetry is retained only as
+long as dispute, capacity and security needs require. Final receipts follow financial/audit
+retention; deletion and legal-hold states are explicit.
 
-The specification is satisfied when an implementation evidence package proves:
+## Failure and dependency matrix
 
-1. versioned schemas and examples validate;
-2. contract and compatibility tests pass;
-3. identity and least-privilege authorization tests pass;
-4. threat, privacy, accessibility, and license reviews are recorded as applicable;
-5. capacity limits, degraded modes, and failure recovery behave as declared;
-6. observability and audit evidence identify success, failure, and saturation;
-7. backup, restore, upgrade, and rollback are demonstrated where applicable;
-8. a standalone institution deployment passes the common conformance suite;
-9. no mandatory proprietary service or undocumented cross-domain dependency exists.
+| Failure | Economic effect | Required response |
+|---|---|---|
+| provider capacity loss | repair and temporary redundancy cost | repair to policy target and charge by contract |
+| egress spike | transfer cost and congestion | apply approved QoS/budget; never strand required restore |
+| proof failure | increased expected loss | quarantine provider, repair and dispute |
+| KMS unavailable | data inaccessible though stored | meet key-plane HA; storage bid cannot claim availability alone |
+| model input stale | false price winner | expire model and stop enforcing placement |
+| federation recipient rejects | duplicated staging/transfer cost | expire transfer grant and delete staged copy by policy |
+| Tier 5 mistake | irreversible privacy impact | block by classification; no financial offset can cure it |
 
-## Decision status
+## Alternatives and trade-offs
 
-There are no unresolved architecture choices in this specification. Institution
-values are supplied through the governed deployment-manifest schema, and
-implementation evidence is collected at the implementation authorization and
-production release gates. Changes follow ADR-based change control.
+Flat per-GiB pricing is easy but hides I/O, repair, egress, staffing and risk. A purely
+financial model can reward unsafe concentration. A purely policy-fixed model wastes supply
+and obscures real subsidy. PSDC first filters policy, then compares complete lifecycle cost
+and benefits among compliant placements.
+
+## Implementation sequence, migration and rollback
+
+1. inventory physical and logical capacity and current costs;
+2. publish resource-unit definitions and conservative assumptions;
+3. collect shadow receipts from existing storage;
+4. validate restore, repair and deletion evidence;
+5. enable advisory bids, then bounded placement enforcement.
+
+Rollback disables automatic price enforcement, retains measurement, restores the last
+accepted static placement policy and completes required repair/retention. It never abandons
+data because its current placement becomes expensive.
+
+## Binary acceptance criteria
+
+- **ECON-ST-ACC-001:** every tier has a positive and prohibited-data fixture;
+- **ECON-ST-ACC-002:** evaluated cost includes usable-capacity, repair, key, backup, labour,
+  exit and expected-loss terms rather than raw disk price only;
+- **ECON-ST-ACC-003:** a cheaper but ineligible provider is absent from ranking;
+- **ECON-ST-ACC-004:** loss of one provider produces modelled repair cost and measured
+  evidence within the declared variance;
+- **ECON-ST-ACC-005:** storage tokens and receipts contain no content or usable key material;
+- **ECON-ST-ACC-006:** the model detects and rejects unreviewed double erasure coding;
+- **ECON-ST-ACC-007:** an institution can export objects, manifests, keys under its control,
+  receipts and custody evidence to a replacement backend.
 
 ## References
 
-- [Specification Completeness Standard](../architecture/Specification-Completeness-Standard.md)
-- [Technology Defaults and Alternatives](../vision/13-Technology-Defaults-and-Alternatives.md)
-- [Human Choices and Decisions Register](../governance/Human-Choices-and-Decisions-Register.md)
-- [ADR-0001: Standards First](../architecture/architecture-decision-records/ADR-0001-standards-first-buy-borrow-build.md)
-- [ADR-0012: Post Secondary Digital Commons](../architecture/architecture-decision-records/ADR-0012-post-secondary-digital-commons.md)
-- [ADR-0017: OpenTofu Default](../architecture/architecture-decision-records/ADR-0017-opentofu-default.md)
+- [Storage Architecture](../storage/Storage-Architecture.md)
+- [ADR-0028](../architecture/architecture-decision-records/ADR-0028-private-content-and-storage-fabric.md)
+- [KMS](../security/KMS.md)
+- [Network Architecture](../network/Network-Architecture.md)

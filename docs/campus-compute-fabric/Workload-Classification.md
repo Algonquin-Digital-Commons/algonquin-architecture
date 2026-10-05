@@ -1,193 +1,205 @@
-# Workload Classification
+# Compute Workload Classification and Backend Selection
 
-> Status: Normative specification; implementation gated
-> Domain: campus-compute-fabric
-> Owner: PSDC Campus Compute Fabric Working Group; accountable maintainer RedjiJB until delegation
-> Last reviewed: 2026-09-11
+> Standard: PSDC-DOC-001
+> Document type: architecture-specification
+> Status: Normative
+> Owner: PSDC Campus Compute Fabric Working Group
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-25
+> Governing decisions: ADR-0010, ADR-0013, ADR-0026, ADR-0028, ADR-0029
 
-## Purpose and outcome
+## Purpose and measurable outcome
 
-This specification defines **Workload Classification** as part of the Post Secondary Digital
-Commons. Its required outcome is institution-controlled heterogeneous campus compute with explicit capability, trust, scheduling, and preemption contracts. An implementation conforms
-only when it satisfies this document, the linked ADRs, and the common
-[Specification Completeness Standard](../architecture/Specification-Completeness-Standard.md).
+This specification converts a workload request into a versioned workload class, production
+criticality, data boundary and allowed backend set. Classification occurs before provider
+bidding. A conformant classifier sends the same manifest and policy version to the same
+backend family, explains every exclusion, and never allows price to weaken a hard control.
 
-## Scope
+## Stakeholders and use cases
 
-- **In scope:** behaviour, interfaces, dependencies, data, security, deployment
-  boundaries, capacity, failure handling, observability, validation, and lifecycle
-  requirements for Workload Classification.
-- **Out of scope:** institution-specific hostnames, credentials, physical capacity,
-  named operators, and legal approvals. Those values belong in signed institution
-  deployment manifests and cannot redefine the common contract.
-- **Authority:** the owning domain may make compatible implementation choices.
-  Contract-breaking or cross-domain changes require an ADR and migration plan.
+- students submit interruptible lab, rendering, build and AI evaluation work;
+- researchers submit independent tasks, parameter sweeps and tightly coupled HPC jobs;
+- platform teams deploy long-running containers, stateful services and VMs;
+- service owners run critical institutional services inside production boundaries;
+- storage and network controllers expose locality, tier and path constraints;
+- federation operators accept only explicitly approved portable workloads.
 
-## Normative requirements
+## Scope, exclusions and prohibited responsibilities
 
-- The Workload Classification capability SHALL provide institution-controlled heterogeneous campus compute with explicit capability, trust, scheduling, and preemption contracts.
-- The capability SHALL have a versioned configuration schema, explicit safe
-  defaults, validation before activation, and a reversible change procedure.
-- User-visible and administrative behaviour SHALL be accessible, explainable,
-  auditable, and bounded by institution policy and user authority.
-- An implementation SHALL expose only the minimum capability required by its
-  callers and SHALL reject unknown, unauthorized, malformed, expired, or
-  unsupported requests with stable machine-readable errors.
-- Institution deployments SHALL be independently operable and SHALL remain
-  compatible with the common contract and conformance suite.
+The classifier owns workload taxonomy, required manifest fields, backend eligibility and
+classification evidence. It does not authenticate a user, authorize data, choose a winning
+provider, operate Kubernetes/OpenStack/Slurm, release keys, or settle credits. It MUST NOT
+infer a weaker data class from missing fields, silently convert a critical workload into
+opportunistic work, or send protected data to an external provider.
 
-## Interfaces, APIs, events, and contracts
+## Out of scope
 
-- Required interoperability boundary: versioned node capability, enrollment, job, lifecycle, artifact, accounting, and result schemas.
-- HTTP interfaces SHALL use OpenAPI 3.1, explicit request and response schemas,
-  documented error codes, pagination for collections, and bounded timeouts.
-- Asynchronous interfaces SHALL use versioned schemas and CloudEvents envelopes;
-  delivery semantics, ordering, replay, deduplication, and dead-letter behaviour
-  SHALL be declared per event.
-- Mutations SHALL be idempotent or accept an idempotency key. Long-running work
-  SHALL expose status, cancellation, expiry, and result retrieval.
-- Consumers SHALL depend on contracts rather than another service's database,
-  internal queue, filesystem, or implementation-specific API.
+Provider ranking, resource leasing, backend execution, key release and settlement are
+performed downstream after classification.
 
-## Dependencies and ownership boundaries
+## Required manifest
 
-- This domain owns its schemas, policy enforcement points, migrations, service
-  metadata, and compatibility tests.
-- Identity, authorization, secrets, telemetry, object storage, notifications,
-  and gateway functions SHALL be consumed through their owning common contracts.
-- Mandatory runtime dependencies SHALL be open-source and self-hostable. An
-  external or proprietary service MAY be an optional adapter with a tested local
-  replacement and SHALL NOT be required for standalone institutional operation.
-- Circular synchronous dependencies are prohibited. Cross-domain workflows SHALL
-  define a coordinating owner and compensating behaviour.
+**CCF-WC-001:** The admission API MUST reject a manifest that omits:
 
-## Data, state, residency, and retention
+- workload ID, requester/project and accountable owner;
+- execution shape: service, VM, job, DAG, MPI or hybrid graph;
+- image or artifact digest and software license decision;
+- CPU, memory, accelerator, local scratch and estimated duration;
+- parallelism, inter-task communication and checkpoint capability;
+- latency, deadline, availability, RPO and RTO objectives;
+- data classifications, object references, residency and storage tier;
+- network ingress/egress, bandwidth, topology and protocol needs;
+- production criticality, trust tier and allowed provider scope;
+- budget ceiling, priority, preemption and retry policy;
+- policy bundle and schema versions.
 
-- Governed information includes node attestations, hardware capabilities, job metadata, immutable artifacts, utilization records, and bounded diagnostic logs.
-- Every data class SHALL declare an authoritative owner, purpose, classification,
-  residency, retention, export, correction, archival, and deletion rule in the
-  institution manifest before production activation.
-- Services SHALL minimize copied data, preserve provenance, encrypt protected
-  state and backups, and prevent telemetry from becoming an undeclared secondary
-  record system.
-- Cache and derived data SHALL be rebuildable or explicitly protected by backup
-  and recovery objectives. Deletion SHALL propagate to indexes, caches,
-  derivatives, replicas, and backups according to the declared retention policy.
+Unknown classification, residency, owner, image digest or provider scope fails closed.
+Unknown duration or resource quantities MAY enter an explicitly bounded discovery queue,
+not a production queue.
 
-## Security, privacy, safety, and compliance
+## Classification hierarchy
 
-- Domain controls SHALL include mutual authentication, signed enrollment, sandboxed workloads, trust tiers, least-privilege worker identities, and rapid revocation.
-- Authentication SHALL use the institution-approved identity issuer;
-  authorization SHALL be deny-by-default, least-privilege, policy-driven, and
-  enforced at every trust boundary.
-- Secrets SHALL use institution-controlled secret storage, short-lived credentials
-  where possible, documented rotation, and immediate revocation procedures.
-- Threat modelling SHALL cover misuse, compromised identities, malicious inputs,
-  dependency compromise, data exfiltration, denial of service, and unsafe
-  automation. High-impact actions require explicit confirmation and audit.
-- Logs, traces, diagnostics, and model context SHALL exclude protected content
-  unless explicitly required, minimized, access-controlled, and retained by policy.
+Classification is hierarchical. The first matching specialized class wins; a hybrid graph
+is decomposed into independently authorized stages rather than forced into one backend.
 
-## Deployment, environments, and configuration
+| Workload | Primary scheduler/backend | Why it fits | Typical fallback or prohibition |
+|---|---|---|---|
+| Opportunistic desktop/lab batch | PSDC/Golem-derived task workers | Preemptible, outbound worker sessions, retryable units and idle capacity | HTCondor-compatible adapter; never critical primary service |
+| Independent task graph | Golem-derived task fabric | DAG dependencies, per-task offers, retries and result verification | Kubernetes Jobs/Argo after adapter approval |
+| Loosely coupled parameter sweep | Golem-derived tasks | Many independent inputs and horizontal work stealing | Slurm arrays or Kubernetes Jobs |
+| Tightly coupled MPI/HPC | Slurm | Gang scheduling, topology awareness and high-speed fabric | No automatic task-fabric fallback |
+| Long-running container service | Kubernetes | Reconciliation, service discovery, health, rollout and autoscaling | Akash-derived provider/lease layer may select an eligible Kubernetes provider |
+| VM workload | OpenStack | VM lifecycle, image, volume, network and tenant isolation | Kubernetes virtualization only after separate evidence |
+| Bare-metal/special appliance | Ironic or approved bare-metal controller | Firmware, accelerator or isolation requirement | Manual reservation if automation cannot preserve safety |
+| Critical stateful institutional service | Kubernetes or OpenStack in a production pool | Stable HA, storage, network, backup and named ownership | No opportunistic lab or unapproved federation provider |
+| Mixed pipeline | PSDC workload graph | Each stage gets the correct backend and shared evidence chain | Reject if data/identity cannot cross a stage boundary |
 
-- The common repository SHALL contain portable schemas, reference configuration,
-  conformance tests, and reusable OpenTofu, Helm, Kubernetes, or container assets.
-- Each institution fork SHALL contain only branding, adapters, policy overlays,
-  release configuration, and signed site values. Secrets SHALL never be committed.
-- Development SHALL use synthetic data. Staging SHALL exercise production-like
-  identity, policy, backup, upgrade, and failure behaviour without production data.
-- Production changes SHALL use reviewed GitOps promotion, immutable versioned
-  artifacts, health gates, rollback, and recorded provenance.
+HTCondor is an interoperability and migration adapter for high-throughput batch estates;
+it is not the default for MPI workloads and does not replace the PSDC market, lease,
+identity, evidence or accounting contracts.
 
-## Capacity, scaling, cost, and sustainability
+## Criticality and provider-scope matrix
 
-- Capacity SHALL be controlled by quotas, concurrency limits, bounded queues,
-  admission control, backpressure, and per-tenant fairness.
-- The institution manifest SHALL declare demand assumptions, normal and peak
-  capacity, saturation thresholds, scale limits, resource budgets, and service
-  objectives using the common schema.
-- Scale-out SHALL preserve authorization, ordering, idempotency, data consistency,
-  and auditability. Overload SHALL degrade optional work before protected or
-  interactive work and SHALL never bypass security controls.
-- Resource and energy consumption SHALL be observable and included in lifecycle
-  and capacity decisions.
+| Criticality | Allowed provider scope | Dynamic behavior |
+|---|---|---|
+| experimental | opportunistic, internal, approved federated or approved public | broad bidding; preemption and retry expected |
+| standard | managed internal and approved federated | dynamic placement with declared fallback |
+| important | prequalified managed providers | reserved floor plus bounded optimization |
+| critical | production-certified institution-controlled pool by default | optimize only within reserved, HA and failure-domain constraints |
+| safety/records authority | named dedicated profile | no unreviewed movement; change-controlled placement plan |
 
-## Failure, recovery, and compatibility
+**CCF-WC-002:** Public or federated scope requires an explicit manifest value and policy
+decision. It is never inferred from budget pressure or internal capacity exhaustion.
 
-- Required lifecycle behaviour includes interactive-user priority, drain and preemption, thermal and power limits, checkpoint recovery, and failure-domain-aware scheduling.
-- Dependencies SHALL have timeouts, bounded retries with jitter, circuit breakers,
-  health reporting, and documented degraded modes. Security and authorization
-  failures SHALL fail closed.
-- Stateful implementations SHALL meet manifest-declared RPO and RTO values and
-  prove backup restoration before production. Stateless components SHALL be
-  replaceable from source, configuration, and signed artifacts.
-- Releases SHALL support rollback and a compatibility window covering the current
-  major contract version and one prior major version unless an ADR documents a
-  safer domain-specific migration.
+## Decision mechanics
 
-## Observability, testing, and operational readiness
+    validate schema
+       -> bind identity, project and policy
+       -> resolve data/storage/network constraints
+       -> determine execution shape and criticality
+       -> construct allowed backend set
+       -> construct eligible provider universe
+       -> emit signed classification record
+       -> send to market resolver
 
-- Implementations SHALL publish health, readiness, structured logs, metrics,
-  traces, security events, usage, latency, error, and saturation signals through
-  OpenTelemetry-compatible boundaries without exposing protected data.
-- Required tests include unit, schema, contract, authorization, privacy, failure,
-  upgrade, rollback, accessibility where user-facing, performance, and
-  institution-standalone conformance tests.
-- A release requires a named owner, runbook, threat model, dependency lock,
-  license inventory, SBOM, vulnerability and secret scans, signed provenance,
-  recovery evidence, and passing acceptance tests.
+The signed record contains input digest, classification result, allowed/rejected backends,
+reason codes, policy version, classifier version and expiry. Reclassification creates a new
+record; it never mutates historical evidence.
 
-## Standards and implementation strategy
+## Interfaces and compatibility
 
-- Adopted boundary and strategy: OCI artifacts, S3-compatible objects, OpenTelemetry, and runtime adapters behind Commons-owned contracts.
-- Implementations SHALL follow **adopt → extend → compatible fork → build**.
-  Building a new primitive requires an ADR demonstrating that mature alternatives
-  fail the requirements and that long-term maintenance is funded.
-- Product selection is replaceable behind the contract. Product-specific APIs
-  SHALL remain inside adapters and SHALL NOT leak into portable clients or domain
-  contracts.
+- POST /v1/workload-classifications accepts the versioned manifest and returns the signed
+  classification record or a stable rejection.
+- WorkloadClassified is a CloudEvents event containing identifiers and digests, not
+  secrets or protected content.
+- Backend adapters publish capability schemas consumed by the classifier. Unknown fields
+  are rejected under the declared schema compatibility policy.
+- Current and previous major contract versions remain readable during migration; execution
+  uses only a currently supported version.
 
-## Settled architecture constraints
+## Dependencies, adapters, runtimes and ownership
 
-- Commons Compute Fabric owns campus-specific enrollment, topology, trust, idle detection, scheduling, preemption, accounting, and integration.
-- Execution engines remain plugins behind versioned job, capability, lifecycle, and result contracts.
-- Any exception follows the adopt → extend → compatible fork → build hierarchy and requires an ADR with evidence.
+The classifier depends on identity/policy, data/storage classification and fresh capability
+contracts. Backend adapters publish capabilities but cannot choose their own workload class.
 
-## Decision traceability
+## State and data handling
 
-- ADR-0001: Standards-First / Buy-Borrow-Build
-- ADR-0005: Standard Platform Primitives
-- ADR-0012: Tenant-Neutral Post-Secondary Digital Commons
-- ADR-0013: Institution-First Federation Locality
-- ADR-0016: Accepted Project Defaults
-- ADR-0017: OpenTofu Default Infrastructure-as-Code Toolchain
+The classifier stores manifests, decisions and reason codes in the operational database.
+Protected object contents and keys are never classifier state. Decision evidence follows
+institution audit retention; transient capability snapshots expire. Subject identifiers are
+pseudonymized where an accountable project reference is sufficient.
 
-## Acceptance criteria
+## Security, privacy and abuse controls
 
-The specification is satisfied when an implementation evidence package proves:
+- policy and authorization failure is fail-closed;
+- submitted resource estimates are capped by project and provider policy;
+- images and inputs require immutable digests and supply-chain decisions;
+- provider advertisements are authenticated, freshness-bounded and evidence-backed;
+- repeated underestimation, bid manipulation or prohibited egress attempts create risk
+  signals but never silently change a student's identity or academic status.
 
-1. versioned schemas and examples validate;
-2. contract and compatibility tests pass;
-3. identity and least-privilege authorization tests pass;
-4. threat, privacy, accessibility, and license reviews are recorded as applicable;
-5. capacity limits, degraded modes, and failure recovery behave as declared;
-6. observability and audit evidence identify success, failure, and saturation;
-7. backup, restore, upgrade, and rollback are demonstrated where applicable;
-8. a standalone institution deployment passes the common conformance suite;
-9. no mandatory proprietary service or undocumented cross-domain dependency exists.
+## Capacity, degradation and failure matrix
 
-## Decision status
+| Failure | Required behavior | Evidence |
+|---|---|---|
+| classifier unavailable | no new discretionary lease; accepted running leases continue | outage and recovery event |
+| policy engine unavailable | fail closed for new classifications | denial reason |
+| capability registry stale | exclude stale providers | freshness reason |
+| no eligible backend | return unschedulable with remediable constraints | considered-set trace |
+| budget insufficient | queue, request approved increase or reject; never weaken policy | budget decision |
+| mixed graph boundary invalid | reject the affected edge and whole atomic request | graph validation report |
 
-There are no unresolved architecture choices in this specification. Institution
-values are supplied through the governed deployment-manifest schema, and
-implementation evidence is collected at the implementation authorization and
-production release gates. Changes follow ADR-based change control.
+## Deployment and operations
+
+Run at least two stateless classifier instances per production failure domain. Configuration
+is signed, GitOps-managed and promoted through synthetic, shadow and enforcing stages.
+Metrics include decision latency, class distribution, rejection reasons, stale capabilities,
+manual overrides and later estimate error. Alerts detect sudden class or provider shifts.
+
+## Alternatives and trade-offs
+
+Letting each backend classify work is simpler but produces inconsistent controls. Sending
+everything to Kubernetes reduces components but is poor for MPI, VMs and opportunistic
+task markets. Sending everything through Akash/Golem-style mechanisms improves economic
+uniformity but adds latency and discards backend-specific scheduling strengths. PSDC keeps
+one classification and economic envelope while delegating execution to the right scheduler.
+
+## Implementation sequence and rollback
+
+1. publish schema and deterministic fixtures;
+2. classify recorded sample workloads without scheduling;
+3. run shadow decisions beside existing manual/backend routing;
+4. resolve disagreements and freeze v1 reason codes;
+5. enforce non-production, then standard, then production classes.
+
+Rollback returns routing authority to the last accepted version, freezes new unsupported
+classes and retains all decision records. It never reroutes a protected workload to a less
+trusted provider.
+
+## Testing and evidence
+
+Fixtures cover every workload/backend class, hard-policy rejection, deterministic replay,
+mixed graphs and operation without public adapters.
+
+## Binary acceptance criteria
+
+These testing and evidence criteria are binary and retained with the classifier version.
+
+- **CCF-WC-ACC-001:** every row in the backend table has positive and negative fixtures whose
+  selected backend and reason codes match exactly;
+- **CCF-WC-ACC-002:** lowering a bid cannot make a provider pass a failed data, identity,
+  trust, residency, production or network constraint;
+- **CCF-WC-ACC-003:** a mixed AI pipeline decomposes into task, service and storage stages
+  with one trace and no unauthorized data edge;
+- **CCF-WC-ACC-004:** classification is deterministic for identical versioned input and
+  records a new immutable decision after a policy change;
+- **CCF-WC-ACC-005:** public adapters unavailable or disabled do not prevent internal-only
+  workload classification.
 
 ## References
 
-- [Specification Completeness Standard](../architecture/Specification-Completeness-Standard.md)
-- [Technology Defaults and Alternatives](../vision/13-Technology-Defaults-and-Alternatives.md)
-- [Human Choices and Decisions Register](../governance/Human-Choices-and-Decisions-Register.md)
-- [ADR-0001: Standards First](../architecture/architecture-decision-records/ADR-0001-standards-first-buy-borrow-build.md)
-- [ADR-0012: Post Secondary Digital Commons](../architecture/architecture-decision-records/ADR-0012-post-secondary-digital-commons.md)
-- [ADR-0017: OpenTofu Default](../architecture/architecture-decision-records/ADR-0017-opentofu-default.md)
+- [Scheduling Algorithm](Scheduling-Algorithm.md)
+- [Compute Fabric Architecture](Campus-Compute-Fabric-Architecture.md)
+- [Storage Architecture](../storage/Storage-Architecture.md)
+- [Production](../deployment/Production.md)
+- [ADR-0029](../architecture/architecture-decision-records/ADR-0029-unified-institutional-resource-metering.md)

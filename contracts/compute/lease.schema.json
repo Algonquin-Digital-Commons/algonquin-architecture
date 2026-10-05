@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:psdc:contracts:compute:lease:1",
+  "title": "PSDC Resource Lease",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["contractVersion", "leaseId", "decisionId", "offerId", "workloadId", "providerId", "status", "generation", "issuedAt", "activateBy", "expiresAt", "allocatedResources", "creditReservation", "policyDecision", "manifestDigest", "signature"],
+  "properties": {
+    "contractVersion": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/contractVersion" },
+    "leaseId": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/uuid" },
+    "decisionId": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/uuid" },
+    "offerId": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/uuid" },
+    "workloadId": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/uuid" },
+    "providerId": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/boundedId" },
+    "status": { "enum": ["issued", "active", "renewal_pending", "released", "expired", "revoked", "failed"] },
+    "generation": { "type": "integer", "minimum": 1 },
+    "issuedAt": { "type": "string", "format": "date-time" },
+    "activateBy": { "type": "string", "format": "date-time" },
+    "activatedAt": { "type": "string", "format": "date-time" },
+    "renewalDeadline": { "type": "string", "format": "date-time" },
+    "expiresAt": { "type": "string", "format": "date-time" },
+    "terminalAt": { "type": "string", "format": "date-time" },
+    "allocatedResources": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/resourceQuantity" },
+    "networkReservationIds": { "type": "array", "uniqueItems": true, "items": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/uuid" } },
+    "storagePlacementTokenIds": { "type": "array", "uniqueItems": true, "items": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/uuid" } },
+    "creditReservation": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/nonNegativeCreditAmount" },
+    "policyDecision": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/policyDecisionRef" },
+    "manifestDigest": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/sha256" },
+    "reason": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/reason" },
+    "signature": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/signature" }
+  },
+  "allOf": [
+    { "if": { "properties": { "status": { "enum": ["released", "expired", "revoked", "failed"] } }, "required": ["status"] }, "then": { "required": ["terminalAt", "reason"] } }
+  ]
+}

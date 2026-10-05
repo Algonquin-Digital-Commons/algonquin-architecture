@@ -1,6 +1,14 @@
 # ADR-0001: Standards-First / Buy-Borrow-Build
 
+
+> Standard: PSDC-DOC-001
+> Document type: adr
 > Status: Accepted
+> Owner: PSDC Architecture Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+
 > Scope: Entire Algonquin Digital Platform
 > Decision owner: Platform architecture
 > Review trigger: A proposal to create a new infrastructure primitive or protocol
@@ -49,3 +57,15 @@ replaceable.
 A proposal is compliant when it names the governing standard, evaluated mature
 implementations, selected extension point, compatibility test, responsible owner,
 upgrade path, and fallback or migration strategy.
+
+## Alternatives and evidence
+
+For **ADR-0001: Standards-First / Buy-Borrow-Build**, the decision record considered: retain the prior approach; adopt a mature compatible standard or open-source implementation; and build or fork a new primitive. The selected decision is preferred under the stated constraints. A change trigger is new security, licensing, interoperability, sovereignty, cost, or operational evidence; a new option requires an ADR update rather than an undocumented exception.
+
+## Migration and rollback
+
+A change implementing **ADR-0001: Standards-First / Buy-Borrow-Build** MUST preserve the current contract during the declared compatibility window, publish a versioned migration plan, and rehearse rollback before production promotion. Migration evidence includes inventory, data/state transformation, operator communication, and verification. Rollback is triggered by failed acceptance, security regression, loss of institution control, or unrecoverable compatibility failure; it restores the last accepted artifact and preserves audit history. If no migration is currently required, the owner MUST record that as a reviewed no-op and revisit it when the decision changes.
+
+## Alternatives
+
+Considered alternatives include retaining the prior approach, adopting a mature open implementation, and building a local adapter. The selected decision is preferred under the stated requirements, constraints, sovereignty, and maintenance capacity; a new option requires a superseding ADR.
