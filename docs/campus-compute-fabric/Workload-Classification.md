@@ -1,107 +1,205 @@
-# Workload Classification
-
+# Compute Workload Classification and Backend Selection
 
 > Standard: PSDC-DOC-001
 > Document type: architecture-specification
 > Status: Normative
 > Owner: PSDC Campus Compute Fabric Working Group
 > Accountable maintainer: RedjiJB until delegation
-> Last reviewed: 2026-09-11
-> Governing decisions: Applicable ADRs and repository governance
-> Domain: campus-compute-fabric
+> Last reviewed: 2026-09-25
+> Governing decisions: ADR-0010, ADR-0013, ADR-0026, ADR-0028, ADR-0029
 
-## Purpose and outcome
+## Purpose and measurable outcome
 
-This specification defines **Workload Classification** as part of the Post Secondary Digital
-Commons. Its required outcome is institution-controlled heterogeneous campus compute with explicit capability, trust, scheduling, and preemption contracts. An implementation conforms
-only when it satisfies this document, the linked ADRs, and the common
-[Specification Completeness Standard](../architecture/Specification-Completeness-Standard.md).
+This specification converts a workload request into a versioned workload class, production
+criticality, data boundary and allowed backend set. Classification occurs before provider
+bidding. A conformant classifier sends the same manifest and policy version to the same
+backend family, explains every exclusion, and never allows price to weaken a hard control.
 
-## Scope
+## Stakeholders and use cases
 
-- **In scope:** behaviour, interfaces, dependencies, data, security, deployment
-  boundaries, capacity, failure handling, observability, validation, and lifecycle
-  requirements for Workload Classification.
-- **Out of scope:** institution-specific hostnames, credentials, physical capacity,
-  named operators, and legal approvals. Those values belong in signed institution
-  deployment manifests and cannot redefine the common contract.
-- **Authority:** the owning domain may make compatible implementation choices.
-  Contract-breaking or cross-domain changes require an ADR and migration plan.
+- students submit interruptible lab, rendering, build and AI evaluation work;
+- researchers submit independent tasks, parameter sweeps and tightly coupled HPC jobs;
+- platform teams deploy long-running containers, stateful services and VMs;
+- service owners run critical institutional services inside production boundaries;
+- storage and network controllers expose locality, tier and path constraints;
+- federation operators accept only explicitly approved portable workloads.
 
-## Normative requirements
+## Scope, exclusions and prohibited responsibilities
 
-- **CCF-WC-001:** The Workload Classification capability SHALL provide institution-controlled heterogeneous campus compute with explicit capability, trust, scheduling, and preemption contracts.
-- The capability SHALL have a versioned configuration schema, explicit safe
-  defaults, validation before activation, and a reversible change procedure.
-- User-visible and administrative behaviour SHALL be accessible, explainable,
-  auditable, and bounded by institution policy and user authority.
-- An implementation SHALL expose only the minimum capability required by its
-  callers and SHALL reject unknown, unauthorized, malformed, expired, or
-  unsupported requests with stable machine-readable errors.
-- Institution deployments SHALL be independently operable and SHALL remain
-  compatible with the common contract and conformance suite.
+The classifier owns workload taxonomy, required manifest fields, backend eligibility and
+classification evidence. It does not authenticate a user, authorize data, choose a winning
+provider, operate Kubernetes/OpenStack/Slurm, release keys, or settle credits. It MUST NOT
+infer a weaker data class from missing fields, silently convert a critical workload into
+opportunistic work, or send protected data to an external provider.
 
-## Interfaces, APIs, events, and contracts
+## Out of scope
 
-See [Interface controls](../architecture/Domain-Control-Profiles.md#campus-compute-fabric-profile); local extensions remain normative.
+Provider ranking, resource leasing, backend execution, key release and settlement are
+performed downstream after classification.
 
-## Dependencies and ownership boundaries
+## Required manifest
 
-Inherits [baseline ownership controls](../architecture/Cross-Cutting-Architecture-Requirements.md#ownership-and-dependency-boundaries).
+**CCF-WC-001:** The admission API MUST reject a manifest that omits:
 
-## Data, state, residency, and retention
+- workload ID, requester/project and accountable owner;
+- execution shape: service, VM, job, DAG, MPI or hybrid graph;
+- image or artifact digest and software license decision;
+- CPU, memory, accelerator, local scratch and estimated duration;
+- parallelism, inter-task communication and checkpoint capability;
+- latency, deadline, availability, RPO and RTO objectives;
+- data classifications, object references, residency and storage tier;
+- network ingress/egress, bandwidth, topology and protocol needs;
+- production criticality, trust tier and allowed provider scope;
+- budget ceiling, priority, preemption and retry policy;
+- policy bundle and schema versions.
 
-See [Data controls](../architecture/Domain-Control-Profiles.md#campus-compute-fabric-profile); local extensions remain normative.
+Unknown classification, residency, owner, image digest or provider scope fails closed.
+Unknown duration or resource quantities MAY enter an explicitly bounded discovery queue,
+not a production queue.
 
-## Security, privacy, safety, and compliance
+## Classification hierarchy
 
-See [Security controls](../architecture/Domain-Control-Profiles.md#campus-compute-fabric-profile); local extensions remain normative.
+Classification is hierarchical. The first matching specialized class wins; a hybrid graph
+is decomposed into independently authorized stages rather than forced into one backend.
 
-## Deployment, environments, and configuration
+| Workload | Primary scheduler/backend | Why it fits | Typical fallback or prohibition |
+|---|---|---|---|
+| Opportunistic desktop/lab batch | PSDC/Golem-derived task workers | Preemptible, outbound worker sessions, retryable units and idle capacity | HTCondor-compatible adapter; never critical primary service |
+| Independent task graph | Golem-derived task fabric | DAG dependencies, per-task offers, retries and result verification | Kubernetes Jobs/Argo after adapter approval |
+| Loosely coupled parameter sweep | Golem-derived tasks | Many independent inputs and horizontal work stealing | Slurm arrays or Kubernetes Jobs |
+| Tightly coupled MPI/HPC | Slurm | Gang scheduling, topology awareness and high-speed fabric | No automatic task-fabric fallback |
+| Long-running container service | Kubernetes | Reconciliation, service discovery, health, rollout and autoscaling | Akash-derived provider/lease layer may select an eligible Kubernetes provider |
+| VM workload | OpenStack | VM lifecycle, image, volume, network and tenant isolation | Kubernetes virtualization only after separate evidence |
+| Bare-metal/special appliance | Ironic or approved bare-metal controller | Firmware, accelerator or isolation requirement | Manual reservation if automation cannot preserve safety |
+| Critical stateful institutional service | Kubernetes or OpenStack in a production pool | Stable HA, storage, network, backup and named ownership | No opportunistic lab or unapproved federation provider |
+| Mixed pipeline | PSDC workload graph | Each stage gets the correct backend and shared evidence chain | Reject if data/identity cannot cross a stage boundary |
 
-Inherits [baseline deployment controls](../architecture/Cross-Cutting-Architecture-Requirements.md#deployment-and-configuration).
+HTCondor is an interoperability and migration adapter for high-throughput batch estates;
+it is not the default for MPI workloads and does not replace the PSDC market, lease,
+identity, evidence or accounting contracts.
 
-## Capacity, scaling, cost, and sustainability
+## Criticality and provider-scope matrix
 
-Inherits [baseline capacity controls](../architecture/Cross-Cutting-Architecture-Requirements.md#capacity-and-overload).
+| Criticality | Allowed provider scope | Dynamic behavior |
+|---|---|---|
+| experimental | opportunistic, internal, approved federated or approved public | broad bidding; preemption and retry expected |
+| standard | managed internal and approved federated | dynamic placement with declared fallback |
+| important | prequalified managed providers | reserved floor plus bounded optimization |
+| critical | production-certified institution-controlled pool by default | optimize only within reserved, HA and failure-domain constraints |
+| safety/records authority | named dedicated profile | no unreviewed movement; change-controlled placement plan |
 
-## Failure, recovery, and compatibility
+**CCF-WC-002:** Public or federated scope requires an explicit manifest value and policy
+decision. It is never inferred from budget pressure or internal capacity exhaustion.
 
-See [Failure controls](../architecture/Domain-Control-Profiles.md#campus-compute-fabric-profile); local extensions remain normative.
+## Decision mechanics
 
-## Observability, testing, and operational readiness
+    validate schema
+       -> bind identity, project and policy
+       -> resolve data/storage/network constraints
+       -> determine execution shape and criticality
+       -> construct allowed backend set
+       -> construct eligible provider universe
+       -> emit signed classification record
+       -> send to market resolver
 
-Inherits [baseline evidence controls](../architecture/Cross-Cutting-Architecture-Requirements.md#observability-and-evidence).
+The signed record contains input digest, classification result, allowed/rejected backends,
+reason codes, policy version, classifier version and expiry. Reclassification creates a new
+record; it never mutates historical evidence.
 
-## Standards and implementation strategy
+## Interfaces and compatibility
 
-See [Standards controls](../architecture/Domain-Control-Profiles.md#campus-compute-fabric-profile); local extensions remain normative.
+- POST /v1/workload-classifications accepts the versioned manifest and returns the signed
+  classification record or a stable rejection.
+- WorkloadClassified is a CloudEvents event containing identifiers and digests, not
+  secrets or protected content.
+- Backend adapters publish capability schemas consumed by the classifier. Unknown fields
+  are rejected under the declared schema compatibility policy.
+- Current and previous major contract versions remain readable during migration; execution
+  uses only a currently supported version.
 
-## Settled architecture constraints
+## Dependencies, adapters, runtimes and ownership
 
-- Commons Compute Fabric owns campus-specific enrollment, topology, trust, idle detection, scheduling, preemption, accounting, and integration.
-- Execution engines remain plugins behind versioned job, capability, lifecycle, and result contracts.
-- Any exception follows the adopt → extend → compatible fork → build hierarchy and requires an ADR with evidence.
+The classifier depends on identity/policy, data/storage classification and fresh capability
+contracts. Backend adapters publish capabilities but cannot choose their own workload class.
 
-## Decision traceability
+## State and data handling
 
-- ADR-0001: Standards-First / Buy-Borrow-Build
-- ADR-0005: Standard Platform Primitives
-- ADR-0012: Tenant-Neutral Post-Secondary Digital Commons
-- ADR-0013: Institution-First Federation Locality
-- ADR-0016: Accepted Project Defaults
-- ADR-0017: OpenTofu Default Infrastructure-as-Code Toolchain
+The classifier stores manifests, decisions and reason codes in the operational database.
+Protected object contents and keys are never classifier state. Decision evidence follows
+institution audit retention; transient capability snapshots expire. Subject identifiers are
+pseudonymized where an accountable project reference is sufficient.
 
-## Acceptance criteria
+## Security, privacy and abuse controls
 
-Inherits [baseline acceptance gates](../architecture/Cross-Cutting-Architecture-Requirements.md#observability-and-evidence); every local requirement MUST also pass.
+- policy and authorization failure is fail-closed;
+- submitted resource estimates are capped by project and provider policy;
+- images and inputs require immutable digests and supply-chain decisions;
+- provider advertisements are authenticated, freshness-bounded and evidence-backed;
+- repeated underestimation, bid manipulation or prohibited egress attempts create risk
+  signals but never silently change a student's identity or academic status.
+
+## Capacity, degradation and failure matrix
+
+| Failure | Required behavior | Evidence |
+|---|---|---|
+| classifier unavailable | no new discretionary lease; accepted running leases continue | outage and recovery event |
+| policy engine unavailable | fail closed for new classifications | denial reason |
+| capability registry stale | exclude stale providers | freshness reason |
+| no eligible backend | return unschedulable with remediable constraints | considered-set trace |
+| budget insufficient | queue, request approved increase or reject; never weaken policy | budget decision |
+| mixed graph boundary invalid | reject the affected edge and whole atomic request | graph validation report |
+
+## Deployment and operations
+
+Run at least two stateless classifier instances per production failure domain. Configuration
+is signed, GitOps-managed and promoted through synthetic, shadow and enforcing stages.
+Metrics include decision latency, class distribution, rejection reasons, stale capabilities,
+manual overrides and later estimate error. Alerts detect sudden class or provider shifts.
+
+## Alternatives and trade-offs
+
+Letting each backend classify work is simpler but produces inconsistent controls. Sending
+everything to Kubernetes reduces components but is poor for MPI, VMs and opportunistic
+task markets. Sending everything through Akash/Golem-style mechanisms improves economic
+uniformity but adds latency and discards backend-specific scheduling strengths. PSDC keeps
+one classification and economic envelope while delegating execution to the right scheduler.
+
+## Implementation sequence and rollback
+
+1. publish schema and deterministic fixtures;
+2. classify recorded sample workloads without scheduling;
+3. run shadow decisions beside existing manual/backend routing;
+4. resolve disagreements and freeze v1 reason codes;
+5. enforce non-production, then standard, then production classes.
+
+Rollback returns routing authority to the last accepted version, freezes new unsupported
+classes and retains all decision records. It never reroutes a protected workload to a less
+trusted provider.
+
+## Testing and evidence
+
+Fixtures cover every workload/backend class, hard-policy rejection, deterministic replay,
+mixed graphs and operation without public adapters.
+
+## Binary acceptance criteria
+
+These testing and evidence criteria are binary and retained with the classifier version.
+
+- **CCF-WC-ACC-001:** every row in the backend table has positive and negative fixtures whose
+  selected backend and reason codes match exactly;
+- **CCF-WC-ACC-002:** lowering a bid cannot make a provider pass a failed data, identity,
+  trust, residency, production or network constraint;
+- **CCF-WC-ACC-003:** a mixed AI pipeline decomposes into task, service and storage stages
+  with one trace and no unauthorized data edge;
+- **CCF-WC-ACC-004:** classification is deterministic for identical versioned input and
+  records a new immutable decision after a policy change;
+- **CCF-WC-ACC-005:** public adapters unavailable or disabled do not prevent internal-only
+  workload classification.
 
 ## References
 
-- [Specification Completeness Standard](../architecture/Specification-Completeness-Standard.md)
-- [Technology Defaults and Alternatives](../vision/13-Technology-Defaults-and-Alternatives.md)
-- [Human Choices and Decisions Register](../governance/Human-Choices-and-Decisions-Register.md)
-- [ADR-0001: Standards First](../architecture/architecture-decision-records/ADR-0001-standards-first-buy-borrow-build.md)
-- [ADR-0012: Post Secondary Digital Commons](../architecture/architecture-decision-records/ADR-0012-post-secondary-digital-commons.md)
-- [ADR-0017: OpenTofu Default](../architecture/architecture-decision-records/ADR-0017-opentofu-default.md)
-
+- [Scheduling Algorithm](Scheduling-Algorithm.md)
+- [Compute Fabric Architecture](Campus-Compute-Fabric-Architecture.md)
+- [Storage Architecture](../storage/Storage-Architecture.md)
+- [Production](../deployment/Production.md)
+- [ADR-0029](../architecture/architecture-decision-records/ADR-0029-unified-institutional-resource-metering.md)

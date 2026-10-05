@@ -1,0 +1,27 @@
+{
+  "vectorVersion": "1.0",
+  "canonicalization": "RFC8785",
+  "hashAlgorithm": "SHA-256",
+  "cases": [
+    {
+      "id": "rfc8785.property-order-unicode-nesting",
+      "description": "Proves deterministic property ordering while preserving Unicode and array order.",
+      "input": { "z": 1, "a": "Å", "nested": { "b": true, "a": null }, "array": [3, 2, 1] },
+      "expectedCanonical": "{\"a\":\"Å\",\"array\":[3,2,1],\"nested\":{\"a\":null,\"b\":true},\"z\":1}",
+      "expectedSha256": "ec2200b0c4cfad540f4c9fba9706854e590e3803942b8bb8e0dfc9cc45fc32f5"
+    },
+    {
+      "id": "psdc.authorization-payload",
+      "description": "Canonical payload used by the PSDC Ed25519 signature vector.",
+      "input": {
+        "contractVersion": "1.0",
+        "decisionId": "13131313-1313-4131-8131-131313131313",
+        "outcome": "allow",
+        "action": "compute.workload.submit",
+        "contextDigest": "1313131313131313131313131313131313131313131313131313131313131313"
+      },
+      "expectedCanonical": "{\"action\":\"compute.workload.submit\",\"contextDigest\":\"1313131313131313131313131313131313131313131313131313131313131313\",\"contractVersion\":\"1.0\",\"decisionId\":\"13131313-1313-4131-8131-131313131313\",\"outcome\":\"allow\"}",
+      "expectedSha256": "bb6159402615b5cf3c0f3815773c8dbb5e1e590c17a3aaa19c85331ee9e6b9bd"
+    }
+  ]
+}

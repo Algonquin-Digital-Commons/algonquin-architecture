@@ -43,7 +43,7 @@ only when it satisfies this document, the linked ADRs, and the common
 
 ## Interfaces, APIs, events, and contracts
 
-- Required interoperability boundary: OIDC, OAuth, SAML where institutionally required, SCIM, WebAuthn, group claims, policy decisions, and workload identity.
+- Required interoperability boundary: institution-authoritative OIDC, OAuth, SAML where institutionally required, SCIM, WebAuthn, group claims, policy decisions, workload identity, W3C DID-compatible identifiers, and Verifiable Credential issuance, presentation, verification, expiry and revocation.
 - HTTP interfaces SHALL use OpenAPI 3.1, explicit request and response schemas,
   documented error codes, pagination for collections, and bounded timeouts.
 - Asynchronous interfaces SHALL use versioned schemas and CloudEvents envelopes;
@@ -53,6 +53,9 @@ only when it satisfies this document, the linked ADRs, and the common
   SHALL expose status, cancellation, expiry, and result retrieval.
 - Consumers SHALL depend on contracts rather than another service's database,
   internal queue, filesystem, or implementation-specific API.
+- Portable credentials SHALL NOT be treated as automatic authorization. A receiving
+  institution MUST verify issuer trust, consent, status and applicable policy before
+  creating local claims or access.
 
 ## Dependencies and ownership boundaries
 

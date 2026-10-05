@@ -3,12 +3,14 @@
 
 > Standard: PSDC-DOC-001
 > Document type: architecture-specification
-> Status: Normative
+> Status: Stub; not yet specified
 > Owner: PSDC Operations Working Group
 > Accountable maintainer: RedjiJB until delegation
 > Last reviewed: 2026-09-11
 > Governing decisions: Applicable ADRs and repository governance
 > Domain: operations
+
+> **Stub - not yet specified.** The requirements below are generic domain-level placeholders shared with sibling documents; this subject's own interfaces, state, failure behaviour and acceptance evidence have not been written. Do not implement from this document. Replace this notice when subject-specific content is added.
 
 ## Purpose and outcome
 
@@ -57,6 +59,7 @@ only when it satisfies this document, the linked ADRs, and the common
 ## Dependencies and ownership boundaries
 
 Inherits [baseline ownership controls](../architecture/Cross-Cutting-Architecture-Requirements.md#ownership-and-dependency-boundaries).
+
 
 ## Data, state, residency, and retention
 

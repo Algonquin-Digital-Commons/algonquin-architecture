@@ -3,15 +3,19 @@
 
 > Standard: PSDC-DOC-001
 > Document type: adr
-> Status: Accepted
+> Status: Superseded
 > Owner: Algonquin Institution Maintainers
 > Accountable maintainer: RedjiJB until delegation
 > Last reviewed: 2026-09-11
-> Governing decisions: Applicable ADRs and repository governance
+> Governing decisions: Superseded by ADR-0030
 
 > Date: 2026-09-11
 > Scope: PSDC-authored code, configuration and documentation
 > Decision owner: Project founder; legal review required before public release
+
+> Historical notice: ADR-0030 replaces this decision for future PSDC-authored work. This
+> record remains authoritative for the rationale and for artifacts that have not completed a
+> lawful repository-specific license migration.
 
 ## Context
 
@@ -56,10 +60,14 @@ distribution reciprocity. Neither is the current default.
 - Every repository must carry `LICENSE`, `NOTICE`, `CONTRIBUTING.md` and a
   third-party license inventory before public release.
 
-## Alternatives
+## Alternatives and evidence
 
-Considered alternatives include retaining the prior approach, adopting a mature open implementation, and building a local adapter. The selected decision is preferred under the stated requirements, constraints, sovereignty, and maintenance capacity; a new option requires a superseding ADR.
+For **ADR-0024: Apache-2.0 with Upstream-First Contribution Policy**, the decision record considered: retain the prior approach; adopt a mature compatible standard or open-source implementation; and build or fork a new primitive. The selected decision is preferred under the stated constraints. A change trigger is new security, licensing, interoperability, sovereignty, cost, or operational evidence; a new option requires an ADR update rather than an undocumented exception.
 
 ## Migration and rollback
 
-Migration MUST identify data/configuration transitions, compatibility windows, verification evidence, owner, and rollback trigger. Rollback restores the last known-good contract and implementation without losing audit evidence.
+A change implementing **ADR-0024: Apache-2.0 with Upstream-First Contribution Policy** MUST preserve the current contract during the declared compatibility window, publish a versioned migration plan, and rehearse rollback before production promotion. Migration evidence includes inventory, data/state transformation, operator communication, and verification. Rollback is triggered by failed acceptance, security regression, loss of institution control, or unrecoverable compatibility failure; it restores the last accepted artifact and preserves audit history. If no migration is currently required, the owner MUST record that as a reviewed no-op and revisit it when the decision changes.
+
+## Alternatives
+
+Considered alternatives include retaining the prior approach, adopting a mature open implementation, and building a local adapter. The selected decision is preferred under the stated requirements, constraints, sovereignty, and maintenance capacity; a new option requires a superseding ADR.

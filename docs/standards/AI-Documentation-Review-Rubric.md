@@ -975,5 +975,5 @@ is unknown.
 - [Human Choices and Decisions Register](../governance/Human-Choices-and-Decisions-Register.md)
 - [Open-Source License Compliance](../governance/Open-Source-License-Compliance.md)
 - [Institution Organization Fork Model ADR](../architecture/architecture-decision-records/ADR-0023-institution-organization-fork-model.md)
-- [License and Upstream Contribution ADR](../architecture/architecture-decision-records/ADR-0024-permissive-license-and-upstream-contribution.md)
+- [Network Copyleft and Commercial Contribution ADR](../architecture/architecture-decision-records/ADR-0030-network-copyleft-and-commercial-contribution.md)
 

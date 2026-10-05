@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:psdc:contracts:compute:offer:1",
+  "title": "PSDC Provider Offer",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["contractVersion", "offerId", "requestId", "providerId", "capabilityId", "sequence", "status", "availableFrom", "expiresAt", "resources", "prices", "healthSnapshotDigest", "policySnapshotDigest", "signature"],
+  "properties": {
+    "contractVersion": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/contractVersion" },
+    "offerId": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/uuid" },
+    "requestId": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/uuid" },
+    "providerId": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/boundedId" },
+    "capabilityId": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/boundedId" },
+    "sequence": { "type": "integer", "minimum": 1 },
+    "status": { "enum": ["submitted", "withdrawn", "expired", "accepted", "rejected"] },
+    "availableFrom": { "type": "string", "format": "date-time" },
+    "expiresAt": { "type": "string", "format": "date-time" },
+    "resources": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/resourceQuantity" },
+    "prices": {
+      "type": "array", "minItems": 1, "maxItems": 32,
+      "items": {
+        "type": "object", "additionalProperties": false, "required": ["metric", "billingUnit", "price"],
+        "properties": {
+          "metric": { "type": "string", "pattern": "^[a-z][a-z0-9_.-]{1,63}$" },
+          "billingUnit": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9._/-]{0,31}$" },
+          "price": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/nonNegativeCreditAmount" }
+        }
+      }
+    },
+    "estimatedCarbonGrams": { "type": "string", "pattern": "^(0|[1-9][0-9]*)(\\.[0-9]{1,6})?$" },
+    "healthSnapshotDigest": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/sha256" },
+    "policySnapshotDigest": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/sha256" },
+    "terms": { "type": "array", "maxItems": 32, "items": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/resourceRef" } },
+    "reason": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/reason" },
+    "signature": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/signature" }
+  },
+  "allOf": [
+    { "if": { "properties": { "status": { "enum": ["withdrawn", "expired", "rejected"] } }, "required": ["status"] }, "then": { "required": ["reason"] } }
+  ]
+}

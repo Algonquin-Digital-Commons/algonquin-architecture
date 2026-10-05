@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:psdc:contracts:common:state-machine:1",
+  "title": "PSDC Executable State Machine Definition",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["machineVersion", "machineId", "contractSchemaId", "statePointer", "initialStates", "terminalStates", "states", "transitions"],
+  "properties": {
+    "machineVersion": { "const": "1.0" },
+    "machineId": { "type": "string", "pattern": "^[a-z][a-z0-9.-]{2,127}$" },
+    "contractSchemaId": { "type": "string", "pattern": "^urn:psdc:contracts:" },
+    "statePointer": { "type": "string", "pattern": "^/" },
+    "initialStates": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
+    "terminalStates": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
+    "states": { "type": "array", "minItems": 2, "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
+    "transitions": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["from", "to", "action", "authorizationAction", "idempotent"],
+        "properties": {
+          "from": { "type": "string", "minLength": 1 },
+          "to": { "type": "string", "minLength": 1 },
+          "action": { "type": "string", "pattern": "^[a-z][a-z0-9_.:-]{2,127}$" },
+          "authorizationAction": { "type": "string", "pattern": "^[a-z][a-z0-9_.:-]{2,127}$" },
+          "idempotent": { "type": "boolean" },
+          "reasonRequired": { "type": "boolean" },
+          "guardCodes": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]{2,63}$" } }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "fixtureVersion": "1.0",
+  "fixtureId": "positive.storage.object-manifest",
+  "category": "positive",
+  "schemaId": "urn:psdc:contracts:storage:object-manifest:1",
+  "description": "Encrypted Tier 1 private object manifest containing references only.",
+  "expected": { "schemaValid": true, "semanticOutcome": "accept" },
+  "instance": {
+    "contractVersion": "1.0",
+    "objectId": "88888888-8888-4888-8888-888888888888",
+    "owner": { "kind": "project", "id": "project.vs01" },
+    "institutionId": "algonquin.example",
+    "createdAt": "2026-09-27T14:00:00Z",
+    "contentDigest": "1414141414141414141414141414141414141414141414141414141414141414",
+    "sizeBytes": 1048576,
+    "mediaType": "application/octet-stream",
+    "dataClassification": "confidential",
+    "purpose": "Retain encrypted VS-01 evidence input.",
+    "tier": 1,
+    "encryption": { "mode": "client_side_envelope", "contentAlgorithm": "AES-256-GCM", "keyEnvelopeRef": { "kind": "key-envelope", "id": "99999999-9999-4999-8999-999999999999" }, "keyVersion": 1, "aadDigest": "1515151515151515151515151515151515151515151515151515151515151515" },
+    "retention": { "class": "retention.project.active", "retainUntil": "2027-09-27T14:00:00Z", "deletionPolicy": "automatic_verified", "legalHold": false },
+    "residency": { "allowedCountries": ["CA"], "allowedInstitutionIds": ["algonquin.example"], "allowFederation": false, "publicNetworkAllowed": false },
+    "signature": { "algorithm": "Ed25519", "keyId": "did:web:algonquin.example#storage-authority-1", "canonicalization": "RFC8785", "signedAt": "2026-09-27T14:00:00Z", "value": "b2JqZWN0LW1hbmlmZXN0LXNpZw" }
+  }
+}

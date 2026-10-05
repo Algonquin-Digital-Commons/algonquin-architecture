@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:psdc:contracts:compute:capability:1",
+  "title": "PSDC Provider Capability Advertisement",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["contractVersion", "capabilityId", "providerId", "resourceId", "sequence", "status", "observedAt", "expiresAt", "locality", "trust", "compute", "available", "signature"],
+  "properties": {
+    "contractVersion": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/contractVersion" },
+    "capabilityId": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/boundedId" },
+    "providerId": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/boundedId" },
+    "resourceId": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/boundedId" },
+    "sequence": { "type": "integer", "minimum": 1 },
+    "status": { "enum": ["available", "draining", "unavailable", "revoked"] },
+    "observedAt": { "type": "string", "format": "date-time" },
+    "expiresAt": { "type": "string", "format": "date-time" },
+    "locality": {
+      "type": "object", "additionalProperties": false, "required": ["institutionId", "zoneId", "country"],
+      "properties": {
+        "institutionId": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/institutionId" },
+        "zoneId": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/boundedId" },
+        "country": { "type": "string", "pattern": "^[A-Z]{2}$" },
+        "campusClass": { "enum": ["datacentre", "lab", "edge", "hpc", "partner"] }
+      }
+    },
+    "trust": {
+      "type": "object", "additionalProperties": false, "required": ["tier", "attestationStatus"],
+      "properties": {
+        "tier": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/trustTier" },
+        "attestationStatus": { "enum": ["not_required", "valid", "stale", "failed"] },
+        "attestationRef": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/resourceRef" }
+      }
+    },
+    "compute": {
+      "type": "object", "additionalProperties": false, "required": ["architecture", "cpuModelClass", "backends", "runtimes"],
+      "properties": {
+        "architecture": { "enum": ["amd64", "arm64"] },
+        "cpuModelClass": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "operatingSystem": {
+          "type": "object", "additionalProperties": false, "required": ["family"],
+          "properties": {
+            "family": { "enum": ["linux", "windows", "macos", "other"] },
+            "version": { "type": "string", "minLength": 1, "maxLength": 64 }
+          }
+        },
+        "backends": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/backendKind" } },
+        "runtimes": { "type": "array", "minItems": 1, "maxItems": 32, "items": { "type": "string", "minLength": 1, "maxLength": 128 } },
+        "accelerators": {
+          "type": "array", "maxItems": 16,
+          "items": {
+            "type": "object", "additionalProperties": false, "required": ["kind", "modelClass", "count", "memoryBytes"],
+            "properties": {
+              "kind": { "enum": ["gpu", "npu", "fpga"] },
+              "modelClass": { "type": "string", "minLength": 1, "maxLength": 128 },
+              "count": { "type": "integer", "minimum": 1 },
+              "memoryBytes": { "type": "integer", "minimum": 0 },
+              "partitioning": { "enum": ["none", "mig", "sriov", "timeslice"] }
+            }
+          }
+        }
+      }
+    },
+    "available": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/resourceQuantity" },
+    "pressure": { "enum": ["low", "moderate", "high", "critical"] },
+    "interactiveUserPresent": { "type": "boolean" },
+    "network": {
+      "type": "object", "additionalProperties": false, "required": ["uplinkBitsPerSecond", "downlinkBitsPerSecond"],
+      "properties": {
+        "uplinkBitsPerSecond": { "type": "integer", "minimum": 0 },
+        "downlinkBitsPerSecond": { "type": "integer", "minimum": 0 },
+        "metered": { "type": "boolean" }
+      }
+    },
+    "drain": {
+      "type": "object", "additionalProperties": false, "required": ["requestedAt", "graceSeconds", "reasonCode"],
+      "properties": {
+        "requestedAt": { "type": "string", "format": "date-time" },
+        "graceSeconds": { "type": "integer", "minimum": 0, "maximum": 86400 },
+        "reasonCode": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]{2,63}$" }
+      }
+    },
+    "reason": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/reason" },
+    "signature": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/signature" }
+  },
+  "allOf": [
+    { "if": { "properties": { "status": { "enum": ["unavailable", "revoked"] } }, "required": ["status"] }, "then": { "required": ["reason"] } },
+    { "if": { "properties": { "status": { "const": "draining" } }, "required": ["status"] }, "then": { "required": ["drain"] } }
+  ]
+}

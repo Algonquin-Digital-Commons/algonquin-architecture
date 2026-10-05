@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:psdc:contracts:common:resource-reference:1",
+  "title": "PSDC Resource Reference",
+  "description": "A portable, institution-scoped reference. A reference is neither authorization nor proof that the target exists.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["contractVersion", "institutionId", "resource"],
+  "properties": {
+    "contractVersion": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/contractVersion" },
+    "institutionId": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/institutionId" },
+    "resource": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/resourceRef" },
+    "authority": { "type": "string", "format": "uri", "maxLength": 2048 },
+    "classification": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/dataClassification" }
+  }
+}
