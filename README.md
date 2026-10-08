@@ -44,6 +44,7 @@ live in the sibling repositories under the workspace root.
 - [Semantic clone removal plan](./docs/roadmap/Semantic-Clone-Removal-Plan.md)
 - [Implementation handoff standard](./docs/standards/Implementation-Handoff-Standard.md)
 - [Implementation handoff backlog](./docs/roadmap/Implementation-Handoff-Backlog.md)
+- [H-006 workload classification handoff candidate](./docs/roadmap/H-006-Workload-Classification-Handoff.md)
 - [Documentation completion audit](./docs/architecture/Documentation-Completion-Audit-2026-09-11.md)
 - [Specification completeness standard](./docs/architecture/Specification-Completeness-Standard.md)
 - [PSDC Web foundation](./docs/clients/PSDC-Web-Foundation.md)
@@ -57,6 +58,14 @@ live in the sibling repositories under the workspace root.
 - [ADR-0029: institutional resource market and metering](./docs/architecture/architecture-decision-records/ADR-0029-unified-institutional-resource-metering.md)
 - [ADR-0030: network copyleft and commercial contribution](./docs/architecture/architecture-decision-records/ADR-0030-network-copyleft-and-commercial-contribution.md)
 - [ADR-0031: off-chain operations and on-chain settlement](./docs/architecture/architecture-decision-records/ADR-0031-off-chain-operations-and-on-chain-settlement.md)
+- [ADR-0032: data-plane gateway and two-axis roadmap](./docs/architecture/architecture-decision-records/ADR-0032-data-plane-gateway-and-two-axis-roadmap.md)
+- [ADR-0033: dual-lane adaptive AI sessions](./docs/architecture/architecture-decision-records/ADR-0033-dual-lane-adaptive-ai-sessions.md)
+- [ADR-0034: governed agent skills and workspace knowledge plane](./docs/architecture/architecture-decision-records/ADR-0034-governed-agent-skills-and-workspace-knowledge-plane.md)
+- [Dual-lane adaptive session architecture](./docs/ai/Dual-Lane-Adaptive-Session-Architecture.md)
+- [Minimal conversation experience](./docs/product/Minimal-Conversation-Experience.md)
+- [Typing and draft privacy](./docs/governance/Typing-and-Draft-Privacy.md)
+- [Adaptive AI vertical slice](./docs/roadmap/Adaptive-AI-Vertical-Slice.md)
+- [Workspace knowledge and agent skills](./docs/architecture/Workspace-Knowledge-and-Agent-Skills.md)
 
 ## Shared contract domains
 
