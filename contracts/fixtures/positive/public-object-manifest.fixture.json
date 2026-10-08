@@ -1,0 +1,26 @@
+{
+  "fixtureVersion": "1.0",
+  "fixtureId": "positive.storage.public-tier5-object",
+  "category": "positive",
+  "schemaId": "urn:psdc:contracts:storage:object-manifest:1",
+  "description": "Intentionally public Tier 5 object may be unencrypted only with permanent-public retention and public-network authorization.",
+  "expected": { "schemaValid": true, "semanticOutcome": "accept" },
+  "instance": {
+    "contractVersion": "1.0",
+    "objectId": "c0c0c0c0-c0c0-40c0-80c0-c0c0c0c0c0c0",
+    "owner": { "kind": "organization", "id": "psdc.publications" },
+    "institutionId": "institution.example",
+    "createdAt": "2026-09-27T17:00:00Z",
+    "contentDigest": "c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0",
+    "sizeBytes": 4096,
+    "mediaType": "application/pdf",
+    "dataClassification": "public",
+    "purpose": "Publish the approved public architecture release permanently.",
+    "tier": 5,
+    "encryption": { "mode": "none_public" },
+    "retention": { "class": "retention.public.permanent", "deletionPolicy": "permanent_public", "legalHold": false },
+    "residency": { "allowedCountries": ["CA"], "allowFederation": true, "publicNetworkAllowed": true },
+    "contentAddressing": { "cid": "bafkreigh2akiscaildc6h2w3nwp5x6m4s3tw7j2j3m4n5p6q7r2s3t4u5v", "codec": "raw" },
+    "signature": { "algorithm": "Ed25519", "keyId": "did:web:institution.example#publication-1", "canonicalization": "RFC8785", "signedAt": "2026-09-27T17:00:00Z", "value": "cHVibGljLW9iamVjdC1zaWduYXR1cmU" }
+  }
+}

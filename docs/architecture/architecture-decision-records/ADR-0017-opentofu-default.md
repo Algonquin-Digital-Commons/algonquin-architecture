@@ -1,6 +1,14 @@
 # ADR-0017: OpenTofu Is the Default Infrastructure-as-Code CLI
 
-> Status: Accepted; supersedes ADR-0011
+
+> Standard: PSDC-DOC-001
+> Document type: adr
+> Status: Historical
+> Owner: Algonquin Institution Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+
 > Date: 2026-09-10
 > Scope: Infrastructure provisioning toolchain
 > Decision owner: Project founder
@@ -40,7 +48,16 @@ OpenTofu plus Ansible is the default infrastructure-as-code toolchain.
 - Existing Terraform-language ecosystem familiarity can usually be reused, but
   OpenTofu behavior and provider compatibility remain the tested authority.
 
+## Alternatives
+
+Considered alternatives include retaining the prior approach, adopting a mature open implementation, and building a local adapter. The selected decision is preferred under the stated requirements, constraints, sovereignty, and maintenance capacity; a new option requires a superseding ADR.
+
+## Migration and rollback
+
+Migration MUST identify data/configuration transitions, compatibility windows, verification evidence, owner, and rollback trigger. Rollback restores the last known-good contract and implementation without losing audit evidence.
+
 ## References
 
 - [OpenTofu repository](https://github.com/opentofu/opentofu)
 - [OpenTofu MPL-2.0 license](https://github.com/opentofu/opentofu/blob/main/LICENSE)
+

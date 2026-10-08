@@ -1,10 +1,28 @@
 # ADR Authoring Template
 
-> Status: Authoring template; never normative
+
+> Standard: PSDC-DOC-001
+> Document type: template
+> Status: Template
+> Owner: Algonquin Institution Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
 
 Copy this structure to the next sequential ADR number. Replace the instructional
 text with project evidence and delete sections that are genuinely inapplicable
 only after explaining why. This file records no decision.
+
+## Non-normative template
+
+This file is non-normative authoring guidance. It is not an accepted architecture
+decision and is excluded from the completed-specification inventory.
+
+## Instructions
+
+Copy the structure to a sequential ADR file, replace instructional text with
+evidence, complete the control block, and obtain the required review before
+marking the new record accepted.
 
 ## Context
 
@@ -57,3 +75,13 @@ interoperability evidence that demonstrates the decision works.
 
 Link governing specifications, issues, standards, upstream projects and replaced
 ADRs. State whether this ADR supersedes or is superseded by another decision.
+
+## Alternatives
+
+Considered alternatives include retaining the prior approach, adopting a mature open implementation, and building a local adapter. The selected decision is preferred under the stated requirements, constraints, sovereignty, and maintenance capacity; a new option requires a superseding ADR.
+
+## Normative requirement
+
+This stub MUST be completed with a concrete context, decision, consequences,
+alternatives, migration/rollback plan, owner, and acceptance evidence before it is
+accepted as an ADR. Until then it is non-deployable scaffolding.

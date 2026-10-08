@@ -1,16 +1,18 @@
 # Control Plane vs Data Plane
 
-> Status: Normative specification; implementation gated
-> Domain: architecture
-> Owner: PSDC Architecture Working Group; accountable maintainer RedjiJB until delegation
+
+> Standard: PSDC-DOC-001
+> Document type: architecture-specification
+> Status: Draft for owner review; sourced from accepted decisions, open gaps listed
+> Owner: PSDC Architecture Working Group
+> Accountable maintainer: RedjiJB until delegation
 > Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+> Domain: architecture
 
 ## Purpose and outcome
 
-This specification defines **Control Plane vs Data Plane** as part of the Post Secondary Digital
-Commons. Its required outcome is coherent system boundaries, portable contracts, explicit trust zones, and institution-first federation. An implementation conforms
-only when it satisfies this document, the linked ADRs, and the common
-[Specification Completeness Standard](../architecture/Specification-Completeness-Standard.md).
+This document separates the control plane (decisions, records, state transitions) from the data plane (the work and the bytes), and says what must keep working when the control plane is unavailable. The compute fabric is the worked example because its control-plane contracts are executable. An implementation conforms only when it satisfies this document, the linked ADRs and the common [Specification Completeness Standard](../architecture/Specification-Completeness-Standard.md).
 
 ## Scope
 
@@ -25,7 +27,7 @@ only when it satisfies this document, the linked ADRs, and the common
 
 ## Normative requirements
 
-- The Control Plane vs Data Plane capability SHALL provide coherent system boundaries, portable contracts, explicit trust zones, and institution-first federation.
+- **ARCH-CPVDP-001:** The Control Plane vs Data Plane capability SHALL provide coherent system boundaries, portable contracts, explicit trust zones, and institution-first federation.
 - The capability SHALL have a versioned configuration schema, explicit safe
   defaults, validation before activation, and a reversible change procedure.
 - User-visible and administrative behaviour SHALL be accessible, explainable,
@@ -36,122 +38,121 @@ only when it satisfies this document, the linked ADRs, and the common
 - Institution deployments SHALL be independently operable and SHALL remain
   compatible with the common contract and conformance suite.
 
+## Subject-specific specification
+
+> **Decision status:** Statements directly traced to accepted ADRs, the decision register, or
+> constitutional architecture restate existing authority. Any new rule identifier or uncited
+> implementation constraint introduced by this draft is a proposal for owner review, not a
+> binding decision. It becomes normative only when the accountable owner accepts it through the
+> decision register, an ADR, or a released contract. The Gaps section remains explicitly open.
+
+### Control plane
+
+The control plane decides and records. In the compute fabric that is the candidate OpenAPI boundary ([compute-control-plane.openapi.json](../../contracts/compute/compute-control-plane.openapi.json)) over providers, capabilities, workload manifests and classification records, offers, placement decisions, leases and usage receipts, plus the AsyncAPI event surface ([compute-fabric.asyncapi.json](../../contracts/events/compute-fabric.asyncapi.json)). Every state change is an authorized, idempotent, generation-fenced transition on a signed record.
+
+### Data plane
+
+The data plane does the work and moves the bytes: workers executing a leased workload, object storage holding images, models, inputs and results, media delivery, and the ActivityPub delivery edge. Bulk data does not pass through the control plane; records carry digests and references.
+
+### Rules
+
+- **CP-1:** A client talks to the control plane for identity, authorization, policy and bounded
+  capability, and moves bytes through an institution-owned, policy-enforcing data-plane gateway.
+  It never reaches a worker, storage backend or model runtime directly. This is the accepted
+  no-bypass rule in the [reference architecture](../vision/constitutional/PSDC-Platform-Reference-Architecture.md)
+  and the [Ecosystem Dependency Contract](Ecosystem-Dependency-Contract.md). The gateway moves
+  bulk data without routing payloads through the control-plane decision service. Direct
+  signed-URL or token access to a backend would need a superseding ADR first (accepted as
+  [ADR-0032](architecture-decision-records/ADR-0032-data-plane-gateway-and-two-axis-roadmap.md)).
+- **CP-2:** Workers connect outbound to a cell gateway over mutual TLS; there is no unsolicited inbound connection to a lab machine (NET-004 in the [decision register](../governance/Human-Choices-and-Decisions-Register.md)).
+- **CP-3:** Leases are time-bounded. A lease carries absolute timestamps for audit and federation
+  plus a signed generation cap and disconnect bound. Before requesting activation, the worker
+  records a local monotonic start and sends a one-use challenge. The lease authority returns a
+  signed `activationGrant` bound to that challenge and generation, with `remainingDurationSeconds`
+  no greater than the time left at grant issuance. The worker enforces that duration from the
+  **pre-request** monotonic start, not from delivery or acceptance; delay only shortens usable
+  time. It MUST NOT reset the timer on replay or renew offline, and MUST shorten, never extend,
+  its authorization when its clock
+  uncertainty is high. Reboot, suspend and resume end the local authorization unless the lease
+  defines otherwise. Revocation takes effect when authenticated revocation evidence reaches the
+  worker, so the maximum permitted exposure is `maximumDisconnectedSeconds`, not an impossible
+  instantaneous offline revocation.
+- **CP-4:** Control-plane events are delivered at least once. Exactly-once effective handling
+  requires a unique inbox key, atomic business-state and inbox commit, a transactional outbox,
+  monotonic ordering within the declared scope, and deterministic duplicate responses. Envelope
+  fields alone do not provide those guarantees ([Event-Driven Architecture](Event-Driven-Architecture.md)).
+- **CP-5:** Authorization and security failures fail closed; low-risk reads may use a documented safe cache.
+
+### Behavior when the control plane is unavailable
+
+New placements pause rather than guess. Already-running leases continue only inside their signed
+offline-execution envelope and end no later than expiry; they are not renewed. A worker that has
+already received a verified revocation stops according to the revocation policy. Workers retain
+encrypted results only for a bounded local TTL and retry upload; local retention is not a durable
+recovery guarantee. A job that lacks verified inputs does not start
+([Ecosystem Dependency Contract](Ecosystem-Dependency-Contract.md)).
+
+### Transactional invariants required before implementation
+
+- One idempotency key maps to one canonical request digest and one recorded response; reuse with
+  different bytes is rejected.
+- A placement decision may issue at most one lease lineage. At most one non-terminal lease may
+  exist for a workload attempt, enforced transactionally rather than inferred from JSON Schema.
+- A state transition compares the expected generation, appends the state change and outbox event,
+  and records the idempotency result in one database transaction.
+- A receipt chain is identified by `(leaseId, attempt, meterId)` unless one canonical aggregator
+  owns the whole lease attempt. Within a chain the sequence starts at one, is unique and gap-free,
+  each prior digest names the immediately preceding accepted receipt of the same chain, intervals
+  do not overlap, and a fork enters dispute or quarantine. A settlement batch consumes each
+  accepted receipt exactly once.
+- Projectors are disposable views. Rebuilding a projector cannot reissue a lease, rerun a command,
+  duplicate a receipt or submit a second settlement commitment.
+
+### Gaps
+
+The operational schema, uniqueness indexes, isolation level, inbox/outbox transaction, worker
+reconciliation protocol, clock-skew envelope and crash/race fixtures are H-004 work and are not
+yet designed in detail. The contracts name the invariants but do not currently prove them.
+
 ## Interfaces, APIs, events, and contracts
 
-- Required interoperability boundary: versioned synchronous APIs, asynchronous events, identity claims, policy decisions, and repository ownership contracts.
-- HTTP interfaces SHALL use OpenAPI 3.1, explicit request and response schemas,
-  documented error codes, pagination for collections, and bounded timeouts.
-- Asynchronous interfaces SHALL use versioned schemas and CloudEvents envelopes;
-  delivery semantics, ordering, replay, deduplication, and dead-letter behaviour
-  SHALL be declared per event.
-- Mutations SHALL be idempotent or accept an idempotency key. Long-running work
-  SHALL expose status, cancellation, expiry, and result retrieval.
-- Consumers SHALL depend on contracts rather than another service's database,
-  internal queue, filesystem, or implementation-specific API.
+See the [Ecosystem Dependency Contract](../architecture/Ecosystem-Dependency-Contract.md); local extensions remain normative.
 
 ## Dependencies and ownership boundaries
 
-- This domain owns its schemas, policy enforcement points, migrations, service
-  metadata, and compatibility tests.
-- Identity, authorization, secrets, telemetry, object storage, notifications,
-  and gateway functions SHALL be consumed through their owning common contracts.
-- Mandatory runtime dependencies SHALL be open-source and self-hostable. An
-  external or proprietary service MAY be an optional adapter with a tested local
-  replacement and SHALL NOT be required for standalone institutional operation.
-- Circular synchronous dependencies are prohibited. Cross-domain workflows SHALL
-  define a coordinating owner and compensating behaviour.
+Inherits [baseline ownership controls](../architecture/Cross-Cutting-Architecture-Requirements.md#ownership-and-dependency-boundaries).
 
 ## Data, state, residency, and retention
 
-- Governed information includes architecture decisions, schemas, service metadata, dependency declarations, and institution deployment manifests.
-- Every data class SHALL declare an authoritative owner, purpose, classification,
-  residency, retention, export, correction, archival, and deletion rule in the
-  institution manifest before production activation.
-- Services SHALL minimize copied data, preserve provenance, encrypt protected
-  state and backups, and prevent telemetry from becoming an undeclared secondary
-  record system.
-- Cache and derived data SHALL be rebuildable or explicitly protected by backup
-  and recovery objectives. Deletion SHALL propagate to indexes, caches,
-  derivatives, replicas, and backups according to the declared retention policy.
+Inherits [baseline data controls](../architecture/Cross-Cutting-Architecture-Requirements.md#security-privacy-and-data); local extensions remain normative.
 
 ## Security, privacy, safety, and compliance
 
-- Domain controls SHALL include documented trust boundaries, threat models, least privilege, failure isolation, and no implicit transitive trust.
-- Authentication SHALL use the institution-approved identity issuer;
-  authorization SHALL be deny-by-default, least-privilege, policy-driven, and
-  enforced at every trust boundary.
-- Secrets SHALL use institution-controlled secret storage, short-lived credentials
-  where possible, documented rotation, and immediate revocation procedures.
-- Threat modelling SHALL cover misuse, compromised identities, malicious inputs,
-  dependency compromise, data exfiltration, denial of service, and unsafe
-  automation. High-impact actions require explicit confirmation and audit.
-- Logs, traces, diagnostics, and model context SHALL exclude protected content
-  unless explicitly required, minimized, access-controlled, and retained by policy.
+Inherits [baseline data controls](../architecture/Cross-Cutting-Architecture-Requirements.md#security-privacy-and-data); local extensions remain normative.
 
 ## Deployment, environments, and configuration
 
-- The common repository SHALL contain portable schemas, reference configuration,
-  conformance tests, and reusable OpenTofu, Helm, Kubernetes, or container assets.
-- Each institution fork SHALL contain only branding, adapters, policy overlays,
-  release configuration, and signed site values. Secrets SHALL never be committed.
-- Development SHALL use synthetic data. Staging SHALL exercise production-like
-  identity, policy, backup, upgrade, and failure behaviour without production data.
-- Production changes SHALL use reviewed GitOps promotion, immutable versioned
-  artifacts, health gates, rollback, and recorded provenance.
+Inherits [baseline deployment controls](../architecture/Cross-Cutting-Architecture-Requirements.md#deployment-and-configuration).
 
 ## Capacity, scaling, cost, and sustainability
 
-- Capacity SHALL be controlled by quotas, concurrency limits, bounded queues,
-  admission control, backpressure, and per-tenant fairness.
-- The institution manifest SHALL declare demand assumptions, normal and peak
-  capacity, saturation thresholds, scale limits, resource budgets, and service
-  objectives using the common schema.
-- Scale-out SHALL preserve authorization, ordering, idempotency, data consistency,
-  and auditability. Overload SHALL degrade optional work before protected or
-  interactive work and SHALL never bypass security controls.
-- Resource and energy consumption SHALL be observable and included in lifecycle
-  and capacity decisions.
+Inherits [baseline capacity controls](../architecture/Cross-Cutting-Architecture-Requirements.md#capacity-and-overload).
 
 ## Failure, recovery, and compatibility
 
-- Required lifecycle behaviour includes independent component lifecycle, compatibility windows, failure-domain isolation, disaster recovery, and observable control planes.
-- Dependencies SHALL have timeouts, bounded retries with jitter, circuit breakers,
-  health reporting, and documented degraded modes. Security and authorization
-  failures SHALL fail closed.
-- Stateful implementations SHALL meet manifest-declared RPO and RTO values and
-  prove backup restoration before production. Stateless components SHALL be
-  replaceable from source, configuration, and signed artifacts.
-- Releases SHALL support rollback and a compatibility window covering the current
-  major contract version and one prior major version unless an ADR documents a
-  safer domain-specific migration.
+Inherits [baseline reliability controls](../architecture/Cross-Cutting-Architecture-Requirements.md#reliability-and-compatibility); local extensions remain normative.
 
 ## Observability, testing, and operational readiness
 
-- Implementations SHALL publish health, readiness, structured logs, metrics,
-  traces, security events, usage, latency, error, and saturation signals through
-  OpenTelemetry-compatible boundaries without exposing protected data.
-- Required tests include unit, schema, contract, authorization, privacy, failure,
-  upgrade, rollback, accessibility where user-facing, performance, and
-  institution-standalone conformance tests.
-- A release requires a named owner, runbook, threat model, dependency lock,
-  license inventory, SBOM, vulnerability and secret scans, signed provenance,
-  recovery evidence, and passing acceptance tests.
+Inherits [baseline evidence controls](../architecture/Cross-Cutting-Architecture-Requirements.md#observability-and-evidence).
 
 ## Standards and implementation strategy
 
-- Adopted boundary and strategy: open protocols and replaceable implementations selected through adopt, extend, compatible fork, then build.
-- Implementations SHALL follow **adopt → extend → compatible fork → build**.
-  Building a new primitive requires an ADR demonstrating that mature alternatives
-  fail the requirements and that long-term maintenance is funded.
-- Product selection is replaceable behind the contract. Product-specific APIs
-  SHALL remain inside adapters and SHALL NOT leak into portable clients or domain
-  contracts.
+Follows adopt, extend, fork, then build ([ADR-0001](../architecture/architecture-decision-records/ADR-0001-standards-first-buy-borrow-build.md)).
 
 ## Settled architecture constraints
 
-- System boundaries use versioned standard interfaces and keep implementations replaceable.
-- Institution-specific control-plane composition must not create proprietary data-plane protocols.
-- Any exception follows the adopt → extend → compatible fork → build hierarchy and requires an ADR with evidence.
+The accepted constraints are the ADRs listed below and the precedence rules in [Architecture Authority and Precedence](../architecture/Architecture-Authority-and-Precedence.md).
 
 ## Decision traceability
 
@@ -164,24 +165,7 @@ only when it satisfies this document, the linked ADRs, and the common
 
 ## Acceptance criteria
 
-The specification is satisfied when an implementation evidence package proves:
-
-1. versioned schemas and examples validate;
-2. contract and compatibility tests pass;
-3. identity and least-privilege authorization tests pass;
-4. threat, privacy, accessibility, and license reviews are recorded as applicable;
-5. capacity limits, degraded modes, and failure recovery behave as declared;
-6. observability and audit evidence identify success, failure, and saturation;
-7. backup, restore, upgrade, and rollback are demonstrated where applicable;
-8. a standalone institution deployment passes the common conformance suite;
-9. no mandatory proprietary service or undocumented cross-domain dependency exists.
-
-## Decision status
-
-There are no unresolved architecture choices in this specification. Institution
-values are supplied through the governed deployment-manifest schema, and
-implementation evidence is collected at the implementation authorization and
-production release gates. Changes follow ADR-based change control.
+Inherits [baseline acceptance gates](../architecture/Cross-Cutting-Architecture-Requirements.md#observability-and-evidence); every local requirement MUST also pass.
 
 ## References
 
@@ -191,3 +175,4 @@ production release gates. Changes follow ADR-based change control.
 - [ADR-0001: Standards First](../architecture/architecture-decision-records/ADR-0001-standards-first-buy-borrow-build.md)
 - [ADR-0012: Post Secondary Digital Commons](../architecture/architecture-decision-records/ADR-0012-post-secondary-digital-commons.md)
 - [ADR-0017: OpenTofu Default](../architecture/architecture-decision-records/ADR-0017-opentofu-default.md)
+

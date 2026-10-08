@@ -1,16 +1,24 @@
 # Dependencies and Critical Path
 
-> Status: Normative specification; implementation gated
-> Domain: roadmap
-> Owner: PSDC Roadmap Working Group; accountable maintainer RedjiJB until delegation
+
+> Standard: PSDC-DOC-001
+> Document type: roadmap
+> Status: Draft for owner review; sourced from accepted decisions, open gaps listed
+> Owner: PSDC Roadmap Working Group
+> Accountable maintainer: RedjiJB until delegation
 > Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+> Domain: roadmap
+
+> **Decision status:** Statements directly traced to accepted ADRs, the decision register, or
+> the constitutional architecture restate existing authority. Any new rule identifier, ordering
+> or uncited constraint introduced by this draft is a proposal for owner review, not a binding
+> decision. It becomes normative only when the accountable owner accepts it through the decision
+> register, an ADR, or a released contract. The Gaps section remains explicitly open.
 
 ## Purpose and outcome
 
-This specification defines **Dependencies and Critical Path** as part of the Post Secondary Digital
-Commons. Its required outcome is dependency-ordered delivery with explicit outcomes, entry and exit criteria, risks, owners, and evidence. An implementation conforms
-only when it satisfies this document, the linked ADRs, and the common
-[Specification Completeness Standard](../architecture/Specification-Completeness-Standard.md).
+This document states what must come before what. Dependencies are gates: if one is unmet, work stays in the current phase. The order below follows the vertical-slice plan and the implementation-readiness sequence. An implementation conforms only when it satisfies this document, the linked ADRs and the common [Specification Completeness Standard](../architecture/Specification-Completeness-Standard.md).
 
 ## Scope
 
@@ -25,7 +33,7 @@ only when it satisfies this document, the linked ADRs, and the common
 
 ## Normative requirements
 
-- The Dependencies and Critical Path capability SHALL provide dependency-ordered delivery with explicit outcomes, entry and exit criteria, risks, owners, and evidence.
+- **ROAD-DACP-001:** The Dependencies and Critical Path capability SHALL provide dependency-ordered delivery with explicit outcomes, entry and exit criteria, risks, owners, and evidence.
 - The capability SHALL have a versioned configuration schema, explicit safe
   defaults, validation before activation, and a reversible change procedure.
 - User-visible and administrative behaviour SHALL be accessible, explainable,
@@ -36,122 +44,100 @@ only when it satisfies this document, the linked ADRs, and the common
 - Institution deployments SHALL be independently operable and SHALL remain
   compatible with the common contract and conformance suite.
 
+## Subject-specific specification
+
+### Two axes, not one path
+
+The roadmap uses two orderings. **Phases 0 to 10** order institution adoption, authorization and operational readiness ([Master Roadmap](Master-Roadmap.md)). **Waves A to E** order common implementation work, which may proceed with synthetic data before any institution operates it. A wave can be built early and operated late.
+
+| Common wave | Developed with synthetic data | Earliest phase that may operate it | Deployment gate |
+|---|---|---|---|
+| A: executable contracts, source admission, minimal identity and policy, network lab profile, development KMS profile, operational database with outbox, reproducible environments | Yes | 3 | Contract and development controls |
+| B: VS-01, an approved request on an idle lab node settling institutional credits | Yes | 7, for campus operation | Compute owner, sandbox, preemption and safety evidence |
+| C: VS-02 to VS-06 (Kubernetes service, OpenStack VM, Slurm HPC job, private hot object, private content distribution) | Yes | 7 or later | Backend-specific and storage-specific gates |
+| D: VS-07 and VS-08 (governed federation storage, portable student identity) | Yes | 9 | Peer trust, credential, retention, consent and dispute conformance |
+| E: VS-09, client-to-AI session across web, desktop and mobile | Yes | Phase 4 for the minimal web vertical slice; phase 5 for the supported web, desktop and mobile sandbox experience | Identity, gateway, policy and client gates |
+
+This mapping was accepted by the project founder on 2026-10-05 ([ADR-0032](../architecture/architecture-decision-records/ADR-0032-data-plane-gateway-and-two-axis-roadmap.md), register item ROAD-016). It resolves the apparent conflict between "AI and web come before compute" (phase order) and "the compute task is the first implementation slice, the cohesive client session the last" (wave order): both are true on their own axis.
+
+### Critical path for institution readiness
+
+```text
+governance and self-hosted CI
+        |
+identity + policy + contracts
+        |
+AI gateway + local inference + telemetry
+        |
+web vertical slice
+        |
+desktop host + mobile relay
+        |
+academic and campus adapters
+        |
+storage, compute, media and social pilots
+        |
+cross-institution conformance and federation
+```
+
+Storage is on the path because AI, media and federation evidence depend on encryption, placement, custody, repair, retention and verified deletion (VS-05 to VS-07, covered in [Cloud Service Rollout](Cloud-Service-Rollout.md)). Applied innovation is an institution-bound phase 7 vertical and is not a common dependency.
+
+### Rules
+
+- **DEP-1:** A dependency has an owner, a compatibility expectation and a fallback; an unmet dependency keeps work in the current phase.
+- **DEP-2:** No Compute Fabric dependency for AI or media until it meets workload-isolation and operational criteria (ROAD-007).
+- **DEP-3:** No public federation before moderation, abuse, media-proxy, privacy and incident tests (ROAD-009).
+- **DEP-4:** Backend APIs never become common contracts; the shared contracts stay implementation-neutral.
+- **DEP-5:** Child implementation issues cannot change a contract or security boundary without returning to the contract owner ([Implementation Handoff Standard](../standards/Implementation-Handoff-Standard.md)).
+- **DEP-6:** A wave built early on synthetic data is never evidence that a phase gate has passed.
+
+### Contract readiness behind the path
+
+The compute and economics boundaries needed by VS-01 exist as contract candidates ([Executable Contract Portfolio](../architecture/Executable-Contract-Portfolio.md)). The operational-state database and transactional outbox that the safe operation of those contracts needs is the next planned implementation work and is not yet designed in detail ([Implementation Handoff Backlog](Implementation-Handoff-Backlog.md)).
+
+### Gaps
+
+No owner is named for any gate, and no calendar exists. VS-02 to VS-09 have outcomes and exit evidence defined but no handoff packets yet. Changing the wave-to-phase mapping requires a superseding ADR.
+
 ## Interfaces, APIs, events, and contracts
 
-- Required interoperability boundary: milestone records, dependency maps, implementation gates, decision links, evidence packages, and release readiness reports.
-- HTTP interfaces SHALL use OpenAPI 3.1, explicit request and response schemas,
-  documented error codes, pagination for collections, and bounded timeouts.
-- Asynchronous interfaces SHALL use versioned schemas and CloudEvents envelopes;
-  delivery semantics, ordering, replay, deduplication, and dead-letter behaviour
-  SHALL be declared per event.
-- Mutations SHALL be idempotent or accept an idempotency key. Long-running work
-  SHALL expose status, cancellation, expiry, and result retrieval.
-- Consumers SHALL depend on contracts rather than another service's database,
-  internal queue, filesystem, or implementation-specific API.
+See the [Ecosystem Dependency Contract](../architecture/Ecosystem-Dependency-Contract.md); local extensions remain normative.
 
 ## Dependencies and ownership boundaries
 
-- This domain owns its schemas, policy enforcement points, migrations, service
-  metadata, and compatibility tests.
-- Identity, authorization, secrets, telemetry, object storage, notifications,
-  and gateway functions SHALL be consumed through their owning common contracts.
-- Mandatory runtime dependencies SHALL be open-source and self-hostable. An
-  external or proprietary service MAY be an optional adapter with a tested local
-  replacement and SHALL NOT be required for standalone institutional operation.
-- Circular synchronous dependencies are prohibited. Cross-domain workflows SHALL
-  define a coordinating owner and compensating behaviour.
+Inherits [baseline ownership controls](../architecture/Cross-Cutting-Architecture-Requirements.md#ownership-and-dependency-boundaries).
 
 ## Data, state, residency, and retention
 
-- Governed information includes scope, dependencies, risks, estimates, outcomes, acceptance evidence, decisions, and change history.
-- Every data class SHALL declare an authoritative owner, purpose, classification,
-  residency, retention, export, correction, archival, and deletion rule in the
-  institution manifest before production activation.
-- Services SHALL minimize copied data, preserve provenance, encrypt protected
-  state and backups, and prevent telemetry from becoming an undeclared secondary
-  record system.
-- Cache and derived data SHALL be rebuildable or explicitly protected by backup
-  and recovery objectives. Deletion SHALL propagate to indexes, caches,
-  derivatives, replicas, and backups according to the declared retention policy.
+Inherits [baseline data controls](../architecture/Cross-Cutting-Architecture-Requirements.md#security-privacy-and-data); local extensions remain normative.
 
 ## Security, privacy, safety, and compliance
 
-- Domain controls SHALL include security, privacy, accessibility, licensing, and operational readiness included in every applicable milestone exit gate.
-- Authentication SHALL use the institution-approved identity issuer;
-  authorization SHALL be deny-by-default, least-privilege, policy-driven, and
-  enforced at every trust boundary.
-- Secrets SHALL use institution-controlled secret storage, short-lived credentials
-  where possible, documented rotation, and immediate revocation procedures.
-- Threat modelling SHALL cover misuse, compromised identities, malicious inputs,
-  dependency compromise, data exfiltration, denial of service, and unsafe
-  automation. High-impact actions require explicit confirmation and audit.
-- Logs, traces, diagnostics, and model context SHALL exclude protected content
-  unless explicitly required, minimized, access-controlled, and retained by policy.
+Inherits [baseline data controls](../architecture/Cross-Cutting-Architecture-Requirements.md#security-privacy-and-data); local extensions remain normative.
 
 ## Deployment, environments, and configuration
 
-- The common repository SHALL contain portable schemas, reference configuration,
-  conformance tests, and reusable OpenTofu, Helm, Kubernetes, or container assets.
-- Each institution fork SHALL contain only branding, adapters, policy overlays,
-  release configuration, and signed site values. Secrets SHALL never be committed.
-- Development SHALL use synthetic data. Staging SHALL exercise production-like
-  identity, policy, backup, upgrade, and failure behaviour without production data.
-- Production changes SHALL use reviewed GitOps promotion, immutable versioned
-  artifacts, health gates, rollback, and recorded provenance.
+Inherits [baseline deployment controls](../architecture/Cross-Cutting-Architecture-Requirements.md#deployment-and-configuration).
 
 ## Capacity, scaling, cost, and sustainability
 
-- Capacity SHALL be controlled by quotas, concurrency limits, bounded queues,
-  admission control, backpressure, and per-tenant fairness.
-- The institution manifest SHALL declare demand assumptions, normal and peak
-  capacity, saturation thresholds, scale limits, resource budgets, and service
-  objectives using the common schema.
-- Scale-out SHALL preserve authorization, ordering, idempotency, data consistency,
-  and auditability. Overload SHALL degrade optional work before protected or
-  interactive work and SHALL never bypass security controls.
-- Resource and energy consumption SHALL be observable and included in lifecycle
-  and capacity decisions.
+Inherits [baseline capacity controls](../architecture/Cross-Cutting-Architecture-Requirements.md#capacity-and-overload).
 
 ## Failure, recovery, and compatibility
 
-- Required lifecycle behaviour includes quarterly sequencing review, dependency and risk updates, evidence-based gate decisions, and transparent scope change control.
-- Dependencies SHALL have timeouts, bounded retries with jitter, circuit breakers,
-  health reporting, and documented degraded modes. Security and authorization
-  failures SHALL fail closed.
-- Stateful implementations SHALL meet manifest-declared RPO and RTO values and
-  prove backup restoration before production. Stateless components SHALL be
-  replaceable from source, configuration, and signed artifacts.
-- Releases SHALL support rollback and a compatibility window covering the current
-  major contract version and one prior major version unless an ADR documents a
-  safer domain-specific migration.
+Inherits [baseline reliability controls](../architecture/Cross-Cutting-Architecture-Requirements.md#reliability-and-compatibility); local extensions remain normative.
 
 ## Observability, testing, and operational readiness
 
-- Implementations SHALL publish health, readiness, structured logs, metrics,
-  traces, security events, usage, latency, error, and saturation signals through
-  OpenTelemetry-compatible boundaries without exposing protected data.
-- Required tests include unit, schema, contract, authorization, privacy, failure,
-  upgrade, rollback, accessibility where user-facing, performance, and
-  institution-standalone conformance tests.
-- A release requires a named owner, runbook, threat model, dependency lock,
-  license inventory, SBOM, vulnerability and secret scans, signed provenance,
-  recovery evidence, and passing acceptance tests.
+Inherits [baseline evidence controls](../architecture/Cross-Cutting-Architecture-Requirements.md#observability-and-evidence).
 
 ## Standards and implementation strategy
 
-- Adopted boundary and strategy: repository-native plans linked to ADRs and specifications; dates are forecasts and gates depend on evidence.
-- Implementations SHALL follow **adopt → extend → compatible fork → build**.
-  Building a new primitive requires an ADR demonstrating that mature alternatives
-  fail the requirements and that long-term maintenance is funded.
-- Product selection is replaceable behind the contract. Product-specific APIs
-  SHALL remain inside adapters and SHALL NOT leak into portable clients or domain
-  contracts.
+Follows adopt, extend, fork, then build ([ADR-0001](../architecture/architecture-decision-records/ADR-0001-standards-first-buy-borrow-build.md)).
 
 ## Settled architecture constraints
 
-- Roadmap work evaluates standards and upstream projects before scheduling custom implementation.
-- Phases prioritize gateway, identity, integration, policy, and user value while experimental infrastructure remains replaceable.
-- Any exception follows the adopt → extend → compatible fork → build hierarchy and requires an ADR with evidence.
+The accepted constraints are the ADRs listed below and the precedence rules in [Architecture Authority and Precedence](../architecture/Architecture-Authority-and-Precedence.md).
 
 ## Decision traceability
 
@@ -164,24 +150,31 @@ only when it satisfies this document, the linked ADRs, and the common
 
 ## Acceptance criteria
 
-The specification is satisfied when an implementation evidence package proves:
+Inherits [baseline acceptance gates](../architecture/Cross-Cutting-Architecture-Requirements.md#observability-and-evidence); every local requirement MUST also pass.
 
-1. versioned schemas and examples validate;
-2. contract and compatibility tests pass;
-3. identity and least-privilege authorization tests pass;
-4. threat, privacy, accessibility, and license reviews are recorded as applicable;
-5. capacity limits, degraded modes, and failure recovery behave as declared;
-6. observability and audit evidence identify success, failure, and saturation;
-7. backup, restore, upgrade, and rollback are demonstrated where applicable;
-8. a standalone institution deployment passes the common conformance suite;
-9. no mandatory proprietary service or undocumented cross-domain dependency exists.
+## Outcome
 
-## Decision status
+The roadmap outcome is a usable vertical slice with stable contracts, operational ownership, and evidence sufficient to start the next phase.
 
-There are no unresolved architecture choices in this specification. Institution
-values are supplied through the governed deployment-manifest schema, and
-implementation evidence is collected at the implementation authorization and
-production release gates. Changes follow ADR-based change control.
+## Dependencies
+
+Dependencies are phase gates, not suggestions. Each dependency has an owner, compatibility expectation, and fallback; unmet dependencies keep work in the current phase.
+
+## Phase
+
+Each numbered phase defines the capability and evidence to produce. Phase work MUST preserve the documented order unless a superseding ADR records the change.
+
+## Exit criteria
+
+Exit criteria include passing tests, security/privacy review, operator runbook, rollback rehearsal, and accountable ownership for the next dependency.
+
+## Risk
+
+Risks include lock-in, authority escalation, privacy leakage, upstream drift, capacity, and contract instability. Mitigations and residual risk are recorded with the phase.
+
+## Evidence
+
+Evidence includes contract tests, threat/privacy reviews, provenance/SBOM, capacity/failure results, runbooks, approvals, and a signed phase decision.
 
 ## References
 
@@ -191,3 +184,4 @@ production release gates. Changes follow ADR-based change control.
 - [ADR-0001: Standards First](../architecture/architecture-decision-records/ADR-0001-standards-first-buy-borrow-build.md)
 - [ADR-0012: Post Secondary Digital Commons](../architecture/architecture-decision-records/ADR-0012-post-secondary-digital-commons.md)
 - [ADR-0017: OpenTofu Default](../architecture/architecture-decision-records/ADR-0017-opentofu-default.md)
+

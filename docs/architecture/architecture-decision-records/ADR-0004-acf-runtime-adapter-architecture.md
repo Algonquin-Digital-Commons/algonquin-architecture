@@ -1,6 +1,14 @@
 # ADR-0004: ACF Is Runtime-Agnostic
 
+
+> Standard: PSDC-DOC-001
+> Document type: adr
 > Status: Accepted
+> Owner: Algonquin Institution Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+
 > Scope: Algonquin Compute Fabric
 
 ## Context
@@ -26,3 +34,11 @@ serving provides evidence-based value.
 - Adapter capability negotiation is explicit and testable.
 - Experimental heterogeneous sharding cannot define the baseline job contract.
 - Replacing an engine does not require redesigning enrollment or scheduling.
+
+## Alternatives
+
+Considered alternatives include retaining the prior approach, adopting a mature open implementation, and building a local adapter. The selected decision is preferred under the stated requirements, constraints, sovereignty, and maintenance capacity; a new option requires a superseding ADR.
+
+## Migration and rollback
+
+Migration MUST identify data/configuration transitions, compatibility windows, verification evidence, owner, and rollback trigger. Rollback restores the last known-good contract and implementation without losing audit evidence.

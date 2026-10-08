@@ -1,6 +1,14 @@
 # ADR-0007: Use Supported Brightspace Integration Mechanisms
 
+
+> Standard: PSDC-DOC-001
+> Document type: adr
 > Status: Accepted
+> Owner: Algonquin Institution Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+
 > Scope: Academic integrations
 
 ## Context
@@ -31,3 +39,11 @@ course data become explicitly unavailable when its adapter is disabled.
 - Contract tests and vendor-change monitoring are required.
 - Disabling the connector does not disable the core platform, but it does disable
   the production academic capabilities that require authoritative LMS data.
+
+## Alternatives
+
+Considered alternatives include retaining the prior approach, adopting a mature open implementation, and building a local adapter. The selected decision is preferred under the stated requirements, constraints, sovereignty, and maintenance capacity; a new option requires a superseding ADR.
+
+## Migration and rollback
+
+Migration MUST identify data/configuration transitions, compatibility windows, verification evidence, owner, and rollback trigger. Rollback restores the last known-good contract and implementation without losing audit evidence.

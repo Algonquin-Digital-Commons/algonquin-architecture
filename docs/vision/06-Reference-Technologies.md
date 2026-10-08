@@ -1,9 +1,14 @@
 # 06 Reference Technologies
 
-> Status: Normative reference baseline; exact release selection is an implementation gate
-> Domain: vision
+
+> Standard: PSDC-DOC-001
+> Document type: architecture-map
+> Status: Normative
 > Owner: Platform architecture
+> Accountable maintainer: RedjiJB until delegation
 > Last reviewed: 2026-09-10
+> Governing decisions: Applicable ADRs and repository governance
+> Domain: vision
 
 ## Purpose
 
@@ -77,6 +82,11 @@ and why the selected implementation is appropriate for its workload.
 - Implementation evidence gate: verify exact releases, transitive licenses, security posture,
   owners, capacity fit, accessibility and exit tests before production.
 
+## Ownership, dependency relationships, source of truth, and validation
+
+MAP-REFTECH-001: Capability owners own selections, security and license owners approve admission, and institution operators own deployed versions. Every dependency terminates at the owning open contract rather than a product-private interface. The accepted technology-default policy and component provenance records are source of truth. Validation MUST detect stale project status, license drift, unsupported versions, missing replacement paths, and ADR contradictions.
+
 ## References
 
 - [Full Technology Stack and Open-Source Alternatives](14-Full-Technology-Stack-and-Open-Source-Alternatives.md)
+

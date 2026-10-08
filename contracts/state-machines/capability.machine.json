@@ -1,0 +1,14 @@
+{
+  "machineVersion": "1.0", "machineId": "compute.capability.v1", "contractSchemaId": "urn:psdc:contracts:compute:capability:1", "statePointer": "/properties/status/enum",
+  "initialStates": ["available", "unavailable"], "terminalStates": ["revoked"], "states": ["available", "draining", "unavailable", "revoked"],
+  "transitions": [
+    { "from": "available", "to": "draining", "action": "capability.drain", "authorizationAction": "compute.capability.drain", "idempotent": true },
+    { "from": "draining", "to": "unavailable", "action": "capability.disable", "authorizationAction": "compute.capability.disable", "idempotent": true, "reasonRequired": true },
+    { "from": "available", "to": "unavailable", "action": "capability.mark-unavailable", "authorizationAction": "compute.capability.disable", "idempotent": true, "reasonRequired": true },
+    { "from": "unavailable", "to": "available", "action": "capability.restore", "authorizationAction": "compute.capability.publish", "idempotent": true, "guardCodes": ["FRESH_OBSERVATION", "ATTESTATION_VALID"] },
+    { "from": "draining", "to": "available", "action": "capability.cancel-drain", "authorizationAction": "compute.capability.publish", "idempotent": true },
+    { "from": "available", "to": "revoked", "action": "capability.revoke", "authorizationAction": "compute.capability.revoke", "idempotent": true, "reasonRequired": true },
+    { "from": "draining", "to": "revoked", "action": "capability.revoke", "authorizationAction": "compute.capability.revoke", "idempotent": true, "reasonRequired": true },
+    { "from": "unavailable", "to": "revoked", "action": "capability.revoke", "authorizationAction": "compute.capability.revoke", "idempotent": true, "reasonRequired": true }
+  ]
+}

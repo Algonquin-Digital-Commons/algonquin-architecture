@@ -1,26 +1,40 @@
 # Master Architecture Document Suite
 
+
+> Standard: PSDC-DOC-001
+> Document type: repository-index
+> Status: Normative
+> Owner: Algonquin Institution Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-25
+> Governing decisions: none; index governed by repository policy
+
 This directory is the normative documentation source for the institution-neutral
 Post Secondary Digital Commons. institution-specific authority and configuration
 live in the Algonquin institution forks.
 
-As of 2026-09-11, the suite contains 423 completed domain specifications,
-constitutional architecture, ADR-0001 through ADR-0025, ten shared contract
-profiles, security and governance policy, implementation readiness, and explicit
-acceptance gates. A complete specification authorizes implementation; it does not
-claim that code, infrastructure or operational evidence already exists.
+As of 2026-09-25, the suite contains constitutional architecture, ADR-0001 through
+ADR-0031, shared contract profiles, security and governance policy, implementation
+readiness, and explicit acceptance gates. Structural validation currently passes,
+but the semantic audit still identifies repeated and subject-substitution content;
+the suite remains in documentation remediation. A complete Level-3 specification
+may authorize implementation; it does not claim that code, infrastructure or
+operational evidence already exists.
 
 ## Reading order
 
 1. `vision/constitutional/Post-Secondary-Digital-Commons-Architecture.md`
 2. `architecture/Consolidated-Ecosystem-Architecture.md`
-3. `architecture/Ecosystem-Dependency-Contract.md`
-4. `architecture/Specification-Completeness-Standard.md`
-5. `vision/13-Technology-Defaults-and-Alternatives.md`
-6. `governance/Human-Choices-and-Decisions-Register.md`
-7. the relevant domain specification and shared contract profile;
-8. the controlling ADRs;
-9. `roadmap/Ecosystem-Implementation-Readiness-2026-09-11.md`.
+3. `architecture/Architecture-Authority-and-Precedence.md`
+4. `architecture/P0-Architecture-Baseline-and-Remediation-Register.md`
+5. `architecture/Ecosystem-Dependency-Contract.md`
+6. `architecture/Specification-Completeness-Standard.md`
+7. `vision/13-Technology-Defaults-and-Alternatives.md`
+8. `governance/Human-Choices-and-Decisions-Register.md`
+9. `architecture/Executable-Contract-Portfolio.md`
+10. the relevant domain specification and shared contract profile
+11. the controlling ADRs
+12. `roadmap/Vertical-Slice-Completion-Plan.md`, `roadmap/Implementation-Handoff-Backlog.md`, and the implementation-readiness roadmap.
 
 ## Normative specification inventory
 
@@ -72,4 +86,67 @@ Use `Documentation-Architecture-Standard.md` and
 `architecture/Decision-Traceability-Matrix.md` and
 `architecture/Standards-First-Coverage-Matrix.md` for conformance. Current
 execution work is tracked in
-`roadmap/Ecosystem-Implementation-Readiness-2026-09-11.md`.
+`roadmap/Ecosystem-Implementation-Readiness-2026-09-11.md`. Documentation
+semantic remediation is tracked in
+`roadmap/Documentation-Debt-to-Implementation-Grade-Plan.md`.
+Implementation work also follows `standards/Implementation-Handoff-Standard.md`; semantic
+consolidation follows `roadmap/Semantic-Clone-Removal-Plan.md`.
+
+## Purpose
+
+This index explains the purpose and placement of the docs directory and links readers to the authoritative documents it contains.
+
+## Allowed contents
+
+This directory belongs to psdc-architecture. It may contain scoped documentation, contracts, configuration examples, tests, and navigation links owned by this repository.
+
+## Prohibited contents
+
+It MUST NOT contain secrets, credentials, private infrastructure values, unrelated product source, copied institution overrides, or undocumented external dependencies.
+
+## Owner
+
+The owning role is PSDC Architecture Maintainers; accountable maintenance remains with RedjiJB until a second maintainer is appointed.
+
+## Contents
+
+- `academic`
+- `ai`
+- `architecture`
+- `campus-compute-fabric`
+- `clients`
+- `cloud`
+- `compute`
+- `data`
+- `decisions`
+- `deployment`
+- `developer`
+- `Documentation-Architecture-Standard.md`
+- `economics`
+- `fediverse`
+- `governance`
+- `identity`
+- `institutional`
+- `integration`
+- `media`
+- `network`
+- `open-source`
+- `operations`
+- `product`
+- `README.md`
+- `reliability`
+- `roadmap`
+- `runbooks`
+- `security`
+- `storage`
+- `studentlife`
+
+## Contribution and change control
+
+Changes MUST use a pull request, preserve the repository boundary, update affected links and contracts, and pass the structural and substantive documentation audits before merge.
+
+## References
+
+- [Ecosystem documentation quality standard](https://github.com/Post-Secondary-Digital-Commons/psdc-architecture/blob/main/docs/standards/Ecosystem-Documentation-Quality-Standard.md)
+- [Repository governance](https://github.com/Post-Secondary-Digital-Commons/psdc-architecture/blob/main/docs/governance/GitHub-Repository-Governance.md)
+

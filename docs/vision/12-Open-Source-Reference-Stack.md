@@ -1,6 +1,14 @@
 # Technology Reference Stack
 
-> Status: Normative open-source reference stack; exact releases are implementation evidence
+
+> Standard: PSDC-DOC-001
+> Document type: architecture-map
+> Status: Normative
+> Owner: Algonquin Institution Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+
 > Constraint: Every selection requires license, security, accessibility,
 > operational, and institutional review before production
 
@@ -111,3 +119,7 @@ The accepted defaults and evaluated alternatives are consolidated in
 [Technology Defaults and Alternatives](13-Technology-Defaults-and-Alternatives.md).
 The project choices are accepted; exact releases, deployment values, accountable
 institutional owners, and production approvals remain evidence gates.
+
+## Purpose, scope and boundaries, ownership, dependency relationships, source of truth, and validation
+
+MAP-STACK-001: This map connects required capabilities to preferred open implementations and alternatives without approving exact deployed versions, secrets, or site capacity. Capability teams own evaluation; security, licensing, accessibility, and operations owners approve gates. Dependencies are authoritative only through contracts, the technology-default policy, and provenance records. Pre-upgrade validation MUST check license, release health, open-edition features, interoperability, export, security support, and replacement.

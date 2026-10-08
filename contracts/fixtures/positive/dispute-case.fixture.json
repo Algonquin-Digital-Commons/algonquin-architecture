@@ -1,0 +1,23 @@
+{
+  "fixtureVersion": "1.0",
+  "fixtureId": "positive.economics.dispute-case",
+  "category": "positive",
+  "schemaId": "urn:psdc:contracts:economics:dispute-case:1",
+  "description": "Open dispute referencing immutable evidence and a bounded response deadline.",
+  "expected": { "schemaValid": true, "semanticOutcome": "accept", "statusPath": "/status", "expectedStatus": "open", "reasonPath": "/reason/code", "expectedReasonCode": "USAGE_MEASUREMENT_CONTESTED" },
+  "instance": {
+    "contractVersion": "1.0",
+    "disputeId": "20202020-2020-4020-8020-202020202020",
+    "revision": 1,
+    "batchId": "21212121-2121-4121-8121-212121212121",
+    "challenger": { "kind": "project", "id": "project.synthetic.student-club" },
+    "openedAt": "2026-09-29T12:10:00Z",
+    "responseDueAt": "2026-10-06T12:10:00Z",
+    "status": "open",
+    "reason": { "code": "USAGE_MEASUREMENT_CONTESTED", "message": "The synthetic GPU duration is contested." },
+    "contestedResources": [{ "kind": "receipt", "id": "receipt.synthetic.1", "digest": "2020202020202020202020202020202020202020202020202020202020202020" }],
+    "evidence": [{ "uri": "https://evidence.institution.example/synthetic/receipt-1", "digest": "2121212121212121212121212121212121212121212121212121212121212121", "classification": "internal", "retentionClass": "retention.dispute.synthetic" }],
+    "policyDecision": { "decisionId": "22222222-2222-4222-8222-222222222222", "policyId": "policy.settlement.dispute", "policyVersion": "1.0.0", "outcome": "allow" },
+    "signature": { "algorithm": "Ed25519", "keyId": "did:web:institution.example#challenger-1", "canonicalization": "RFC8785", "signedAt": "2026-09-29T12:10:00Z", "value": "ZGlzcHV0ZS1jYXNlLXNpZ25hdHVyZQ" }
+  }
+}

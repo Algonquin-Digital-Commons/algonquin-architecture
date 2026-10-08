@@ -1,9 +1,14 @@
 # 08 Standards Compatibility Matrix
 
-> Status: Normative compatibility targets; conformance results are implementation evidence
-> Domain: vision
+
+> Standard: PSDC-DOC-001
+> Document type: architecture-map
+> Status: Normative
 > Owner: Platform architecture and quality engineering
+> Accountable maintainer: RedjiJB until delegation
 > Last reviewed: 2026-09-10
+> Governing decisions: Applicable ADRs and repository governance
+> Domain: vision
 
 ## Purpose
 
@@ -71,7 +76,12 @@ behaviors, known deviations, and evidence location.
 - Implementation evidence gate: pin versions, build suites, document deviations, and publish
   evidence before using `Compatible` or `Certified` status.
 
+## Ownership, dependency relationships, source of truth, and validation
+
+MAP-STANDARDS-001: Contract owners own protocol profiles; component owners own implementations; the architecture maintainer resolves collisions. Relationships are directional producer-consumer contracts, never private database coupling. Published standards, local profiles, schemas, and accepted ADRs are source of truth. Validation MUST include positive, negative, version-skew, optional-feature, and independent-implementation tests and mark stale or superseded entries.
+
 ## References
 
 - [Ecosystem Implementation Readiness](../roadmap/Ecosystem-Implementation-Readiness-2026-09-11.md)
 - [Full Technology Stack and Open-Source Alternatives](14-Full-Technology-Stack-and-Open-Source-Alternatives.md)
+

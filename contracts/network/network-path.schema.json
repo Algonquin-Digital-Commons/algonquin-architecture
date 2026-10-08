@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:psdc:contracts:network:path:1",
+  "title": "PSDC Network Path Capability",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["contractVersion", "pathId", "providerId", "sequence", "sourceZoneId", "destinationZoneId", "status", "observedAt", "expiresAt", "transport", "isolation", "bandwidth", "latencyClass", "encryption", "egressMode", "signature"],
+  "properties": {
+    "contractVersion": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/contractVersion" },
+    "pathId": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/boundedId" },
+    "providerId": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/boundedId" },
+    "sequence": { "type": "integer", "minimum": 1 },
+    "sourceZoneId": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/boundedId" },
+    "destinationZoneId": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/boundedId" },
+    "status": { "enum": ["available", "degraded", "unavailable", "revoked"] },
+    "observedAt": { "type": "string", "format": "date-time" },
+    "expiresAt": { "type": "string", "format": "date-time" },
+    "transport": { "enum": ["ipv4", "ipv6", "dual_stack"] },
+    "isolation": { "enum": ["shared_policy", "dedicated_segment", "vrf", "encrypted_overlay", "rdma_fabric"] },
+    "bandwidth": {
+      "type": "object", "additionalProperties": false, "required": ["capacityMbps", "availableMbps"],
+      "properties": {
+        "capacityMbps": { "type": "integer", "minimum": 1 },
+        "availableMbps": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "latencyClass": { "enum": ["campus_low", "metro", "regional", "federated", "best_effort"] },
+    "maximumLatencyMs": { "type": "integer", "minimum": 1 },
+    "encryption": {
+      "type": "object", "additionalProperties": false, "required": ["required", "modes"],
+      "properties": {
+        "required": { "type": "boolean" },
+        "modes": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "enum": ["mTLS", "WireGuard", "IPsec", "MACsec", "application"] } }
+      }
+    },
+    "egressMode": { "enum": ["none", "allowlisted", "institution_proxy", "approved_direct"] },
+    "federation": {
+      "type": "object", "additionalProperties": false, "required": ["crossInstitution", "approvedPeerIds"],
+      "properties": {
+        "crossInstitution": { "type": "boolean" },
+        "approvedPeerIds": { "type": "array", "uniqueItems": true, "items": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/institutionId" } }
+      }
+    },
+    "reason": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/reason" },
+    "signature": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/signature" }
+  },
+  "allOf": [
+    { "if": { "properties": { "status": { "enum": ["unavailable", "revoked"] } }, "required": ["status"] }, "then": { "required": ["reason"] } }
+  ]
+}

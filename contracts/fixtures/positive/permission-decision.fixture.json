@@ -1,0 +1,21 @@
+{
+  "fixtureVersion": "1.0",
+  "fixtureId": "positive.agent-sessions.permission-decision",
+  "category": "positive",
+  "schemaId": "urn:psdc:contracts:agent-sessions:permission-decision:1",
+  "description": "Existing permission-decision contract remains covered by the unified runner.",
+  "expected": { "schemaValid": true, "semanticOutcome": "accept", "statusPath": "/decision", "expectedStatus": "allow_once" },
+  "instance": {
+    "contractVersion": "1.0",
+    "decisionId": "a5a5a5a5-a5a5-45a5-85a5-a5a5a5a5a5a5",
+    "requestId": "a3a3a3a3-a3a3-43a3-83a3-a3a3a3a3a3a3",
+    "sessionId": "a4a4a4a4-a4a4-44a4-84a4-a4a4a4a4a4a4",
+    "actionDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "decision": "allow_once",
+    "actorId": "subject.synthetic.student-1",
+    "deviceId": "a6a6a6a6-a6a6-46a6-86a6-a6a6a6a6a6a6",
+    "decidedAt": "2026-09-27T12:01:00Z",
+    "expiresAt": "2026-09-27T12:05:00Z",
+    "signature": "c2lnbmF0dXJl"
+  }
+}

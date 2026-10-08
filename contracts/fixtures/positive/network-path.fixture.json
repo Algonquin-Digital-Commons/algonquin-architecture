@@ -1,0 +1,28 @@
+{
+  "fixtureVersion": "1.0",
+  "fixtureId": "positive.network.path",
+  "category": "positive",
+  "schemaId": "urn:psdc:contracts:network:path:1",
+  "description": "Available encrypted campus path expressed without private addresses.",
+  "expected": { "schemaValid": true, "semanticOutcome": "accept", "statusPath": "/status", "expectedStatus": "available" },
+  "instance": {
+    "contractVersion": "1.0",
+    "pathId": "path.lab-a.dc-a",
+    "providerId": "network.example.core",
+    "sequence": 12,
+    "sourceZoneId": "zone.lab-a",
+    "destinationZoneId": "zone.dc-a",
+    "status": "available",
+    "observedAt": "2026-09-27T14:01:00Z",
+    "expiresAt": "2026-09-27T14:06:00Z",
+    "transport": "dual_stack",
+    "isolation": "vrf",
+    "bandwidth": { "capacityMbps": 10000, "availableMbps": 8000 },
+    "latencyClass": "campus_low",
+    "maximumLatencyMs": 5,
+    "encryption": { "required": true, "modes": ["mTLS", "WireGuard"] },
+    "egressMode": "institution_proxy",
+    "federation": { "crossInstitution": false, "approvedPeerIds": [] },
+    "signature": { "algorithm": "Ed25519", "keyId": "did:web:institution.example#network-1", "canonicalization": "RFC8785", "signedAt": "2026-09-27T14:01:00Z", "value": "bmV0d29yay1wYXRoLXNpZ25hdHVyZQ" }
+  }
+}

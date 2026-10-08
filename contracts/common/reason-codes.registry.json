@@ -1,0 +1,22 @@
+{
+  "$comment": "Registered vocabulary for terminal lease transitions, usage-receipt assertions and capability drains. Provider or meter codes and providerFault defaults are not adjudicated facts or settlement authority. Economic and reputation effects require a verified, signed reason-adjudication record from the institution lease authority. Codes are append-only; never repurpose an existing code.",
+  "registryVersion": "1.0",
+  "codes": [
+    { "code": "WORKLOAD_COMPLETED", "category": "normal", "appliesTo": ["lease:released"], "usageOutcomes": ["succeeded"], "retryableDefault": false, "providerFault": false, "description": "The workload finished and the lease was released by its owner." },
+    { "code": "WORKLOAD_CANCELLED", "category": "normal", "appliesTo": ["lease:released"], "usageOutcomes": ["cancelled"], "retryableDefault": false, "providerFault": false, "description": "The requester cancelled the workload and released the lease." },
+    { "code": "LEASE_EXPIRED", "category": "timeout", "appliesTo": ["lease:expired"], "usageOutcomes": ["lost", "failed", "succeeded"], "retryableDefault": false, "providerFault": false, "description": "The lease reached its authoritative expiry." },
+    { "code": "ACTIVATION_TIMEOUT", "category": "timeout", "appliesTo": ["lease:expired"], "usageOutcomes": ["lost", "failed"], "retryableDefault": true, "providerFault": false, "description": "The lease was not activated before activateBy." },
+    { "code": "RENEWAL_TIMEOUT", "category": "timeout", "appliesTo": ["lease:expired"], "usageOutcomes": ["lost", "failed"], "retryableDefault": true, "providerFault": false, "description": "A requested renewal was not granted before the renewal deadline." },
+    { "code": "OWNER_RECLAIM", "category": "owner_reclaim", "appliesTo": ["lease:revoked"], "usageOutcomes": ["preempted"], "retryableDefault": true, "providerFault": false, "description": "The machine owner or an interactive user needed the resources back (idle policy). Not a fault of the workload or the provider." },
+    { "code": "CAPACITY_RECLAIM", "category": "capacity_reclaim", "appliesTo": ["lease:revoked"], "usageOutcomes": ["preempted"], "retryableDefault": true, "providerFault": false, "description": "Higher-priority work or an operator capacity decision displaced a preemptible lease." },
+    { "code": "DRAIN_DEADLINE", "category": "drain_deadline", "appliesTo": ["lease:revoked"], "usageOutcomes": ["preempted"], "retryableDefault": true, "providerFault": false, "description": "The capability drain grace period elapsed before the workload finished or checkpointed." },
+    { "code": "PROVIDER_REVOKED", "category": "revocation_for_cause", "appliesTo": ["lease:revoked"], "usageOutcomes": ["failed", "cancelled"], "retryableDefault": false, "providerFault": true, "description": "The provider was revoked; its leases end for cause." },
+    { "code": "TRUST_LOST", "category": "revocation_for_cause", "appliesTo": ["lease:revoked"], "usageOutcomes": ["failed", "cancelled"], "retryableDefault": false, "providerFault": true, "description": "Attestation failed or trust tier no longer satisfies the placement constraint." },
+    { "code": "POLICY_REVOKED", "category": "revocation_for_cause", "appliesTo": ["lease:revoked"], "usageOutcomes": ["failed", "cancelled"], "retryableDefault": false, "providerFault": false, "description": "Updated policy no longer permits the placement." },
+    { "code": "WORKER_LOST", "category": "fault", "appliesTo": ["lease:failed"], "usageOutcomes": ["lost"], "retryableDefault": true, "providerFault": true, "description": "Worker heartbeat and session were lost." },
+    { "code": "WORKLOAD_FAILED", "category": "fault", "appliesTo": ["lease:failed"], "usageOutcomes": ["failed"], "retryableDefault": false, "providerFault": false, "description": "The workload exited with a failure." },
+    { "code": "DRAIN_OWNER_REQUEST", "category": "owner_reclaim", "appliesTo": ["capability:draining"], "retryableDefault": true, "providerFault": false, "description": "The machine owner requested that the resource drain." },
+    { "code": "DRAIN_MAINTENANCE", "category": "capacity_reclaim", "appliesTo": ["capability:draining"], "retryableDefault": true, "providerFault": false, "description": "Planned maintenance drain." },
+    { "code": "DRAIN_RETIREMENT", "category": "capacity_reclaim", "appliesTo": ["capability:draining"], "retryableDefault": false, "providerFault": false, "description": "The resource is being retired." }
+  ]
+}

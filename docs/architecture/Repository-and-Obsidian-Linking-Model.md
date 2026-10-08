@@ -1,8 +1,13 @@
 # Repository and Obsidian Linking Model
 
-> Status: Normative polyrepo and vault model
-> Governing decisions: ADR-0022, ADR-0023
+
+> Standard: PSDC-DOC-001
+> Document type: architecture-map
+> Status: Normative
+> Owner: Algonquin Institution Maintainers
+> Accountable maintainer: RedjiJB until delegation
 > Last reviewed: 2026-09-11
+> Governing decisions: ADR-0022, ADR-0023
 
 ## Source-of-truth model
 
@@ -66,3 +71,27 @@ alone. The vault configuration contains no product source or secrets.
 The former `Algonquin` grand-monorepo is preserved read-only as migration source
 until histories, licenses, links, contract releases and independent CI checks are
 verified. New implementation work begins in the independent repositories.
+
+## Purpose and mapped scope
+
+This map records the context, scope, and relationships represented by **Repository-and-Obsidian-Linking-Model**. It is a cross-repository navigation and ownership record, not a replacement for an owning contract.
+
+## Scope and exclusions
+
+The map covers only the named systems, documents, capabilities, and edges. It excludes secrets, private implementation details, undocumented vendor commitments, and requirements owned by a different specification.
+
+## Ownership boundaries
+
+The owning repository remains authoritative for each capability and contract. This map may summarize and link but MUST NOT redefine an institution policy, product boundary, or signed deployment value.
+
+## Dependency and relationship semantics
+
+A relationship means a declared contract, event, protocol, deployment dependency, or navigation edge; it does not imply shared databases or filesystem access. Producers and consumers MUST use the referenced versioned interface.
+
+## Source of truth and references
+
+Authoritative sources are the owning contracts, accepted ADRs, and deployment profiles linked by this map. References MUST identify the source document and version where applicable.
+
+## Validation and staleness
+
+Maintainers MUST validate links, versions, ownership, and contradictions whenever a boundary or contract changes. A stale edge is corrected, superseded, or marked historical with an owner and expiry before dependent release.

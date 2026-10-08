@@ -1,6 +1,14 @@
 # Happy Ecosystem Feature Adoption Scope
 
-> Status: Accepted product scope; staged implementation
+
+> Standard: PSDC-DOC-001
+> Document type: roadmap
+> Status: Accepted
+> Owner: Algonquin Institution Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+
 > Applies to: Happy-derived mobile, OpenWork-derived desktop, Commons Session Host and Relay
 
 ## Adopt first
@@ -59,3 +67,7 @@ retained for cursor progress but never executed.
 5. Threat-test compromised relay, lost phone, duplicated commands, stale approval,
    offline host, and concurrent handoff.
 6. Pilot read/observe workflows before enabling remote tool approval.
+
+## Outcome, dependencies, phases, risks, evidence, and exit criteria
+
+ROAD-HAPPY-001: The roadmap MUST deliver the platform session contract, loopback host, synthetic relay, permission receipts, and failure fixtures before mobile source is imported. Phase 1 covers encrypted pairing, continuity, approval, handoff, and opaque notifications. Phase 2 begins only after revocation, replay, offline-race, and metadata-minimization tests pass. Dependencies are identity, device keys, the Session Host and Relay, AI policy, and provenance approval. The principal risks are hosted-service coupling, cryptographic misuse, remote-action escalation, and inherited maintenance debt. Exit evidence is schema conformance, threat, privacy and accessibility review, lost-device and compromised-relay exercises, and an accepted phase decision.

@@ -1,0 +1,26 @@
+{
+  "fixtureVersion": "1.0",
+  "fixtureId": "positive.network.reservation",
+  "category": "positive",
+  "schemaId": "urn:psdc:contracts:network:reservation:1",
+  "description": "Active lease-bound network reservation.",
+  "expected": { "schemaValid": true, "semanticOutcome": "accept", "statusPath": "/status", "expectedStatus": "active" },
+  "instance": {
+    "contractVersion": "1.0",
+    "reservationId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+    "pathId": "path.lab-a.dc-a",
+    "leaseId": "66666666-6666-4666-8666-666666666666",
+    "workloadId": "11111111-1111-4111-8111-111111111111",
+    "status": "active",
+    "generation": 1,
+    "issuedAt": "2026-09-27T14:04:00Z",
+    "activateBy": "2026-09-27T14:05:00Z",
+    "expiresAt": "2026-09-27T14:19:20Z",
+    "bandwidthMbps": 100,
+    "qosClass": "bulk",
+    "sourceZoneId": "zone.lab-a",
+    "destinationZoneId": "zone.dc-a",
+    "policyDecision": { "decisionId": "cdcdcdcd-cdcd-4dcd-8dcd-cdcdcdcdcdcd", "policyId": "policy.network.reservation", "policyVersion": "1.0.0", "outcome": "allow" },
+    "signature": { "algorithm": "Ed25519", "keyId": "did:web:institution.example#network-1", "canonicalization": "RFC8785", "signedAt": "2026-09-27T14:04:00Z", "value": "bmV0d29yay1yZXNlcnZhdGlvbi1zaWc" }
+  }
+}

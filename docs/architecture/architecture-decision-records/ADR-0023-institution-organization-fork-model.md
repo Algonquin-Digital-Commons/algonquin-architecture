@@ -1,6 +1,14 @@
 # ADR-0023: Institution Organizations Use Thin Repository Forks
 
+
+> Standard: PSDC-DOC-001
+> Document type: adr
 > Status: Accepted
+> Owner: Algonquin Institution Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+
 > Date: 2026-09-11
 > Scope: GitHub organizations, white-labelling and upstream synchronization
 > Decision owner: Project founder
@@ -52,3 +60,11 @@ thin fork with configuration and assets, preserving upstream compatibility.
   is shared.
 - Another university can reproduce the white-label model without asking
   Algonquin for infrastructure, identity or release access.
+
+## Alternatives
+
+Considered alternatives include retaining the prior approach, adopting a mature open implementation, and building a local adapter. The selected decision is preferred under the stated requirements, constraints, sovereignty, and maintenance capacity; a new option requires a superseding ADR.
+
+## Migration and rollback
+
+Migration MUST identify data/configuration transitions, compatibility windows, verification evidence, owner, and rollback trigger. Rollback restores the last known-good contract and implementation without losing audit evidence.

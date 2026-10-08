@@ -1,195 +1,195 @@
-# Fork Management
+# Upstream Fork and Patch-Queue Management
 
-> Status: Normative specification; implementation gated
-> Domain: open-source
-> Owner: PSDC Open Source Working Group; accountable maintainer RedjiJB until delegation
-> Last reviewed: 2026-09-11
+> Standard: PSDC-DOC-001
+> Document type: policy-standard
+> Status: Normative
+> Owner: PSDC Open Source Working Group
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-25
+> Governing decisions: ADR-0001, ADR-0006, ADR-0023, ADR-0026, ADR-0030
 
-## Purpose and outcome
+## Purpose and authority
 
-This specification defines **Fork Management** as part of the Post Secondary Digital
-Commons. Its required outcome is license-compatible adoption, provenance, upstream collaboration, patch management, and sustainable replacement paths. An implementation conforms
-only when it satisfies this document, the linked ADRs, and the common
-[Specification Completeness Standard](../architecture/Specification-Completeness-Standard.md).
+This policy prevents sovereign operation from becoming an unmaintainable collection of
+deep forks. The PSDC Architecture Maintainers approve fork creation and retirement;
+repository owners maintain provenance, patch queues, upstream synchronization, security
+response and compatible release evidence.
 
 ## Scope
 
-- **In scope:** behaviour, interfaces, dependencies, data, security, deployment
-  boundaries, capacity, failure handling, observability, validation, and lifecycle
-  requirements for Fork Management.
-- **Out of scope:** institution-specific hostnames, credentials, physical capacity,
-  named operators, and legal approvals. Those values belong in signed institution
-  deployment manifests and cannot redefine the common contract.
-- **Authority:** the owning domain may make compatible implementation choices.
-  Contract-breaking or cross-domain changes require an ADR and migration plan.
+This policy covers configured upstreams, adapters, patch queues, forks and design-derived
+implementations used in PSDC common or institution repositories.
 
-## Normative requirements
+## Normative rules
 
-- The Fork Management capability SHALL provide license-compatible adoption, provenance, upstream collaboration, patch management, and sustainable replacement paths.
-- The capability SHALL have a versioned configuration schema, explicit safe
-  defaults, validation before activation, and a reversible change procedure.
-- User-visible and administrative behaviour SHALL be accessible, explainable,
-  auditable, and bounded by institution policy and user authority.
-- An implementation SHALL expose only the minimum capability required by its
-  callers and SHALL reject unknown, unauthorized, malformed, expired, or
-  unsupported requests with stable machine-readable errors.
-- Institution deployments SHALL be independently operable and SHALL remain
-  compatible with the common contract and conformance suite.
+Owners MUST minimize divergence, preserve provenance/licenses, maintain a measured patch
+budget, upstream generic changes and retain a tested replacement/rollback path.
 
-## Interfaces, APIs, events, and contracts
+## Enforcement
 
-- Required interoperability boundary: component inventories, license records, SBOMs, source offers, patch queues, upstream references, and exception ADRs.
-- HTTP interfaces SHALL use OpenAPI 3.1, explicit request and response schemas,
-  documented error codes, pagination for collections, and bounded timeouts.
-- Asynchronous interfaces SHALL use versioned schemas and CloudEvents envelopes;
-  delivery semantics, ordering, replay, deduplication, and dead-letter behaviour
-  SHALL be declared per event.
-- Mutations SHALL be idempotent or accept an idempotency key. Long-running work
-  SHALL expose status, cancellation, expiry, and result retrieval.
-- Consumers SHALL depend on contracts rather than another service's database,
-  internal queue, filesystem, or implementation-specific API.
+Repository protection, provenance/license checks, patch-budget checks, conformance CI and
+release approval block a fork that breaches this policy.
 
-## Dependencies and ownership boundaries
+## Exceptions
 
-- This domain owns its schemas, policy enforcement points, migrations, service
-  metadata, and compatibility tests.
-- Identity, authorization, secrets, telemetry, object storage, notifications,
-  and gateway functions SHALL be consumed through their owning common contracts.
-- Mandatory runtime dependencies SHALL be open-source and self-hostable. An
-  external or proprietary service MAY be an optional adapter with a tested local
-  replacement and SHALL NOT be required for standalone institutional operation.
-- Circular synchronous dependencies are prohibited. Cross-domain workflows SHALL
-  define a coordinating owner and compensating behaviour.
+An exception requires scope, owner, reason, risk, compensating control, approval and expiry.
+No exception may waive license compliance or silently enable a public-network dependency.
 
-## Data, state, residency, and retention
+## Adopt-to-build hierarchy
 
-- Governed information includes copyright notices, licenses, immutable source references, checksums, modifications, vulnerabilities, maintainers, and upstream status.
-- Every data class SHALL declare an authoritative owner, purpose, classification,
-  residency, retention, export, correction, archival, and deletion rule in the
-  institution manifest before production activation.
-- Services SHALL minimize copied data, preserve provenance, encrypt protected
-  state and backups, and prevent telemetry from becoming an undeclared secondary
-  record system.
-- Cache and derived data SHALL be rebuildable or explicitly protected by backup
-  and recovery objectives. Deletion SHALL propagate to indexes, caches,
-  derivatives, replicas, and backups according to the declared retention policy.
+Use the lowest-divergence strategy that meets requirements:
 
-## Security, privacy, safety, and compliance
+1. adopt upstream unmodified;
+2. configure or compose supported extension points;
+3. contribute a generic change upstream;
+4. maintain a narrow adapter;
+5. carry a bounded compatible patch queue;
+6. maintain a scoped fork;
+7. implement PSDC-owned behavior from public specifications/design principles.
 
-- Domain controls SHALL include verified sources, signed releases, dependency scanning, vulnerability response, abandoned-project criteria, and reproducible builds.
-- Authentication SHALL use the institution-approved identity issuer;
-  authorization SHALL be deny-by-default, least-privilege, policy-driven, and
-  enforced at every trust boundary.
-- Secrets SHALL use institution-controlled secret storage, short-lived credentials
-  where possible, documented rotation, and immediate revocation procedures.
-- Threat modelling SHALL cover misuse, compromised identities, malicious inputs,
-  dependency compromise, data exfiltration, denial of service, and unsafe
-  automation. High-impact actions require explicit confirmation and audit.
-- Logs, traces, diagnostics, and model context SHALL exclude protected content
-  unless explicitly required, minimized, access-controlled, and retained by policy.
+A full fork is not the default interpretation of “adopt Akash/Golem/IPFS mechanisms.”
+Fork only the code actually needed and only when configuration/adapters cannot satisfy the
+contract.
 
-## Deployment, environments, and configuration
+## Source-relationship classes
 
-- The common repository SHALL contain portable schemas, reference configuration,
-  conformance tests, and reusable OpenTofu, Helm, Kubernetes, or container assets.
-- Each institution fork SHALL contain only branding, adapters, policy overlays,
-  release configuration, and signed site values. Secrets SHALL never be committed.
-- Development SHALL use synthetic data. Staging SHALL exercise production-like
-  identity, policy, backup, upgrade, and failure behaviour without production data.
-- Production changes SHALL use reviewed GitOps promotion, immutable versioned
-  artifacts, health gates, rollback, and recorded provenance.
+| Class | Meaning | Update behavior |
+|---|---|---|
+| upstream dependency | unmodified release/package | track supported releases and verify artifacts |
+| configured deployment | upstream code plus PSDC config | update upstream; test config compatibility |
+| adapter | PSDC-owned code uses stable upstream API | independently versioned; contract tests |
+| compatible patch queue | small local patches over upstream | continuously rebase; upstream/removal ticket per patch |
+| scoped fork | maintained derived repository | preserve history/remotes/tags; explicit fork release line |
+| design-derived implementation | no copied code; mechanism rebuilt to PSDC contract | document sources and clean implementation evidence |
 
-## Capacity, scaling, cost, and sustainability
+## Selected strategy by derived fabric
 
-- Capacity SHALL be controlled by quotas, concurrency limits, bounded queues,
-  admission control, backpressure, and per-tenant fairness.
-- The institution manifest SHALL declare demand assumptions, normal and peak
-  capacity, saturation thresholds, scale limits, resource budgets, and service
-  objectives using the common schema.
-- Scale-out SHALL preserve authorization, ordering, idempotency, data consistency,
-  and auditability. Overload SHALL degrade optional work before protected or
-  interactive work and SHALL never bypass security controls.
-- Resource and energy consumption SHALL be observable and included in lifecycle
-  and capacity decisions.
+| Fabric | Initial strategy | Fork trigger | Exit trigger |
+|---|---|---|---|
+| Akash-derived service market | study and extract contracts/algorithms; Apache-compatible adapter or bounded fork | required provider/auction mechanism cannot be exposed by adapter | patch budget/security lag breached |
+| Golem-derived task fabric | separate GPL service behind PSDC API or clean design-derived task engine | exact Yagna modules materially reduce scope and obligations are accepted | GPL coupling, public-token assumptions or rebases exceed capacity |
+| Kubo/IPFS | deploy upstream private Kubo and IPFS Cluster configuration first | required metadata/privacy/membership control cannot be added upstream/configured | security/scale/metadata requirements fail |
+| Tahoe-LAFS | use least-authority design; separate GPL service only after evidence | code uniquely meets a requirement | license/operations cost exceeds benefit |
+| Storj | use design and protocol insights; separate AGPL service only after source-publication plan | mature code materially reduces risk | AGPL/complexity or upstream drift exceeds capacity |
+| Sia | exact MIT component/adapters or design-derived contracts | exact repository passes file/dependency review | public-chain assumptions dominate |
+| Cosmos/CometBFT | bounded core modules for internal commitments/settlement | standard modules cannot express accepted state machine | consensus burden exceeds signed-log alternative |
 
-## Failure, recovery, and compatibility
+## Repository and Git topology
 
-- Required lifecycle behaviour includes scheduled upstream review, patch rebase, license audit, replacement rehearsal, contribution tracking, and end-of-life handling.
-- Dependencies SHALL have timeouts, bounded retries with jitter, circuit breakers,
-  health reporting, and documented degraded modes. Security and authorization
-  failures SHALL fail closed.
-- Stateful implementations SHALL meet manifest-declared RPO and RTO values and
-  prove backup restoration before production. Stateless components SHALL be
-  replaceable from source, configuration, and signed artifacts.
-- Releases SHALL support rollback and a compatibility window covering the current
-  major contract version and one prior major version unless an ADR documents a
-  safer domain-specific migration.
+Every fork preserves upstream commit history and has:
 
-## Observability, testing, and operational readiness
+- origin pointing to the PSDC-maintained fork and upstream pointing to the canonical project;
+- protected main and release branches; signed tags and immutable release artifacts;
+- upstream baseline tag, PSDC patch-series branch and generated patch inventory;
+- LICENSE, NOTICE, source offer where required, provenance manifest, SBOM, SECURITY,
+  CONTRIBUTING and MAINTAINERS;
+- automated upstream fetch, compare, vulnerability and compatibility reports;
+- no private institutional configuration, keys, data or branding in the common fork.
 
-- Implementations SHALL publish health, readiness, structured logs, metrics,
-  traces, security events, usage, latency, error, and saturation signals through
-  OpenTelemetry-compatible boundaries without exposing protected data.
-- Required tests include unit, schema, contract, authorization, privacy, failure,
-  upgrade, rollback, accessibility where user-facing, performance, and
-  institution-standalone conformance tests.
-- A release requires a named owner, runbook, threat model, dependency lock,
-  license inventory, SBOM, vulnerability and secret scans, signed provenance,
-  recovery evidence, and passing acceptance tests.
+Institution white-label repositories remain thin overlays. They do not create independent
+forks of Akash/Golem/Kubo merely for branding.
 
-## Standards and implementation strategy
+## Patch record and budget
 
-- Adopted boundary and strategy: OSI-approved licenses for platform software by default, SPDX identifiers, SBOMs, and preserved upstream notices.
-- Implementations SHALL follow **adopt → extend → compatible fork → build**.
-  Building a new primitive requires an ADR demonstrating that mature alternatives
-  fail the requirements and that long-term maintenance is funded.
-- Product selection is replaceable behind the contract. Product-specific APIs
-  SHALL remain inside adapters and SHALL NOT leak into portable clients or domain
-  contracts.
+Each patch records ID, owner, purpose, affected contracts, upstream issue/PR or reason it
+cannot be upstreamed, license, tests, security impact, conflict surface, introduced date,
+review date and removal/replace plan.
 
-## Settled architecture constraints
+Budgets are declared before import:
 
-- Use configuration and plugin surfaces first, contribute generally useful changes upstream, and fork only with an explicit patch budget.
-- Every downstream patch has an owner, rationale, compatibility test, upstream or removal plan, and review trigger.
-- Conform to ADR-0006: use extension points first and preserve upstream upgradeability.
-- Any exception follows the adopt → extend → compatible fork → build hierarchy and requires an ADR with evidence.
+- maximum local patch count and changed lines by subsystem;
+- maximum days behind supported upstream security release;
+- maximum unresolved rebase conflicts;
+- minimum test/pass rate and supported upstream versions;
+- funded maintainer hours and named backup/continuity plan;
+- automatic freeze/replace threshold.
 
-## Decision traceability
+Until a second staff maintainer exists, no high-risk fork may rely on undocumented knowledge
+held by RedjiJB. Build, release, update, rollback and emergency patch procedures must be
+reproducible by an authorized newcomer.
 
-- ADR-0001: Standards-First / Buy-Borrow-Build
-- ADR-0005: Standard Platform Primitives
-- ADR-0012: Tenant-Neutral Post-Secondary Digital Commons
-- ADR-0013: Institution-First Federation Locality
-- ADR-0016: Accepted Project Defaults
-- ADR-0017: OpenTofu Default Infrastructure-as-Code Toolchain
-- ADR-0006: Thin, Upstream-Compatible Product Forks
+## Update and release cadence
 
-## Acceptance criteria
+1. continuously monitor upstream releases, advisories, licenses and project health;
+2. triage critical security changes immediately and other changes at least monthly;
+3. fetch upstream without rewriting PSDC history;
+4. rebase/replay patch queue in a temporary integration branch;
+5. run license, build, unit, integration, conformance, failure, migration and rollback tests;
+6. review patch delta and update provenance/SBOM/notices;
+7. canary, sign and release; retain the prior accepted artifact;
+8. upstream generic improvements and close/remove downstream patches when accepted.
 
-The specification is satisfied when an implementation evidence package proves:
+Security urgency may shorten the cycle but not omit provenance or rollback evidence.
 
-1. versioned schemas and examples validate;
-2. contract and compatibility tests pass;
-3. identity and least-privilege authorization tests pass;
-4. threat, privacy, accessibility, and license reviews are recorded as applicable;
-5. capacity limits, degraded modes, and failure recovery behave as declared;
-6. observability and audit evidence identify success, failure, and saturation;
-7. backup, restore, upgrade, and rollback are demonstrated where applicable;
-8. a standalone institution deployment passes the common conformance suite;
-9. no mandatory proprietary service or undocumented cross-domain dependency exists.
+## Compatibility and contracts
 
-## Decision status
+PSDC clients call PSDC contracts, not fork-private APIs. An adapter maps upstream versions to
+current and previous supported PSDC contract versions. Fork-specific fields remain namespaced
+and optional. Data formats and state migrations have export/import and downgrade rules.
+Conformance fixtures run against the fork and at least one alternative or reference stub.
 
-There are no unresolved architecture choices in this specification. Institution
-values are supplied through the governed deployment-manifest schema, and
-implementation evidence is collected at the implementation authorization and
-production release gates. Changes follow ADR-based change control.
+## Security, privacy and supply chain
+
+Upstream commits and release signatures are verified; builds are reproducible where
+practical and use pinned dependencies. CI runs with least privilege and no production data.
+Maintainer compromise, malicious upstream, dependency confusion, abandoned project and
+build-system takeover are threat-modelled. A fork never silently enables public peers,
+tokens, telemetry or update services.
+
+## Failure and escalation matrix
+
+| Failure | Action |
+|---|---|
+| critical upstream CVE | freeze promotion, patch/rebase within SLA or disable component |
+| incompatible license change | pin last accepted version; fork/replace under old rights after review |
+| upstream abandoned | health review, adopt community successor or execute replacement |
+| patch budget exceeded | stop features, reduce divergence or replace; architecture approval required |
+| rebase breaks state | preserve old release, rehearse migration on copy and roll back |
+| sole maintainer unavailable | freeze major release; follow documented continuity procedure |
+| fork cannot meet conformance | remove from eligible backend set and use alternative |
+| source publication failure | stop distribution/deployment until corrected |
+
+## Audit evidence
+
+Evidence includes immutable upstream baseline, source digest, patch inventory, license
+decision, SBOM, vulnerability report, build log, tests, benchmark/behavior differences,
+state migration, rollback, upstream contributions, release signature and owner approval.
+Evidence is retained for every supported release.
+
+## Alternatives and trade-offs
+
+Never forking minimizes maintenance but may not meet sovereign policy or integration needs.
+Forking whole systems accelerates early feature count but creates permanent security and
+upgrade cost. Clean implementation minimizes license coupling but increases custom code.
+The selected per-component strategy chooses the smallest maintained divergence and measures
+when that choice stops paying for itself.
+
+## Migration and rollback
+
+A fork begins from an immutable accepted upstream baseline. Existing deployments migrate by
+exporting state, validating the new adapter, canarying and retaining the old release during
+the compatibility window. Rollback restores the last accepted binary/configuration and
+state format or uses the rehearsed reverse migration. If downgrade is unsafe, promotion is
+blocked until forward recovery is proven.
+
+## Binary acceptance criteria
+
+- **OS-FM-ACC-001:** a clean clone can reproduce the fork build, patches, notices and SBOM;
+- **OS-FM-ACC-002:** upstream update rehearsal reports every conflict and passes the common
+  contract/failure suite before release;
+- **OS-FM-ACC-003:** every patch has an owner, upstream/removal plan and review date;
+- **OS-FM-ACC-004:** exceeding any patch/security/maintainer budget automatically blocks
+  normal promotion;
+- **OS-FM-ACC-005:** public network, telemetry and token dependencies remain disabled in an
+  offline sovereign deployment;
+- **OS-FM-ACC-006:** a documented replacement backend accepts exported PSDC contracts and
+  restores the tested workload/data fixture;
+- **OS-FM-ACC-007:** another authorized operator can execute update and rollback from the
+  repository documentation without private maintainer knowledge.
 
 ## References
 
-- [Specification Completeness Standard](../architecture/Specification-Completeness-Standard.md)
-- [Technology Defaults and Alternatives](../vision/13-Technology-Defaults-and-Alternatives.md)
-- [Human Choices and Decisions Register](../governance/Human-Choices-and-Decisions-Register.md)
-- [ADR-0001: Standards First](../architecture/architecture-decision-records/ADR-0001-standards-first-buy-borrow-build.md)
-- [ADR-0012: Post Secondary Digital Commons](../architecture/architecture-decision-records/ADR-0012-post-secondary-digital-commons.md)
-- [ADR-0017: OpenTofu Default](../architecture/architecture-decision-records/ADR-0017-opentofu-default.md)
+- [License Policy](License-Policy.md)
+- [Patch Budget](Patch-Budget.md)
+- [Upstream-First Policy](Upstream-First-Policy.md)
+- [Implementation Framework Composition Study](../campus-compute-fabric/Implementation-Framework-Composition-Study.md)

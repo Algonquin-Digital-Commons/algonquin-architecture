@@ -1,7 +1,14 @@
 # Happy Mobile Client Foundation
 
-> Status: Normative foundation; source import authorized only at the implementation provenance gate
+
+> Standard: PSDC-DOC-001
+> Document type: product-specification
+> Status: Normative
 > Owner: Commons AI Fabric mobile team
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+
 > Governing decision: ADR-0019
 
 ## Product role
@@ -68,3 +75,7 @@ WCAG-informed mobile testing, and signed distribution evidence.
 
 Users obtain the app, authenticate and pair devices through
 [Institution-Branded Client Distribution and Access](Institution-Branded-Client-Distribution-and-Access.md).
+
+## Users, accessibility, privacy, security, and acceptance scenarios
+
+PROD-MOBILE-001: Learners, faculty, researchers, and staff MAY observe and steer only authorized sessions. The client MUST support screen readers, scalable text, non-colour status, reduced motion, and accessible approval summaries. Workspace content remains end-to-end encrypted; push receives opaque wake data. Acceptance covers pairing, reconnect, offline editing, lost-device revocation, stale approval rejection, relay compromise, inaccessible-network recovery, and deterministic handoff.

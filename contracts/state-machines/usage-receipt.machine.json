@@ -1,0 +1,11 @@
+{
+  "machineVersion": "1.0", "machineId": "compute.usage-receipt.v1", "contractSchemaId": "urn:psdc:contracts:compute:usage-receipt:1", "statePointer": "/properties/status/enum",
+  "initialStates": ["measured", "failed"], "terminalStates": ["failed", "voided"],
+  "states": ["measured", "failed", "disputed", "voided"],
+  "transitions": [
+    { "from": "measured", "to": "disputed", "action": "receipt.dispute", "authorizationAction": "economics.dispute.open", "idempotent": true, "reasonRequired": true },
+    { "from": "measured", "to": "voided", "action": "receipt.void", "authorizationAction": "compute.receipt.void", "idempotent": true, "reasonRequired": true },
+    { "from": "disputed", "to": "voided", "action": "receipt.uphold-dispute", "authorizationAction": "economics.dispute.resolve", "idempotent": true, "reasonRequired": true },
+    { "from": "disputed", "to": "measured", "action": "receipt.reject-dispute", "authorizationAction": "economics.dispute.resolve", "idempotent": true, "reasonRequired": true }
+  ]
+}

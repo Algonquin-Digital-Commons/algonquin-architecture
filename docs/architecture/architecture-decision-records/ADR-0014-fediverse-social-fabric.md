@@ -1,6 +1,14 @@
 # ADR-0014: The Social Fabric Is Fediverse- and ActivityPub-Based
 
+
+> Standard: PSDC-DOC-001
+> Document type: adr
 > Status: Accepted
+> Owner: Algonquin Institution Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+
 > Date: 2026-09-10
 > Scope: Social, photos, video, communities, blogs, live media, and inter-campus collaboration
 
@@ -29,3 +37,15 @@ institutional identity data to federation peers.
   levels with different policies.
 - Compatibility and abuse-resistance testing precede public federation.
 
+## Alternatives
+
+Considered alternatives include retaining the prior approach, adopting a mature open implementation, and building a local adapter. The selected decision is preferred under the stated requirements, constraints, sovereignty, and maintenance capacity; a new option requires a superseding ADR.
+
+## Migration and rollback
+
+Migration MUST identify data/configuration transitions, compatibility windows, verification evidence, owner, and rollback trigger. Rollback restores the last known-good contract and implementation without losing audit evidence.
+
+## Context
+
+The decision establishes the federation boundary for institution-controlled social
+services while preserving user safety, moderation authority, and protocol interoperability.

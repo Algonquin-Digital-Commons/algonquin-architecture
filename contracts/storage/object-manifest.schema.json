@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:psdc:contracts:storage:object-manifest:1",
+  "title": "PSDC Object Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["contractVersion", "objectId", "owner", "institutionId", "createdAt", "contentDigest", "sizeBytes", "mediaType", "dataClassification", "purpose", "tier", "encryption", "retention", "residency", "signature"],
+  "properties": {
+    "contractVersion": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/contractVersion" },
+    "objectId": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/uuid" },
+    "owner": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/resourceRef" },
+    "institutionId": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/institutionId" },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "contentDigest": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/sha256" },
+    "sizeBytes": { "type": "integer", "minimum": 0 },
+    "mediaType": { "type": "string", "pattern": "^[a-z0-9!#$&^_.+-]+/[a-z0-9!#$&^_.+-]+$", "maxLength": 255 },
+    "dataClassification": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/dataClassification" },
+    "purpose": { "type": "string", "minLength": 3, "maxLength": 500 },
+    "tier": { "type": "integer", "minimum": 0, "maximum": 5 },
+    "encryption": {
+      "type": "object", "additionalProperties": false, "required": ["mode"],
+      "properties": {
+        "mode": { "enum": ["client_side_envelope", "none_public"] },
+        "contentAlgorithm": { "enum": ["AES-256-GCM", "XChaCha20-Poly1305"] },
+        "keyEnvelopeRef": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/resourceRef" },
+        "keyVersion": { "type": "integer", "minimum": 1 },
+        "aadDigest": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/sha256" }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "mode": { "const": "client_side_envelope" } }, "required": ["mode"] },
+          "then": { "required": ["contentAlgorithm", "keyEnvelopeRef", "keyVersion"] }
+        },
+        {
+          "if": { "properties": { "mode": { "const": "none_public" } }, "required": ["mode"] },
+          "then": { "not": { "anyOf": [{ "required": ["contentAlgorithm"] }, { "required": ["keyEnvelopeRef"] }, { "required": ["keyVersion"] }, { "required": ["aadDigest"] }] } }
+        }
+      ]
+    },
+    "retention": {
+      "type": "object", "additionalProperties": false, "required": ["class", "deletionPolicy", "legalHold"],
+      "properties": {
+        "class": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/boundedId" },
+        "retainUntil": { "type": "string", "format": "date-time" },
+        "deletionPolicy": { "enum": ["automatic_verified", "authority_approved", "permanent_public"] },
+        "legalHold": { "type": "boolean" }
+      }
+    },
+    "residency": {
+      "type": "object", "additionalProperties": false, "required": ["allowedCountries", "allowFederation", "publicNetworkAllowed"],
+      "properties": {
+        "allowedCountries": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "pattern": "^[A-Z]{2}$" } },
+        "allowedInstitutionIds": { "type": "array", "uniqueItems": true, "items": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/institutionId" } },
+        "allowFederation": { "type": "boolean" },
+        "publicNetworkAllowed": { "type": "boolean" }
+      }
+    },
+    "contentAddressing": {
+      "type": "object", "additionalProperties": false, "required": ["cid", "codec"],
+      "properties": {
+        "cid": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/cid" },
+        "codec": { "enum": ["raw", "dag-pb", "dag-cbor"] },
+        "carDigest": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/sha256" }
+      }
+    },
+    "labels": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/labels" },
+    "signature": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/signature" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "encryption": { "type": "object", "properties": { "mode": { "const": "none_public" } }, "required": ["mode"] } }, "required": ["encryption"] },
+      "then": {
+        "properties": {
+          "dataClassification": { "const": "public" },
+          "tier": { "enum": [2, 5] }
+        }
+      }
+    },
+    {
+      "if": { "properties": { "dataClassification": { "not": { "const": "public" } } }, "required": ["dataClassification"] },
+      "then": { "properties": { "encryption": { "type": "object", "properties": { "mode": { "const": "client_side_envelope" } } } } }
+    },
+    {
+      "if": { "properties": { "tier": { "const": 5 } }, "required": ["tier"] },
+      "then": {
+        "properties": {
+          "dataClassification": { "const": "public" },
+          "retention": { "type": "object", "properties": { "deletionPolicy": { "const": "permanent_public" } } },
+          "residency": { "type": "object", "properties": { "publicNetworkAllowed": { "const": true } } }
+        }
+      }
+    }
+  ]
+}

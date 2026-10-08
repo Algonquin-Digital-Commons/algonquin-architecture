@@ -1,0 +1,25 @@
+{
+  "fixtureVersion": "1.0",
+  "fixtureId": "positive.economics.ledger-commitment",
+  "category": "positive",
+  "schemaId": "urn:psdc:contracts:economics:ledger-commitment:1",
+  "description": "Finalized Cosmos-derived settlement commitment containing no private content.",
+  "expected": { "schemaValid": true, "semanticOutcome": "accept", "statusPath": "/status", "expectedStatus": "finalized" },
+  "instance": {
+    "contractVersion": "1.0",
+    "commitmentId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+    "batchId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+    "batchRoot": "1616161616161616161616161616161616161616161616161616161616161616",
+    "chainId": "psdc-settlement-test-1",
+    "module": "psdc.settlement.v1",
+    "height": 101,
+    "transactionHash": "1818181818181818181818181818181818181818181818181818181818181818",
+    "status": "finalized",
+    "submittedAt": "2026-09-27T15:02:00Z",
+    "finalizedAt": "2026-09-27T15:02:06Z",
+    "proposerId": "validator.example.test-1",
+    "validatorSetDigest": "1919191919191919191919191919191919191919191919191919191919191919",
+    "evidenceDigest": "1717171717171717171717171717171717171717171717171717171717171717",
+    "signature": { "algorithm": "Ed25519", "keyId": "did:web:institution.example#ledger-1", "canonicalization": "RFC8785", "signedAt": "2026-09-27T15:02:06Z", "value": "bGVkZ2VyLWNvbW1pdG1lbnQtc2ln" }
+  }
+}

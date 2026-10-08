@@ -1,9 +1,14 @@
 # Post-Secondary Digital Commons Reference Architecture
 
-> Status: Normative reference architecture; implementation gated
-> Domain: vision
+
+> Standard: PSDC-DOC-001
+> Document type: architecture-specification
+> Status: Normative
 > Owner: Platform architecture
+> Accountable maintainer: RedjiJB until delegation
 > Last reviewed: 2026-09-10
+> Governing decisions: Applicable ADRs and repository governance
+> Domain: vision
 
 ## Purpose
 
@@ -125,7 +130,28 @@ users, developers, administrators, institutions, federated peers
   named institutional operators, and production approvals are implementation and
   release evidence; they do not reopen this architecture unless an ADR changes it.
 
+## Security, privacy, and safety
+
+**VISION-PPRA-001:** Trust boundaries MUST use institution-controlled identity, deny-by-default authorization, least privilege, secret rotation, minimized telemetry, and explicit data classification/residency/retention/deletion. Protected content, credentials, and private infrastructure values MUST NOT appear in maps, logs, or committed configuration.
+
+## Deployment and implementation
+
+The common organization owns portable contracts, reference configuration, OpenTofu modules, conformance fixtures, and upstream-compatible improvements. Institution organizations own branding, signed site values, policy overlays, adapters, and operational approvals. Development uses synthetic data; production promotion is reviewed, observable, reversible, and provenance-recorded.
+
+## Capacity and scaling
+
+Implementations MUST declare workload assumptions, quotas, concurrency, queue limits, saturation thresholds, resource budgets, and service objectives. Scale-out MUST preserve authorization, ordering, idempotency, auditability, and locality; overload degrades optional work before protected or interactive work.
+
+## Failure, recovery, and compatibility
+
+Dependencies require timeouts, bounded retries, circuit breakers, health signals, and documented degraded modes. Authorization and security failures fail closed. Stateful deployments declare RPO/RTO and restore evidence; contract changes require migration, compatibility windows, rollback, and an ADR when behavior is incompatible.
+
+## Testing and evidence
+
+Evidence MUST include contract and schema validation, authorization/privacy/security tests, failure and recovery exercises, capacity measurements, accessibility where user-facing, SBOM/license review, signed provenance, and standalone institution conformance. The workspace structural and substantive documentation gates are required before release authorization.
+
 ## References
 
 - [Consolidated Ecosystem Architecture](../../architecture/Consolidated-Ecosystem-Architecture.md)
 - [Ecosystem Dependency Contract](../../architecture/Ecosystem-Dependency-Contract.md)
+

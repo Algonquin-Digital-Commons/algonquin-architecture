@@ -1,16 +1,24 @@
 # Consent
 
-> Status: Normative specification; implementation gated
-> Domain: governance
-> Owner: PSDC Governance Working Group; accountable maintainer RedjiJB until delegation
+
+> Standard: PSDC-DOC-001
+> Document type: policy-standard
+> Status: Draft for owner review; sourced from accepted decisions, open gaps listed
+> Owner: PSDC Governance Working Group
+> Accountable maintainer: RedjiJB until delegation
 > Last reviewed: 2026-09-11
+> Governing decisions: ADR-0012, ADR-0013, ADR-0016; Privacy by Design, Data Handling, Data Classification (ADR-0028 informative)
+> Domain: governance
+
+> **Decision status:** Statements directly traced to accepted ADRs, the decision register, or
+> the constitutional architecture restate existing authority. Any new rule identifier, ordering
+> or uncited constraint introduced by this draft is a proposal for owner review, not a binding
+> decision. It becomes normative only when the accountable owner accepts it through the decision
+> register, an ADR, or a released contract. The Gaps section remains explicitly open.
 
 ## Purpose and outcome
 
-This specification defines **Consent** as part of the Post Secondary Digital
-Commons. Its required outcome is accountable decision rights, repository control, safety, audit, contribution, and institution participation. An implementation conforms
-only when it satisfies this document, the linked ADRs, and the common
-[Specification Completeness Standard](../architecture/Specification-Completeness-Standard.md).
+This policy states when the platform needs a person's consent, what a valid consent record contains, and what withdrawal must do. It applies the consent rows of the decision register and the shared privacy policies; it does not name a legal basis, which each institution decides with its own counsel. An implementation conforms only when it satisfies this document, the linked ADRs and the common [Specification Completeness Standard](../architecture/Specification-Completeness-Standard.md).
 
 ## Scope
 
@@ -25,7 +33,7 @@ only when it satisfies this document, the linked ADRs, and the common
 
 ## Normative requirements
 
-- The Consent capability SHALL provide accountable decision rights, repository control, safety, audit, contribution, and institution participation.
+- **GOV-CONSENT-001:** Where consent is the governing authority for a purpose, the Consent policy SHALL make it granular, informed, recorded, prospectively withdrawable and non-portable across institutions, and SHALL keep other kinds of choice from being treated as consent.
 - The capability SHALL have a versioned configuration schema, explicit safe
   defaults, validation before activation, and a reversible change procedure.
 - User-visible and administrative behaviour SHALL be accessible, explainable,
@@ -36,122 +44,102 @@ only when it satisfies this document, the linked ADRs, and the common
 - Institution deployments SHALL be independently operable and SHALL remain
   compatible with the common contract and conformance suite.
 
+## Subject-specific specification
+
+### What consent is and is not
+
+- Consent is one way to authorize processing. The institution's legal basis for each processing purpose is set by the institution, binding law and records authority; this policy does not choose it, and it applies its consent lifecycle only where consent is the governing authority ([Data Handling](Data-Handling.md), [Data Classification](Data-Classification.md), [Privacy by Design](Privacy-by-Design.md)).
+- Consent is not authorization. A person who consents to processing still needs an authorization decision to access anything; consent never grants a role or scope.
+- Several things that look like consent are different authorities and do not use the consent lifecycle:
+
+| Kind of choice | What it is | Examples |
+|---|---|---|
+| Privacy or legal consent | The governing authority for a processing purpose where the institution has selected consent | Personalization, optional collection, sharing with a recipient |
+| Service preference or opt-in | A product setting inside a purpose already authorized | Search and discoverability, notification channels |
+| Asset-owner permission | The owner of a machine allowing use of it | A volunteer personal device |
+| Institution authorization | The institution authorizing its own managed asset or participant | Enrollment of a managed lab machine; pilot cohort membership |
+| Operating-system sensor permission | A device permission prompt | Voice, camera, location services |
+| Research participation consent | Consent governed by research ethics review | A study using platform data |
+| Agent-action confirmation | Approval of one action | Read, propose, confirm, execute tiers; `allow_once` and `deny` |
+
+A machine cannot consent. A managed asset joins the compute fabric through institution authorization, short-lived enrollment with device identity and revocation (Commons Compute Fabric-001 and -003 in the [decision register](Human-Choices-and-Decisions-Register.md)). A personally owned volunteer device (Commons Compute Fabric-017, deferred) involves both the owner's permission for resource use and, separately, privacy consent for any personal data.
+
+### Where the architecture already requires explicit consent or opt-in
+
+| Processing | Accepted default | Kind | Register item |
+|---|---|---|---|
+| Optional data collection | Defaults off; secondary use needs separate authority | Privacy consent where chosen | POL-PRIVACY-003 |
+| Personalization | Granular, understandable, auditable consent and withdrawal before it begins | Privacy consent | PRIV-003 |
+| Persistent agent memory | User-controlled, scoped, inspectable, deletable | Privacy consent where chosen | AI-018 |
+| Storing prompts and responses | Off or minimized; each use has a feature-specific purpose | Privacy consent where chosen | AI-011 |
+| Linking institutional and public social identity | Explicit opt-in, revocable, minimal linkage | Opt-in, consent where chosen | ID-004, FED-004 |
+| Search and discoverability | Opt-in rules suited to the audience | Opt-in | FED-010 |
+| Precise location | Private and reduced precision by default; exact location only with consent | Privacy consent | PRIV-004, FED-012 |
+| Voice, camera and other sensors | Just-in-time, purpose-specific, revocable permission | OS permission plus purpose notice | UX-008 |
+| Notifications | Consent-aware delivery through the communications boundary | Preference or consent | [Cross-Pollination](../architecture/Cross-Pollination-and-Shared-Capabilities.md) |
+| Volunteer compute | Separate opt-in trust tier with a public policy (deferred) | Owner permission plus consent | Commons Compute Fabric-017 |
+| Pilot participation | Small opt-in cohort | Institution authorization plus consent where chosen | ROAD-005 |
+| Sending an object to another institution | Transfer authority recorded before the transfer | Transfer authority; consent where it governs | VS-07 |
+
+### Rules
+
+Rules CONSENT-1 to CONSENT-5 apply where consent is the governing authority for the purpose.
+
+- **CONSENT-1:** Consent is granular. Each purpose is asked separately; one consent never bundles unrelated purposes or conditions an unrelated service on it.
+- **CONSENT-2:** The request states the purpose, data, recipients and retention in plain language and is accessible, with real user testing (UX-002).
+- **CONSENT-3:** Withdrawal is as easy as giving consent and is prospective. After reasonable notice the platform stops further consent-based processing for that purpose; it does not retroactively invalidate completed processing. What happens to data already held is decided by the approved disposition workflow in [Retention](Retention.md), which weighs any independent authority, statutory or records minimum, hold, and access or correction right.
+- **CONSENT-4:** A consent receipt is minimized and purpose-scoped. It holds a pseudonymous subject reference, the controlling institution, the governing authority profile, the exact purpose, data and recipient scope, the notice digest and version, the capture channel and proof, status, and the grant, withdrawal and expiry times. Export is controlled and per purpose or service; there is no omnibus record per person, and a receipt does not become a profile.
+- **CONSENT-5:** Consent given to one institution does not travel to a peer. A transfer to a federation peer needs its own purpose-specific transfer authority and, where consent is the governing authority, explicit consent that covers only the capability or reference exchanged.
+- **CONSENT-6:** Guests and affiliates get no access by default until a sponsor and expiry model exist (ID-012); consent does not substitute for that.
+- **CONSENT-7:** Agent-action confirmation is not data consent; neither implies the other (AI-017, UX-011).
+- **CONSENT-8:** The common Governance Working Group owns the portable minimum, schemas, fixtures and conformance suite. Each institution names accountable owners and enforces locally; neither the common group nor a peer administers another institution.
+
+### Gaps
+
+- The legal basis per purpose, applicable privacy law, records authority and the role of research ethics review are for institutional counsel to name. The bases named here are placeholders, not advice.
+- The treatment of minors, incapacity and substitute decision-makers, and of consent given in a power relationship, is not decided.
+- No contract records consent. Before implementation the platform needs a consent-receipt schema and lifecycle state machine, a purpose and notice-version registry, fixtures for grant, refusal, expiry, withdrawal, supersession and re-consent, tests that consent is not portable across institutions, and end-to-end withdrawal tests covering independent authority, holds, backups, derived data and remote copies.
+- Retention of consent records, the notice wording and the withdrawal user experience are open (the student-life consent specification is a stub).
+
 ## Interfaces, APIs, events, and contracts
 
-- Required interoperability boundary: ADRs, policy records, membership roles, approval workflows, exception records, audit exports, and escalation channels.
-- HTTP interfaces SHALL use OpenAPI 3.1, explicit request and response schemas,
-  documented error codes, pagination for collections, and bounded timeouts.
-- Asynchronous interfaces SHALL use versioned schemas and CloudEvents envelopes;
-  delivery semantics, ordering, replay, deduplication, and dead-letter behaviour
-  SHALL be declared per event.
-- Mutations SHALL be idempotent or accept an idempotency key. Long-running work
-  SHALL expose status, cancellation, expiry, and result retrieval.
-- Consumers SHALL depend on contracts rather than another service's database,
-  internal queue, filesystem, or implementation-specific API.
+See the [Ecosystem Dependency Contract](../architecture/Ecosystem-Dependency-Contract.md); local extensions remain normative.
 
 ## Dependencies and ownership boundaries
 
-- This domain owns its schemas, policy enforcement points, migrations, service
-  metadata, and compatibility tests.
-- Identity, authorization, secrets, telemetry, object storage, notifications,
-  and gateway functions SHALL be consumed through their owning common contracts.
-- Mandatory runtime dependencies SHALL be open-source and self-hostable. An
-  external or proprietary service MAY be an optional adapter with a tested local
-  replacement and SHALL NOT be required for standalone institutional operation.
-- Circular synchronous dependencies are prohibited. Cross-domain workflows SHALL
-  define a coordinating owner and compensating behaviour.
+Inherits [baseline ownership controls](../architecture/Cross-Cutting-Architecture-Requirements.md#ownership-and-dependency-boundaries).
 
 ## Data, state, residency, and retention
 
-- Governed information includes decisions, approvals, membership, incidents, exceptions, audits, contribution provenance, and policy versions.
-- Every data class SHALL declare an authoritative owner, purpose, classification,
-  residency, retention, export, correction, archival, and deletion rule in the
-  institution manifest before production activation.
-- Services SHALL minimize copied data, preserve provenance, encrypt protected
-  state and backups, and prevent telemetry from becoming an undeclared secondary
-  record system.
-- Cache and derived data SHALL be rebuildable or explicitly protected by backup
-  and recovery objectives. Deletion SHALL propagate to indexes, caches,
-  derivatives, replicas, and backups according to the declared retention policy.
+Inherits [baseline data controls](../architecture/Cross-Cutting-Architecture-Requirements.md#security-privacy-and-data); local extensions remain normative.
 
 ## Security, privacy, safety, and compliance
 
-- Domain controls SHALL include two-person control when maintainers permit, protected branches, mandatory 2FA, least privilege, conflict disclosure, and immutable audit history.
-- Authentication SHALL use the institution-approved identity issuer;
-  authorization SHALL be deny-by-default, least-privilege, policy-driven, and
-  enforced at every trust boundary.
-- Secrets SHALL use institution-controlled secret storage, short-lived credentials
-  where possible, documented rotation, and immediate revocation procedures.
-- Threat modelling SHALL cover misuse, compromised identities, malicious inputs,
-  dependency compromise, data exfiltration, denial of service, and unsafe
-  automation. High-impact actions require explicit confirmation and audit.
-- Logs, traces, diagnostics, and model context SHALL exclude protected content
-  unless explicitly required, minimized, access-controlled, and retained by policy.
+Inherits [baseline data controls](../architecture/Cross-Cutting-Architecture-Requirements.md#security-privacy-and-data); local extensions remain normative.
 
 ## Deployment, environments, and configuration
 
-- The common repository SHALL contain portable schemas, reference configuration,
-  conformance tests, and reusable OpenTofu, Helm, Kubernetes, or container assets.
-- Each institution fork SHALL contain only branding, adapters, policy overlays,
-  release configuration, and signed site values. Secrets SHALL never be committed.
-- Development SHALL use synthetic data. Staging SHALL exercise production-like
-  identity, policy, backup, upgrade, and failure behaviour without production data.
-- Production changes SHALL use reviewed GitOps promotion, immutable versioned
-  artifacts, health gates, rollback, and recorded provenance.
+Inherits [baseline deployment controls](../architecture/Cross-Cutting-Architecture-Requirements.md#deployment-and-configuration).
 
 ## Capacity, scaling, cost, and sustainability
 
-- Capacity SHALL be controlled by quotas, concurrency limits, bounded queues,
-  admission control, backpressure, and per-tenant fairness.
-- The institution manifest SHALL declare demand assumptions, normal and peak
-  capacity, saturation thresholds, scale limits, resource budgets, and service
-  objectives using the common schema.
-- Scale-out SHALL preserve authorization, ordering, idempotency, data consistency,
-  and auditability. Overload SHALL degrade optional work before protected or
-  interactive work and SHALL never bypass security controls.
-- Resource and energy consumption SHALL be observable and included in lifecycle
-  and capacity decisions.
+Inherits [baseline capacity controls](../architecture/Cross-Cutting-Architecture-Requirements.md#capacity-and-overload).
 
 ## Failure, recovery, and compatibility
 
-- Required lifecycle behaviour includes scheduled review, expiry and renewal, succession, incident escalation, member offboarding, exception closure, and policy publication.
-- Dependencies SHALL have timeouts, bounded retries with jitter, circuit breakers,
-  health reporting, and documented degraded modes. Security and authorization
-  failures SHALL fail closed.
-- Stateful implementations SHALL meet manifest-declared RPO and RTO values and
-  prove backup restoration before production. Stateless components SHALL be
-  replaceable from source, configuration, and signed artifacts.
-- Releases SHALL support rollback and a compatibility window covering the current
-  major contract version and one prior major version unless an ADR documents a
-  safer domain-specific migration.
+Inherits [baseline reliability controls](../architecture/Cross-Cutting-Architecture-Requirements.md#reliability-and-compatibility); local extensions remain normative.
 
 ## Observability, testing, and operational readiness
 
-- Implementations SHALL publish health, readiness, structured logs, metrics,
-  traces, security events, usage, latency, error, and saturation signals through
-  OpenTelemetry-compatible boundaries without exposing protected data.
-- Required tests include unit, schema, contract, authorization, privacy, failure,
-  upgrade, rollback, accessibility where user-facing, performance, and
-  institution-standalone conformance tests.
-- A release requires a named owner, runbook, threat model, dependency lock,
-  license inventory, SBOM, vulnerability and secret scans, signed provenance,
-  recovery evidence, and passing acceptance tests.
+Inherits [baseline evidence controls](../architecture/Cross-Cutting-Architecture-Requirements.md#observability-and-evidence).
 
 ## Standards and implementation strategy
 
-- Adopted boundary and strategy: transparent open governance, documented authority, repository-native change control, and institution-local legal authority.
-- Implementations SHALL follow **adopt → extend → compatible fork → build**.
-  Building a new primitive requires an ADR demonstrating that mature alternatives
-  fail the requirements and that long-term maintenance is funded.
-- Product selection is replaceable behind the contract. Product-specific APIs
-  SHALL remain inside adapters and SHALL NOT leak into portable clients or domain
-  contracts.
+Follows adopt, extend, fork, then build ([ADR-0001](../architecture/architecture-decision-records/ADR-0001-standards-first-buy-borrow-build.md)).
 
 ## Settled architecture constraints
 
-- A new proprietary primitive requires evidence that standards, mature implementations, extensions, and compatible forks are inadequate.
-- Institutional identity, infrastructure, secrets, policies, and production data remain College-controlled.
-- Any exception follows the adopt → extend → compatible fork → build hierarchy and requires an ADR with evidence.
+The accepted constraints are the ADRs listed below and the precedence rules in [Architecture Authority and Precedence](../architecture/Architecture-Authority-and-Precedence.md).
 
 ## Decision traceability
 
@@ -161,27 +149,35 @@ only when it satisfies this document, the linked ADRs, and the common
 - ADR-0013: Institution-First Federation Locality
 - ADR-0016: Accepted Project Defaults
 - ADR-0017: OpenTofu Default Infrastructure-as-Code Toolchain
+- ADR-0028: Private Content and Storage Fabric (informative for deletion and storage tiers)
 
 ## Acceptance criteria
 
-The specification is satisfied when an implementation evidence package proves:
+Inherits [baseline acceptance gates](../architecture/Cross-Cutting-Architecture-Requirements.md#observability-and-evidence); every local requirement MUST also pass.
 
-1. versioned schemas and examples validate;
-2. contract and compatibility tests pass;
-3. identity and least-privilege authorization tests pass;
-4. threat, privacy, accessibility, and license reviews are recorded as applicable;
-5. capacity limits, degraded modes, and failure recovery behave as declared;
-6. observability and audit evidence identify success, failure, and saturation;
-7. backup, restore, upgrade, and rollback are demonstrated where applicable;
-8. a standalone institution deployment passes the common conformance suite;
-9. no mandatory proprietary service or undocumented cross-domain dependency exists.
+## Enforcement
 
-## Decision status
+The common Governance Working Group owns the portable minimum, the schemas, the fixtures and the conformance suite for this policy. It does not operate enforcement inside any institution. Each institution names the accountable privacy, data and service owners and enforces the policy at its own identity, gateway, deployment and moderation points; a request or change that fails the numbered rules is denied or quarantined there. In federation each peer proves its own enforcement, and neither the common group nor one peer administers the other.
 
-There are no unresolved architecture choices in this specification. Institution
-values are supplied through the governed deployment-manifest schema, and
-implementation evidence is collected at the implementation authorization and
-production release gates. Changes follow ADR-based change control.
+## Exceptions
+
+An exception to **Consent** requires a written reason, affected scope, risk assessment, compensating control, approving role, start date, and expiry date. The subject owner MUST NOT self-approve a high-impact exception. Expired exceptions MUST stop applying automatically; renewal requires new evidence and review.
+
+## Audit evidence
+
+Conformance evidence for **Consent** MUST record the policy version, actor or service, decision, reason code, affected object or boundary, timestamp, outcome, and reviewer where applicable. Evidence MUST minimize protected data, be access-controlled, be exportable to the institution, and be retained according to the governing data policy. The owner MUST be able to demonstrate both an allowed and a denied case.
+
+## Purpose
+
+See Purpose and outcome above. This policy applies its consent lifecycle only where consent is the governing authority for a purpose.
+
+## Normative rules
+
+The numbered CONSENT rules in the subject-specific specification are the normative rules of this document. Until the owner accepts them they are proposals.
+
+## Acceptance and review
+
+Acceptance requires tests for granting, refusing, withdrawing and expiring each consent purpose, a purpose-scoped controlled export of a consent receipt, evidence that withdrawal stops further consent-based processing and triggers the disposition workflow, tests that consent is not portable across institutions, and accessibility testing of the consent experience. The owner reviews this policy at least annually and whenever applicable law, institutional policy or a processing purpose changes.
 
 ## References
 
@@ -191,3 +187,11 @@ production release gates. Changes follow ADR-based change control.
 - [ADR-0001: Standards First](../architecture/architecture-decision-records/ADR-0001-standards-first-buy-borrow-build.md)
 - [ADR-0012: Post Secondary Digital Commons](../architecture/architecture-decision-records/ADR-0012-post-secondary-digital-commons.md)
 - [ADR-0017: OpenTofu Default](../architecture/architecture-decision-records/ADR-0017-opentofu-default.md)
+- [Data Handling](Data-Handling.md)
+- [Data Classification](Data-Classification.md)
+- [Privacy by Design](Privacy-by-Design.md)
+- [Fediverse Privacy](Fediverse-Privacy.md)
+- [Disaster Recovery](../architecture/Disaster-Recovery.md)
+- [ADR-0028: Private Content and Storage Fabric](../architecture/architecture-decision-records/ADR-0028-private-content-and-storage-fabric.md)
+- [Vertical Slice Completion Plan](../roadmap/Vertical-Slice-Completion-Plan.md)
+

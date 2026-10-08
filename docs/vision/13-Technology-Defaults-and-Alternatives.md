@@ -1,8 +1,15 @@
 # Technology Defaults and Alternatives
 
-> Status: Normative technology baseline; exact releases are implementation evidence
+
+> Standard: PSDC-DOC-001
+> Document type: policy-standard
+> Status: Normative
+> Owner: Algonquin Institution Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-25
+> Governing decisions: ADR-0008, ADR-0009, ADR-0016, ADR-0017, ADR-0018, ADR-0019, ADR-0026, ADR-0027, ADR-0028, ADR-0029, ADR-0030, ADR-0031
+
 > Date: 2026-09-10
-> Governing decisions: ADR-0008, ADR-0009, ADR-0016, ADR-0017, ADR-0018, ADR-0019
 
 This matrix turns the architecture's earlier candidate lists into an explicit
 default stack. Alternatives remain supported evaluation or exit paths; they are
@@ -24,6 +31,26 @@ families, see [Full Technology Stack and Open-Source Alternatives](14-Full-Techn
 5. Do not add every alternative. Adopt the default until evidence justifies a
    recorded change.
 
+## Reconciliation of earlier defaults with accepted fabric decisions
+
+The earlier stack treated products as mostly independent defaults. ADR-0026 through
+ADR-0029 add a common sovereign authority, market, evidence and storage-tier plane. The
+product remains the execution mechanism; PSDC contracts now decide whether, where and under
+what lease it may be used.
+
+| Earlier default or ambiguity | Reconciled decision | Resulting implementation rule |
+|---|---|---|
+| Kubernetes-first could be read as “send everything to Kubernetes” | Kubernetes is the default long-running container backend, not the universal scheduler | classifier chooses Kubernetes, OpenStack, Slurm, task fabric or a hybrid graph before provider auction |
+| HTCondor listed as campus batch default | Golem-derived task fabric is primary for new opportunistic/DAG/parameter-sweep work; HTCondor is an interoperability/migration adapter | both emit PSDC leases, receipts and evidence |
+| Slurm appeared as an alternative batch scheduler | Slurm is the required default for tightly coupled MPI/HPC when that class is adopted | PSDC selects an eligible Slurm partition; Slurm retains native gang/backfill scheduling |
+| OpenStack was optional VM infrastructure | OpenStack is the default VM backend when the workload actually requires VM semantics | Nova/Neutron/Cinder remain behind PSDC provider, network, storage, lease and receipt contracts |
+| Ceph was called “primary storage” for all storage | the six-tier semantic fabric is primary; Ceph is one replaceable Tier 1/3 physical backend | tier, manifest, key, custody, repair and deletion semantics live above Ceph |
+| content addressing was an artifact feature | private Kubo/IPFS-compatible Tier 2 is an internal immutable distribution fabric | no public DHT by default; CID never grants authorization |
+| ledger and tokenization were unspecified | non-transferable Institutional Resource Units, placement tokens, leases and receipts cover compute/storage/network | PostgreSQL holds live state; Cosmos-derived ledger records periodic commitments and settlement |
+| dynamic placement excluded critical services | critical services may be dynamically placed only inside a certified, reserved, failure-domain-safe production pool | price optimizes safe choices and cannot widen eligibility |
+| institutional identity was the only practical login | W3C DID/VC portability is standard alongside local institutional identity | credentials prove claims; each institution still performs local authorization |
+| generic open-source policy did not define reciprocal boundaries | AGPL target for PSDC network services, reciprocal worker/client decisions, Apache-2.0 interoperability contracts, and exact upstream license boundaries | every repository has an explicit license/provenance record; recognized participants separately offer reusable improvements upstream |
+
 ## Infrastructure and delivery
 
 | Capability | Accepted default | Alternatives / exit path | Selection note |
@@ -31,15 +58,17 @@ families, see [Full Technology Stack and Open-Source Alternatives](14-Full-Techn
 | Server OS | Debian Stable | Ubuntu Server LTS; Rocky Linux; AlmaLinux | Choose one supported image family per environment |
 | Virtualization | KVM + QEMU + libvirt | Proxmox VE; OpenNebula | Standard Linux virtualization, no proprietary hypervisor dependency |
 | Container standard/runtime | OCI + containerd | CRI-O | Docker-compatible artifacts are acceptable; Docker Desktop is not required |
-| Cluster orchestration | Kubernetes | OKD for an integrated open platform; systemd/Podman for very small edge nodes | Kubernetes is the shared production control API |
+| Cluster orchestration | Kubernetes (open-source upstream) | OKD for an integrated open platform; systemd/Podman for very small edge nodes | Kubernetes is the shared production control API; alternatives require an adapter to the PSDC workload, lease, evidence and metering contracts |
 | Kubernetes distribution | RKE2 for managed production; K3s for edge/dev | kubeadm; Talos Linux | No hosted control plane requirement |
-| Private cloud | Kubernetes first; selected OpenStack services for VM/bare metal | Apache CloudStack; OpenNebula; Proxmox VE | Add OpenStack only when workload evidence requires it |
+| Private cloud | Kubernetes first; selected OpenStack services for VM/bare metal | Apache CloudStack; OpenNebula; Proxmox VE | Add OpenStack only when workload evidence requires it; every VM backend emits common PSDC usage receipts |
 | Bare-metal lifecycle | OpenStack Ironic | Metal3 | Keep hardware inventory and enrollment contracts implementation-neutral |
 | CNI/network policy | Cilium | Calico | Decide dataplane mode from campus network testing |
 | Load balancer | MetalLB | PureLB | Integrate hardware appliances only behind standard Kubernetes APIs |
 | API gateway/ingress | Envoy Gateway | Traefik; ingress-nginx | Envoy Gateway is the common north-south baseline |
 | Service mesh | None initially; Cilium capabilities first | Linkerd; Istio after measured need | Avoid a second networking control plane by default |
-| Primary storage | Ceph RBD + CephFS + Ceph RGW | Longhorn for small block clusters; Garage or SeaweedFS for focused object use | S3-compatible object contracts remain portable |
+| Storage semantic architecture | PSDC six-tier storage fabric | A simpler Tier 0/1-only profile for small pilots | Tier policy, object manifest, keys, placement/custody, lifecycle and receipts are authoritative |
+| Tier 1/3 physical storage | Ceph RBD + CephFS + Ceph RGW where operational capacity supports it | Garage or SeaweedFS for focused object use; Longhorn for small block clusters | Avoid double erasure coding; S3/block/file providers remain replaceable |
+| Tier 2 content distribution | Private Kubo-compatible nodes + IPFS Cluster | OCI registry/object-cache distribution where CID/IPLD is unnecessary | No public DHT by default; content addressing is not authorization |
 | Infrastructure as code | OpenTofu + Ansible | Terraform only as a bounded compatibility option | OpenTofu is MPL-2.0; no hosted control plane dependency |
 | IaC state | Institution-controlled encrypted backend with locking and recovery tests | Small local state only for disposable dev | Never store production state in Git |
 | GitOps | Argo CD | Flux | Use pull-based promotion and signed artifacts |
@@ -81,6 +110,8 @@ families, see [Full Technology Stack and Open-Source Alternatives](14-Full-Techn
 | Dashboards | Grafana OSS | Perses | Store dashboards as versioned code |
 | Logs | Loki | OpenSearch | Structured logs with classification and redaction |
 | Traces | Tempo | Jaeger | OpenTelemetry context propagation end to end |
+| Scheduler operational state | PostgreSQL transactional state + outbox; NATS JetStream events; Valkey only as cache | another open transactional database after conformance ADR | The scheduler hot path never depends on ledger finality |
+| Commitment and settlement ledger | Bounded Cosmos SDK/CometBFT-derived internal ledger using ADR-0031 deterministic batches | signed append-only transparency log plus periodic settlement exports | Store commitments, governance and settlement—not content, keys, heartbeats or live queues; PostgreSQL/outbox owns live operations |
 
 ## AI, agents, and compute
 
@@ -93,7 +124,12 @@ families, see [Full Technology Stack and Open-Source Alternatives](14-Full-Techn
 | Embeddings/reranking | Gateway-managed open model adapters | Text Embeddings Inference; llama.cpp-supported models | Model and license are approved separately |
 | RAG | PostgreSQL + pgvector | Qdrant or Milvus after evidence | Authorized sources and user-visible provenance |
 | Model metadata/tracking | Content-addressed manifests + MLflow | Kubeflow components after need | Weights remain outside Git |
-| Campus batch scheduler | HTCondor interoperability/model | Slurm; Kubernetes Kueue | Commons Compute Fabric adds enrollment, trust, idle policy and topology |
+| Cross-backend resolver | PSDC policy-gated multi-attribute reverse auction and placement service | deterministic static placement if market service is unavailable | Hard policy filters precede cost/performance ranking |
+| Opportunistic/DAG task scheduling | Golem-derived sovereign task fabric | HTCondor interoperability; Kubernetes Jobs/Argo for suitable bounded jobs | Task workers are preemptible and emit common leases/receipts |
+| Long-running container services | Kubernetes | Akash-derived provider/lease mechanics choose among eligible Kubernetes providers | Kubernetes retains pod/service reconciliation inside the selected cluster |
+| VM scheduling | OpenStack | Apache CloudStack; OpenNebula; Proxmox adapter after evidence | PSDC selects cloud/aggregate; Nova placement selects host |
+| Tightly coupled HPC | Slurm | another HPC scheduler only through conformance ADR | Slurm retains gang, topology, reservation and backfill semantics |
+| Service-provider market | Akash-derived sovereign offer/reverse-auction/lease mechanisms | clean PSDC implementation of the same open contracts | No public Akash or public token dependency |
 | Distributed Python | Ray only when measured | Dask | Never a baseline dependency for simple inference |
 | Workload isolation | OCI/containerd; gVisor for higher-risk compatible jobs | Kata Containers; dedicated VM | Isolation follows trust and data class |
 | Agent workflows | Temporal-backed deterministic action services | Plain service workflow for simple cases | Models propose; deterministic services authorize and execute |
@@ -131,9 +167,20 @@ ActivityPub for social, and explicit provider/job contracts. A custom broker may
 be built only for post-secondary policy, routing, settlement, and sovereignty
 that existing open projects do not provide.
 
+The Compute Fabric-specific division between adopted frameworks, external
+adapters, prohibited forks, and PSDC-owned scheduling, lease, worker, and
+evidence code is evaluated in the
+[Compute Fabric Implementation Framework Composition Study](../campus-compute-fabric/Implementation-Framework-Composition-Study.md)
+and scoped in the
+[Compute Fabric Custom Control Plane and Worker Scope](../campus-compute-fabric/Custom-Control-Plane-and-Worker-Scope.md).
+
 ## Change rule
 
 An alternative becomes the default through an ADR recording requirements,
 license, security, operations, accessibility, compatibility, migration, rollback,
 data export, and lifecycle ownership. Exact version selection remains a release
 decision even when the project default is accepted.
+
+## Purpose, scope, normative rules, enforcement, exceptions, audit evidence, and acceptance review
+
+POL-TECH-001: This policy selects portable defaults and alternatives for infrastructure, identity, data, observability, AI, clients, media, and federation. Components MUST depend on the open contract, not a product-private API. Admission requires provenance, threat and privacy review, ownership, compatibility, migration, rollback, and standalone evidence. CI and architecture review enforce selections. An alternative requires an allowed substitution or ADR with equivalent controls and exit path. Acceptance is a reproducible evaluation plus conformance and failure tests.

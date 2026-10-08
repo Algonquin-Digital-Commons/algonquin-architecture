@@ -1,6 +1,14 @@
 # ADR-0011: Terraform Is the Default IaC CLI with an OpenTofu Exit Path
 
-> Status: Superseded by ADR-0017
+
+> Standard: PSDC-DOC-001
+> Document type: adr
+> Status: Historical
+> Owner: Algonquin Institution Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+
 > Date: 2026-09-10
 > Scope: Infrastructure provisioning toolchain
 > Decision owner: Project founder; legal review required before multi-institution distribution
@@ -53,8 +61,17 @@ fallback for workflows that do not need Terraform state.
 - Portability tests and provider-neutral state/data practices reduce, but do not
   eliminate, migration cost.
 
+## Alternatives
+
+Considered alternatives include retaining the prior approach, adopting a mature open implementation, and building a local adapter. The selected decision is preferred under the stated requirements, constraints, sovereignty, and maintenance capacity; a new option requires a superseding ADR.
+
+## Migration and rollback
+
+Migration MUST identify data/configuration transitions, compatibility windows, verification evidence, owner, and rollback trigger. Rollback restores the last known-good contract and implementation without losing audit evidence.
+
 ## References
 
 - [Terraform repository and license](https://github.com/hashicorp/terraform)
 - [Terraform BSL license text](https://github.com/hashicorp/terraform/blob/main/LICENSE)
 - [OpenTofu](https://opentofu.org/)
+

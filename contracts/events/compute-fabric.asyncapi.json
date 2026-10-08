@@ -1,0 +1,56 @@
+{
+  "asyncapi": "3.1.0",
+  "info": {
+    "title": "PSDC Compute Fabric Events",
+    "version": "1.0.0-candidate",
+    "description": "At-least-once event surface. Consumers deduplicate by source plus event ID, enforce sequence within ordering scope, reject expired or unauthorized events, and route poison messages to a bounded dead-letter flow."
+  },
+  "defaultContentType": "application/json",
+  "channels": {
+    "computeEvents": {
+      "address": "psdc.{institutionId}.compute.events",
+      "parameters": { "institutionId": { "$ref": "#/components/parameters/institutionId" } },
+      "messages": {
+        "providerChanged": { "$ref": "#/components/messages/providerChanged" },
+        "capabilityChanged": { "$ref": "#/components/messages/capabilityChanged" },
+        "workloadSubmitted": { "$ref": "#/components/messages/workloadSubmitted" },
+        "workloadClassified": { "$ref": "#/components/messages/workloadClassified" },
+        "offerChanged": { "$ref": "#/components/messages/offerChanged" },
+        "decisionRecorded": { "$ref": "#/components/messages/decisionRecorded" },
+        "leaseChanged": { "$ref": "#/components/messages/leaseChanged" },
+        "receiptChanged": { "$ref": "#/components/messages/receiptChanged" }
+      },
+      "bindings": { "nats": { "bindingVersion": "0.1.0" } }
+    },
+    "settlementEvents": {
+      "address": "psdc.{institutionId}.economics.events",
+      "parameters": { "institutionId": { "$ref": "#/components/parameters/institutionId" } },
+      "messages": {
+        "settlementBatchChanged": { "$ref": "#/components/messages/settlementBatchChanged" },
+        "ledgerCommitmentChanged": { "$ref": "#/components/messages/ledgerCommitmentChanged" },
+        "disputeChanged": { "$ref": "#/components/messages/disputeChanged" }
+      },
+      "bindings": { "nats": { "bindingVersion": "0.1.0" } }
+    }
+  },
+  "operations": {
+    "receiveComputeEvents": { "action": "receive", "channel": { "$ref": "#/channels/computeEvents" }, "summary": "Consume compute state changes with idempotent handlers." },
+    "receiveSettlementEvents": { "action": "receive", "channel": { "$ref": "#/channels/settlementEvents" }, "summary": "Consume settlement and dispute state changes with idempotent handlers." }
+  },
+  "components": {
+    "parameters": { "institutionId": { "description": "Institution authority namespace", "location": "$message.header#/institutionid" } },
+    "messages": {
+      "providerChanged": { "name": "providerChanged", "title": "Provider registered, activated, suspended, revoked, or retired", "payload": { "$ref": "event-envelope.schema.json" }, "x-psdc-data-schema": "urn:psdc:contracts:compute:provider:1" },
+      "capabilityChanged": { "name": "capabilityChanged", "title": "Capability published, drained, unavailable, or revoked", "payload": { "$ref": "event-envelope.schema.json" }, "x-psdc-data-schema": "urn:psdc:contracts:compute:capability:1" },
+      "workloadSubmitted": { "name": "workloadSubmitted", "title": "Workload submitted", "payload": { "$ref": "event-envelope.schema.json" }, "x-psdc-event-type": "org.psdc.compute.workload.submitted.v1", "x-psdc-data-schema": "urn:psdc:contracts:events:workload-submitted-data:1" },
+      "workloadClassified": { "name": "workloadClassified", "title": "Workload classification recorded", "payload": { "$ref": "event-envelope.schema.json" }, "x-psdc-data-schema": "urn:psdc:contracts:compute:classification-record:1" },
+      "offerChanged": { "name": "offerChanged", "title": "Offer submitted, withdrawn, expired, accepted, or rejected", "payload": { "$ref": "event-envelope.schema.json" }, "x-psdc-data-schema": "urn:psdc:contracts:compute:offer:1" },
+      "decisionRecorded": { "name": "decisionRecorded", "title": "Placement decision recorded", "payload": { "$ref": "event-envelope.schema.json" }, "x-psdc-data-schema": "urn:psdc:contracts:compute:placement-decision:1" },
+      "leaseChanged": { "name": "leaseChanged", "title": "Lease issued, activated, renewed, released, expired, revoked, or failed", "payload": { "$ref": "event-envelope.schema.json" }, "x-psdc-data-schema": "urn:psdc:contracts:compute:lease:1" },
+      "receiptChanged": { "name": "receiptChanged", "title": "Usage receipt measured, disputed, voided, or failed", "payload": { "$ref": "event-envelope.schema.json" }, "x-psdc-data-schema": "urn:psdc:contracts:compute:usage-receipt:1" },
+      "settlementBatchChanged": { "name": "settlementBatchChanged", "title": "Settlement batch built, submitted, finalized, disputed, or rejected", "payload": { "$ref": "event-envelope.schema.json" }, "x-psdc-data-schema": "urn:psdc:contracts:economics:settlement-batch:1" },
+      "ledgerCommitmentChanged": { "name": "ledgerCommitmentChanged", "title": "Ledger commitment submitted, finalized, rejected, or superseded", "payload": { "$ref": "event-envelope.schema.json" }, "x-psdc-data-schema": "urn:psdc:contracts:economics:ledger-commitment:1" },
+      "disputeChanged": { "name": "disputeChanged", "title": "Dispute opened, reviewed, resolved, withdrawn, or expired", "payload": { "$ref": "event-envelope.schema.json" }, "x-psdc-data-schema": "urn:psdc:contracts:economics:dispute-case:1" }
+    }
+  }
+}

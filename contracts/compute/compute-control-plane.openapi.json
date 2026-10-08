@@ -1,0 +1,92 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "PSDC Compute Control Plane API",
+    "version": "1.0.0-candidate",
+    "description": "Institution-sovereign API boundary. Authentication does not imply authorization; each mutation requires a current policy decision and idempotency key."
+  },
+  "servers": [{ "url": "https://compute.{institutionDomain}/v1", "variables": { "institutionDomain": { "default": "institution.example" } } }],
+  "security": [{ "oidc": [] }, { "mutualTLS": [] }],
+  "paths": {
+    "/providers": {
+      "post": {
+        "operationId": "registerProvider", "summary": "Register a candidate provider", "tags": ["Providers"],
+        "parameters": [{ "$ref": "#/components/parameters/IdempotencyKey" }],
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "provider.schema.json" } } } },
+        "responses": { "201": { "description": "Provider record accepted", "content": { "application/json": { "schema": { "$ref": "provider.schema.json" } } } }, "400": { "$ref": "#/components/responses/Problem" }, "401": { "$ref": "#/components/responses/Problem" }, "403": { "$ref": "#/components/responses/Problem" }, "409": { "$ref": "#/components/responses/Problem" } }
+      }
+    },
+    "/providers/{providerId}": {
+      "parameters": [{ "$ref": "#/components/parameters/ProviderId" }],
+      "get": { "operationId": "getProvider", "summary": "Read a provider record", "tags": ["Providers"], "responses": { "200": { "description": "Provider record", "content": { "application/json": { "schema": { "$ref": "provider.schema.json" } } } }, "404": { "$ref": "#/components/responses/Problem" } } }
+    },
+    "/providers/{providerId}/revocations": {
+      "parameters": [{ "$ref": "#/components/parameters/ProviderId" }],
+      "post": { "operationId": "revokeProvider", "summary": "Append a provider revocation transition", "tags": ["Providers"], "parameters": [{ "$ref": "#/components/parameters/IdempotencyKey" }], "requestBody": { "$ref": "#/components/requestBodies/ProviderTransitionRequest" }, "responses": { "200": { "description": "Revoked provider record", "content": { "application/json": { "schema": { "$ref": "provider.schema.json" } } } }, "400": { "$ref": "#/components/responses/Problem" }, "403": { "$ref": "#/components/responses/Problem" }, "409": { "$ref": "#/components/responses/Problem" } } }
+    },
+    "/capabilities": {
+      "post": { "operationId": "publishCapability", "summary": "Publish a sequenced capability snapshot", "tags": ["Capabilities"], "parameters": [{ "$ref": "#/components/parameters/IdempotencyKey" }], "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "capability.schema.json" } } } }, "responses": { "202": { "description": "Capability snapshot accepted", "content": { "application/json": { "schema": { "$ref": "capability.schema.json" } } } }, "400": { "$ref": "#/components/responses/Problem" }, "403": { "$ref": "#/components/responses/Problem" }, "409": { "$ref": "#/components/responses/Problem" } } }
+    },
+    "/capabilities/{capabilityId}": {
+      "parameters": [{ "$ref": "#/components/parameters/CapabilityId" }],
+      "get": { "operationId": "getCapability", "summary": "Read the latest accepted capability snapshot", "tags": ["Capabilities"], "responses": { "200": { "description": "Capability snapshot", "content": { "application/json": { "schema": { "$ref": "capability.schema.json" } } } }, "404": { "$ref": "#/components/responses/Problem" }, "410": { "$ref": "#/components/responses/Problem" } } }
+    },
+    "/workloads": {
+      "post": { "operationId": "submitWorkload", "summary": "Submit a workload for classification and admission", "tags": ["Workloads"], "parameters": [{ "$ref": "#/components/parameters/IdempotencyKey" }], "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "workload-manifest.schema.json" } } } }, "responses": { "202": { "description": "Workload accepted for classification", "content": { "application/json": { "schema": { "$ref": "workload-manifest.schema.json" } } } }, "400": { "$ref": "#/components/responses/Problem" }, "403": { "$ref": "#/components/responses/Problem" }, "409": { "$ref": "#/components/responses/Problem" }, "422": { "$ref": "#/components/responses/Problem" } } }
+    },
+    "/workloads/{workloadId}": {
+      "parameters": [{ "$ref": "#/components/parameters/WorkloadId" }],
+      "get": { "operationId": "getWorkload", "summary": "Read the immutable submitted manifest", "tags": ["Workloads"], "responses": { "200": { "description": "Workload manifest", "content": { "application/json": { "schema": { "$ref": "workload-manifest.schema.json" } } } }, "404": { "$ref": "#/components/responses/Problem" } } }
+    },
+    "/workloads/{workloadId}/classification": {
+      "parameters": [{ "$ref": "#/components/parameters/WorkloadId" }],
+      "get": { "operationId": "getWorkloadClassification", "summary": "Read the classifier output", "tags": ["Workloads"], "responses": { "200": { "description": "Classification record", "content": { "application/json": { "schema": { "$ref": "classification-record.schema.json" } } } }, "404": { "$ref": "#/components/responses/Problem" } } }
+    },
+    "/offers": {
+      "post": { "operationId": "submitOffer", "summary": "Submit a provider offer after eligibility filtering", "tags": ["Market"], "parameters": [{ "$ref": "#/components/parameters/IdempotencyKey" }], "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "offer.schema.json" } } } }, "responses": { "202": { "description": "Offer accepted", "content": { "application/json": { "schema": { "$ref": "offer.schema.json" } } } }, "400": { "$ref": "#/components/responses/Problem" }, "403": { "$ref": "#/components/responses/Problem" }, "409": { "$ref": "#/components/responses/Problem" }, "422": { "$ref": "#/components/responses/Problem" } } }
+    },
+    "/decisions/{decisionId}": {
+      "parameters": [{ "$ref": "#/components/parameters/DecisionId" }],
+      "get": { "operationId": "getPlacementDecision", "summary": "Read the deterministic placement decision and score evidence", "tags": ["Market"], "responses": { "200": { "description": "Placement decision", "content": { "application/json": { "schema": { "$ref": "placement-decision.schema.json" } } } }, "404": { "$ref": "#/components/responses/Problem" } } }
+    },
+    "/leases/{leaseId}": {
+      "parameters": [{ "$ref": "#/components/parameters/LeaseId" }],
+      "get": { "operationId": "getLease", "summary": "Read current projected lease state", "tags": ["Leases"], "responses": { "200": { "description": "Lease", "content": { "application/json": { "schema": { "$ref": "lease.schema.json" } } } }, "404": { "$ref": "#/components/responses/Problem" } } }
+    },
+    "/leases/{leaseId}/{action}": {
+      "parameters": [{ "$ref": "#/components/parameters/LeaseId" }, { "name": "action", "in": "path", "required": true, "schema": { "enum": ["activate", "renew", "release", "revoke"] } }],
+      "post": { "operationId": "transitionLease", "summary": "Apply an authorized generation-fenced lease state transition", "tags": ["Leases"], "parameters": [{ "$ref": "#/components/parameters/IdempotencyKey" }], "requestBody": { "$ref": "#/components/requestBodies/LeaseTransitionRequest" }, "responses": { "200": { "description": "Updated lease projection", "content": { "application/json": { "schema": { "$ref": "lease.schema.json" } } } }, "400": { "$ref": "#/components/responses/Problem" }, "403": { "$ref": "#/components/responses/Problem" }, "409": { "$ref": "#/components/responses/Problem" }, "422": { "$ref": "#/components/responses/Problem" } } }
+    },
+    "/receipts": {
+      "post": { "operationId": "publishUsageReceipt", "summary": "Publish a signed, interval-bounded usage receipt", "tags": ["Metering"], "parameters": [{ "$ref": "#/components/parameters/IdempotencyKey" }], "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "usage-receipt.schema.json" } } } }, "responses": { "202": { "description": "Receipt accepted", "content": { "application/json": { "schema": { "$ref": "usage-receipt.schema.json" } } } }, "400": { "$ref": "#/components/responses/Problem" }, "403": { "$ref": "#/components/responses/Problem" }, "409": { "$ref": "#/components/responses/Problem" }, "422": { "$ref": "#/components/responses/Problem" } } }
+    },
+    "/reason-adjudications": {
+      "post": { "operationId": "publishReasonAdjudication", "summary": "Publish an independently authorized lease-reason determination", "tags": ["Metering"], "parameters": [{ "$ref": "#/components/parameters/IdempotencyKey" }], "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "reason-adjudication.schema.json" } } } }, "responses": { "202": { "description": "Adjudication accepted after authority and evidence checks", "content": { "application/json": { "schema": { "$ref": "reason-adjudication.schema.json" } } } }, "400": { "$ref": "#/components/responses/Problem" }, "403": { "$ref": "#/components/responses/Problem" }, "409": { "$ref": "#/components/responses/Problem" }, "422": { "$ref": "#/components/responses/Problem" } } }
+    },
+    "/reason-adjudications/{adjudicationId}": {
+      "parameters": [{ "name": "adjudicationId", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }],
+      "get": { "operationId": "getReasonAdjudication", "summary": "Read a signed reason determination", "tags": ["Metering"], "responses": { "200": { "description": "Adjudication record", "content": { "application/json": { "schema": { "$ref": "reason-adjudication.schema.json" } } } }, "404": { "$ref": "#/components/responses/Problem" } } }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "oidc": { "type": "openIdConnect", "openIdConnectUrl": "https://identity.institution.example/.well-known/openid-configuration" },
+      "mutualTLS": { "type": "mutualTLS" }
+    },
+    "parameters": {
+      "IdempotencyKey": { "name": "Idempotency-Key", "in": "header", "required": true, "schema": { "type": "string", "pattern": "^[A-Za-z0-9._:-]{16,128}$" } },
+      "ProviderId": { "name": "providerId", "in": "path", "required": true, "schema": { "type": "string" } },
+      "CapabilityId": { "name": "capabilityId", "in": "path", "required": true, "schema": { "type": "string" } },
+      "WorkloadId": { "name": "workloadId", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } },
+      "DecisionId": { "name": "decisionId", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } },
+      "LeaseId": { "name": "leaseId", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
+    },
+    "requestBodies": {
+      "ProviderTransitionRequest": { "required": true, "content": { "application/json": { "schema": { "type": "object", "additionalProperties": false, "required": ["authorizationDecisionId", "reason"], "properties": { "authorizationDecisionId": { "type": "string", "format": "uuid" }, "reason": { "$ref": "../common/definitions.schema.json#/$defs/reason" } } } } } },
+      "LeaseTransitionRequest": { "required": true, "content": { "application/json": { "schema": { "type": "object", "additionalProperties": false, "required": ["authorizationDecisionId", "reason", "expectedGeneration"], "properties": { "authorizationDecisionId": { "type": "string", "format": "uuid" }, "reason": { "$ref": "../common/definitions.schema.json#/$defs/reason" }, "expectedGeneration": { "type": "integer", "minimum": 1 }, "activationChallengeId": { "type": "string", "format": "uuid", "description": "Required by the lease authority for action=activate; generated by the worker after starting its monotonic timer. Other actions must omit it." } } } } } }
+    },
+    "responses": {
+      "Problem": { "description": "Policy-safe problem detail", "content": { "application/problem+json": { "schema": { "$ref": "../common/error-envelope.schema.json" } } } }
+    }
+  }
+}

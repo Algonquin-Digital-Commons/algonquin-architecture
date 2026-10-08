@@ -1,6 +1,14 @@
 # ADR-0015: Use CA$30 per Enrolled Student-Month as the Funding Assumption
 
-> Status: Accepted planning assumption
+
+> Standard: PSDC-DOC-001
+> Document type: adr
+> Status: Accepted
+> Owner: Algonquin Institution Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+
 > Date: 2026-09-10
 > Scope: Business-case and capacity scenarios
 > External approval: Not granted
@@ -35,3 +43,20 @@ Student governance, College leadership, finance, legal, accessibility/equity,
 privacy, procurement, and any applicable provincial authority must approve the
 actual funding model before collection or public claims.
 
+## Alternatives
+
+Considered alternatives include retaining the prior approach, adopting a mature open implementation, and building a local adapter. The selected decision is preferred under the stated requirements, constraints, sovereignty, and maintenance capacity; a new option requires a superseding ADR.
+
+## Migration and rollback
+
+Migration MUST identify data/configuration transitions, compatibility windows, verification evidence, owner, and rollback trigger. Rollback restores the last known-good contract and implementation without losing audit evidence.
+
+## Context
+
+The funding assumption is recorded so that implementation and public claims do not
+silently depend on an unapproved commercial, institutional, or grant commitment.
+
+## Consequences
+
+The fork must keep funding-sensitive capabilities optional, disclose uncertainty,
+and obtain an explicit governance decision before collecting money or promising support.

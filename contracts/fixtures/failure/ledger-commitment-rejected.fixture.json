@@ -1,0 +1,23 @@
+{
+  "fixtureVersion": "1.0",
+  "fixtureId": "failure.economics.ledger-commitment-rejected",
+  "category": "failure",
+  "schemaId": "urn:psdc:contracts:economics:ledger-commitment:1",
+  "description": "Rejected commitment preserving the reason without mutating the batch.",
+  "expected": { "schemaValid": true, "semanticOutcome": "failed", "statusPath": "/status", "expectedStatus": "rejected", "reasonPath": "/reason/code", "expectedReasonCode": "BATCH_ROOT_MISMATCH" },
+  "instance": {
+    "contractVersion": "1.0",
+    "commitmentId": "a0a0a0a0-a0a0-40a0-80a0-a0a0a0a0a0a0",
+    "batchId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+    "batchRoot": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "chainId": "psdc-settlement-test-1",
+    "module": "psdc.settlement.v1",
+    "status": "rejected",
+    "submittedAt": "2026-09-27T15:02:00Z",
+    "proposerId": "validator.example.test-1",
+    "validatorSetDigest": "1919191919191919191919191919191919191919191919191919191919191919",
+    "evidenceDigest": "1717171717171717171717171717171717171717171717171717171717171717",
+    "reason": { "code": "BATCH_ROOT_MISMATCH", "message": "Submitted root does not match canonical batch evidence.", "retryable": false },
+    "signature": { "algorithm": "Ed25519", "keyId": "did:web:institution.example#ledger-1", "canonicalization": "RFC8785", "signedAt": "2026-09-27T15:02:01Z", "value": "cmVqZWN0ZWQtY29tbWl0bWVudC1zaWc" }
+  }
+}

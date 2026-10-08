@@ -1,9 +1,14 @@
 # Federated Social Identity
 
-> Status: Normative specification; implementation gated
-> Domain: identity
-> Owner: PSDC Identity Working Group; accountable maintainer RedjiJB until delegation
+
+> Standard: PSDC-DOC-001
+> Document type: architecture-specification
+> Status: Normative
+> Owner: PSDC Identity Working Group
+> Accountable maintainer: RedjiJB until delegation
 > Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+> Domain: identity
 
 ## Purpose and outcome
 
@@ -51,15 +56,7 @@ only when it satisfies this document, the linked ADRs, and the common
 
 ## Dependencies and ownership boundaries
 
-- This domain owns its schemas, policy enforcement points, migrations, service
-  metadata, and compatibility tests.
-- Identity, authorization, secrets, telemetry, object storage, notifications,
-  and gateway functions SHALL be consumed through their owning common contracts.
-- Mandatory runtime dependencies SHALL be open-source and self-hostable. An
-  external or proprietary service MAY be an optional adapter with a tested local
-  replacement and SHALL NOT be required for standalone institutional operation.
-- Circular synchronous dependencies are prohibited. Cross-domain workflows SHALL
-  define a coordinating owner and compensating behaviour.
+Inherits [baseline ownership controls](../architecture/Cross-Cutting-Architecture-Requirements.md#ownership-and-dependency-boundaries).
 
 ## Data, state, residency, and retention
 
@@ -90,27 +87,11 @@ only when it satisfies this document, the linked ADRs, and the common
 
 ## Deployment, environments, and configuration
 
-- The common repository SHALL contain portable schemas, reference configuration,
-  conformance tests, and reusable OpenTofu, Helm, Kubernetes, or container assets.
-- Each institution fork SHALL contain only branding, adapters, policy overlays,
-  release configuration, and signed site values. Secrets SHALL never be committed.
-- Development SHALL use synthetic data. Staging SHALL exercise production-like
-  identity, policy, backup, upgrade, and failure behaviour without production data.
-- Production changes SHALL use reviewed GitOps promotion, immutable versioned
-  artifacts, health gates, rollback, and recorded provenance.
+Inherits [baseline deployment controls](../architecture/Cross-Cutting-Architecture-Requirements.md#deployment-and-configuration).
 
 ## Capacity, scaling, cost, and sustainability
 
-- Capacity SHALL be controlled by quotas, concurrency limits, bounded queues,
-  admission control, backpressure, and per-tenant fairness.
-- The institution manifest SHALL declare demand assumptions, normal and peak
-  capacity, saturation thresholds, scale limits, resource budgets, and service
-  objectives using the common schema.
-- Scale-out SHALL preserve authorization, ordering, idempotency, data consistency,
-  and auditability. Overload SHALL degrade optional work before protected or
-  interactive work and SHALL never bypass security controls.
-- Resource and energy consumption SHALL be observable and included in lifecycle
-  and capacity decisions.
+Inherits [baseline capacity controls](../architecture/Cross-Cutting-Architecture-Requirements.md#capacity-and-overload).
 
 ## Failure, recovery, and compatibility
 
@@ -127,15 +108,7 @@ only when it satisfies this document, the linked ADRs, and the common
 
 ## Observability, testing, and operational readiness
 
-- Implementations SHALL publish health, readiness, structured logs, metrics,
-  traces, security events, usage, latency, error, and saturation signals through
-  OpenTelemetry-compatible boundaries without exposing protected data.
-- Required tests include unit, schema, contract, authorization, privacy, failure,
-  upgrade, rollback, accessibility where user-facing, performance, and
-  institution-standalone conformance tests.
-- A release requires a named owner, runbook, threat model, dependency lock,
-  license inventory, SBOM, vulnerability and secret scans, signed provenance,
-  recovery evidence, and passing acceptance tests.
+Inherits [baseline evidence controls](../architecture/Cross-Cutting-Architecture-Requirements.md#observability-and-evidence).
 
 ## Standards and implementation strategy
 
@@ -156,6 +129,28 @@ only when it satisfies this document, the linked ADRs, and the common
 - Use OCI-compatible artifacts and established Kubernetes/container interfaces rather than custom packaging.
 - Any exception follows the adopt → extend → compatible fork → build hierarchy and requires an ADR with evidence.
 
+## Subject-specific control contract
+
+| Dimension | Required definition |
+|---|---|
+| Owned responsibility | mapping between local institutional people and federated social actors |
+| Authoritative input | local account state, actor URI, domain proof, consent, visibility, and moderation status |
+| Authoritative output | controlled actor linkage, discovery representation, unlinking, and tombstone behavior |
+| Primary trust boundary | institutional authentication authority remains separate from ActivityPub actor identity |
+| Unsafe failure to prevent | a remote actor, recycled identifier, or public profile is treated as institutional authentication |
+
+- **ID-FED-001:** The owner MUST implement the responsibility and preserve the input-to-output evidence chain shown above.
+- **ID-FED-002:** The enforcement point MUST fail closed when identity, policy version, integrity, freshness, or required context cannot be verified.
+- **ID-FED-003:** A release MUST include a positive conformance case, an unauthorized or malformed case, a dependency-loss case, and a regression case for the unsafe failure.
+- **ID-FED-004:** Exceptions MUST identify scope, compensating controls, approver, expiry, monitoring, and a removal plan; permanent undocumented bypasses are prohibited.
+
+The Algonquin deployment MUST bind these controls to Algonquin-owned identity, policy, evidence retention, and incident routes without weakening the common contract.
+
+### Verification scenarios
+
+1. Exercise mapping between local institutional people and federated social actors | with local account state, actor URI, domain proof, consent, visibility, and moderation status | and prove the recorded result is controlled actor linkage, discovery representation, unlinking, and tombstone behavior |.
+2. Remove or alter one required input and prove the request is denied without exposing protected diagnostic content.
+3. Simulate the dependency or authority failure that could cause a remote actor, recycled identifier, or public profile is treated as institutional authentication |; prove the declared safe state, revocation, and evidence are produced.
 ## Decision traceability
 
 - ADR-0001: Standards-First / Buy-Borrow-Build
@@ -169,24 +164,7 @@ only when it satisfies this document, the linked ADRs, and the common
 
 ## Acceptance criteria
 
-The specification is satisfied when an implementation evidence package proves:
-
-1. versioned schemas and examples validate;
-2. contract and compatibility tests pass;
-3. identity and least-privilege authorization tests pass;
-4. threat, privacy, accessibility, and license reviews are recorded as applicable;
-5. capacity limits, degraded modes, and failure recovery behave as declared;
-6. observability and audit evidence identify success, failure, and saturation;
-7. backup, restore, upgrade, and rollback are demonstrated where applicable;
-8. a standalone institution deployment passes the common conformance suite;
-9. no mandatory proprietary service or undocumented cross-domain dependency exists.
-
-## Decision status
-
-There are no unresolved architecture choices in this specification. Institution
-values are supplied through the governed deployment-manifest schema, and
-implementation evidence is collected at the implementation authorization and
-production release gates. Changes follow ADR-based change control.
+Inherits [baseline acceptance gates](../architecture/Cross-Cutting-Architecture-Requirements.md#observability-and-evidence); every local requirement MUST also pass.
 
 ## References
 
@@ -196,3 +174,5 @@ production release gates. Changes follow ADR-based change control.
 - [ADR-0001: Standards First](../architecture/architecture-decision-records/ADR-0001-standards-first-buy-borrow-build.md)
 - [ADR-0012: Post Secondary Digital Commons](../architecture/architecture-decision-records/ADR-0012-post-secondary-digital-commons.md)
 - [ADR-0017: OpenTofu Default](../architecture/architecture-decision-records/ADR-0017-opentofu-default.md)
+
+

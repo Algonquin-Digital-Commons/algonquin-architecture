@@ -13,9 +13,15 @@ mappings, secrets and local policy in the institution deployment repository.
 Do not contribute protected institutional data, credentials or confidential
 vulnerability details through a public pull request.
 
-Apache-2.0 permits private and commercial modification; upstream contribution is
-therefore a project and participation policy, not a condition added to the public
-license. Recognized consortium, certification, shared-infrastructure and support
-participants may have a separate contribution obligation in their participation
-agreement.
+This architecture and contract repository currently remains Apache-2.0 unless and
+until a lawful repository-specific migration is completed. Other PSDC repositories
+may use AGPL, GPL, MPL or another approved OSI license under ADR-0030. Contributors
+must check the exact repository and file license rather than assuming one platform-wide
+license.
 
+AGPL corresponding-source duties do not themselves require PSDC to accept a pull
+request. Recognized consortium, certification, federation-service,
+shared-infrastructure, trademark and support participants must separately offer
+generally useful improvements upstream under their participation agreement. General
+commercial users retain the rights and duties of the public license; no PSDC document
+may misstate a commercial-use restriction as OSI open source.

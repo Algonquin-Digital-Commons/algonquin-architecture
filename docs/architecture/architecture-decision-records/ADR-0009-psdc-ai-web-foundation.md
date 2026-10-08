@@ -1,6 +1,14 @@
 # ADR-0009: Bootstrap Algonquin AI Web from the Open WebUI v0.6.5 BSD Baseline
 
+
+> Standard: PSDC-DOC-001
+> Document type: adr
 > Status: Accepted
+> Owner: Algonquin Institution Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+
 > Date: 2026-09-10
 > Scope: AC AI web client
 > Decision owner: Project founder; license plan requires institutional legal review
@@ -75,6 +83,10 @@ No source import or production deployment occurs until:
   Code, and Campus experiences replace generic components.
 - Failing a gate above changes the preferred implementation to another eligible
   client or an Algonquin-native build; it does not change the gateway architecture.
+
+## Migration and rollback
+
+Migration MUST identify data/configuration transitions, compatibility windows, verification evidence, owner, and rollback trigger. Rollback restores the last known-good contract and implementation without losing audit evidence.
 
 ## References
 

@@ -1,16 +1,18 @@
 # Resource Model
 
-> Status: Normative specification; implementation gated
-> Domain: architecture
-> Owner: PSDC Architecture Working Group; accountable maintainer RedjiJB until delegation
+
+> Standard: PSDC-DOC-001
+> Document type: architecture-specification
+> Status: Draft for owner review; sourced from accepted decisions, open gaps listed
+> Owner: PSDC Architecture Working Group
+> Accountable maintainer: RedjiJB until delegation
 > Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+> Domain: architecture
 
 ## Purpose and outcome
 
-This specification defines **Resource Model** as part of the Post Secondary Digital
-Commons. Its required outcome is coherent system boundaries, portable contracts, explicit trust zones, and institution-first federation. An implementation conforms
-only when it satisfies this document, the linked ADRs, and the common
-[Specification Completeness Standard](../architecture/Specification-Completeness-Standard.md).
+This document defines how resources are named, owned and referenced: the hierarchy, the ownership rule, and how a reference differs from the thing it points to. An implementation conforms only when it satisfies this document, the linked ADRs and the common [Specification Completeness Standard](../architecture/Specification-Completeness-Standard.md).
 
 ## Scope
 
@@ -25,7 +27,7 @@ only when it satisfies this document, the linked ADRs, and the common
 
 ## Normative requirements
 
-- The Resource Model capability SHALL provide coherent system boundaries, portable contracts, explicit trust zones, and institution-first federation.
+- **ARCH-RM-001:** The Resource Model capability SHALL provide coherent system boundaries, portable contracts, explicit trust zones, and institution-first federation.
 - The capability SHALL have a versioned configuration schema, explicit safe
   defaults, validation before activation, and a reversible change procedure.
 - User-visible and administrative behaviour SHALL be accessible, explainable,
@@ -36,122 +38,92 @@ only when it satisfies this document, the linked ADRs, and the common
 - Institution deployments SHALL be independently operable and SHALL remain
   compatible with the common contract and conformance suite.
 
+## Subject-specific specification
+
+> **Decision status:** Statements directly traced to accepted ADRs, the decision register, or
+> constitutional architecture restate existing authority. Any new rule identifier or uncited
+> implementation constraint introduced by this draft is a proposal for owner review, not a
+> binding decision. It becomes normative only when the accountable owner accepts it through the
+> decision register, an ADR, or a released contract. The Gaps section remains explicitly open.
+
+### Hierarchy and ownership
+
+Resources follow organization, project, environment, resource (ARC-009). Neutral nouns are Institution, Tenant, Subject, Course, ComputeProvider, Node, Cell and Federation (ARC-019). Every record has one owning service; there are no cross-service database reads (ARC-015).
+
+### References
+
+A resource reference is portable and institution-scoped. It does not imply that the object exists or that the caller may access it ([resource-reference contract](../../contracts/common/resource-reference.schema.json)). Records carry references and digests, not embedded copies of other services' data.
+
+### Compute and economics resources
+
+| Resource | Contract | Lifecycle |
+|---|---|---|
+| Provider | [provider](../../contracts/compute/provider.schema.json) | pending, active, suspended, revoked, retired |
+| Capability | [capability](../../contracts/compute/capability.schema.json) | available, draining, unavailable, revoked |
+| Workload | [workload manifest](../../contracts/compute/workload-manifest.schema.json) | submitted and classified; the manifest is immutable |
+| Offer | [offer](../../contracts/compute/offer.schema.json) | submitted, withdrawn, expired, accepted, rejected |
+| Lease | [lease](../../contracts/compute/lease.schema.json) | issued, active, renewal pending, released, expired, revoked, failed |
+| Usage receipt | [usage receipt](../../contracts/compute/usage-receipt.schema.json) | measured, failed, disputed, voided |
+
+Resource use is measured in institutional resource units (IRU), non-transferable accounting units ([ADR-0029](architecture-decision-records/ADR-0029-unified-institutional-resource-metering.md)). Lifecycle tables are executable ([state machines](../../contracts/state-machines/lease.machine.json)).
+
+### Rules
+
+- **RES-1:** A finalized record is corrected by a linked record or compensating entry, never mutated.
+- **RES-2:** Every state change names an authorization action and carries a reason where the table requires one.
+- **RES-3:** Backend-native measurements are preserved even when a common unit is used for accounting.
+- **RES-4:** JSON Schema validates record shape, not global uniqueness. The operational store
+  enforces one canonical response per idempotency key, one lease lineage per placement decision,
+  at most one non-terminal lease per workload attempt, a gap-free unique receipt sequence per
+  chain `(leaseId, attempt, meterId)`, a prior digest that names the preceding accepted receipt of
+  the same chain, non-overlapping receipt intervals and one settlement consumption per accepted
+  receipt.
+
+### Gaps
+
+Organization, project and environment records have no schema yet; only the compute and economics
+resources do. The database keys, uniqueness indexes, transaction boundaries and correction links
+needed to enforce RES-4 remain H-004 design work.
+
 ## Interfaces, APIs, events, and contracts
 
-- Required interoperability boundary: versioned synchronous APIs, asynchronous events, identity claims, policy decisions, and repository ownership contracts.
-- HTTP interfaces SHALL use OpenAPI 3.1, explicit request and response schemas,
-  documented error codes, pagination for collections, and bounded timeouts.
-- Asynchronous interfaces SHALL use versioned schemas and CloudEvents envelopes;
-  delivery semantics, ordering, replay, deduplication, and dead-letter behaviour
-  SHALL be declared per event.
-- Mutations SHALL be idempotent or accept an idempotency key. Long-running work
-  SHALL expose status, cancellation, expiry, and result retrieval.
-- Consumers SHALL depend on contracts rather than another service's database,
-  internal queue, filesystem, or implementation-specific API.
+See the [Ecosystem Dependency Contract](../architecture/Ecosystem-Dependency-Contract.md); local extensions remain normative.
 
 ## Dependencies and ownership boundaries
 
-- This domain owns its schemas, policy enforcement points, migrations, service
-  metadata, and compatibility tests.
-- Identity, authorization, secrets, telemetry, object storage, notifications,
-  and gateway functions SHALL be consumed through their owning common contracts.
-- Mandatory runtime dependencies SHALL be open-source and self-hostable. An
-  external or proprietary service MAY be an optional adapter with a tested local
-  replacement and SHALL NOT be required for standalone institutional operation.
-- Circular synchronous dependencies are prohibited. Cross-domain workflows SHALL
-  define a coordinating owner and compensating behaviour.
+Inherits [baseline ownership controls](../architecture/Cross-Cutting-Architecture-Requirements.md#ownership-and-dependency-boundaries).
 
 ## Data, state, residency, and retention
 
-- Governed information includes architecture decisions, schemas, service metadata, dependency declarations, and institution deployment manifests.
-- Every data class SHALL declare an authoritative owner, purpose, classification,
-  residency, retention, export, correction, archival, and deletion rule in the
-  institution manifest before production activation.
-- Services SHALL minimize copied data, preserve provenance, encrypt protected
-  state and backups, and prevent telemetry from becoming an undeclared secondary
-  record system.
-- Cache and derived data SHALL be rebuildable or explicitly protected by backup
-  and recovery objectives. Deletion SHALL propagate to indexes, caches,
-  derivatives, replicas, and backups according to the declared retention policy.
+Inherits [baseline data controls](../architecture/Cross-Cutting-Architecture-Requirements.md#security-privacy-and-data); local extensions remain normative.
 
 ## Security, privacy, safety, and compliance
 
-- Domain controls SHALL include documented trust boundaries, threat models, least privilege, failure isolation, and no implicit transitive trust.
-- Authentication SHALL use the institution-approved identity issuer;
-  authorization SHALL be deny-by-default, least-privilege, policy-driven, and
-  enforced at every trust boundary.
-- Secrets SHALL use institution-controlled secret storage, short-lived credentials
-  where possible, documented rotation, and immediate revocation procedures.
-- Threat modelling SHALL cover misuse, compromised identities, malicious inputs,
-  dependency compromise, data exfiltration, denial of service, and unsafe
-  automation. High-impact actions require explicit confirmation and audit.
-- Logs, traces, diagnostics, and model context SHALL exclude protected content
-  unless explicitly required, minimized, access-controlled, and retained by policy.
+Inherits [baseline data controls](../architecture/Cross-Cutting-Architecture-Requirements.md#security-privacy-and-data); local extensions remain normative.
 
 ## Deployment, environments, and configuration
 
-- The common repository SHALL contain portable schemas, reference configuration,
-  conformance tests, and reusable OpenTofu, Helm, Kubernetes, or container assets.
-- Each institution fork SHALL contain only branding, adapters, policy overlays,
-  release configuration, and signed site values. Secrets SHALL never be committed.
-- Development SHALL use synthetic data. Staging SHALL exercise production-like
-  identity, policy, backup, upgrade, and failure behaviour without production data.
-- Production changes SHALL use reviewed GitOps promotion, immutable versioned
-  artifacts, health gates, rollback, and recorded provenance.
+Inherits [baseline deployment controls](../architecture/Cross-Cutting-Architecture-Requirements.md#deployment-and-configuration).
 
 ## Capacity, scaling, cost, and sustainability
 
-- Capacity SHALL be controlled by quotas, concurrency limits, bounded queues,
-  admission control, backpressure, and per-tenant fairness.
-- The institution manifest SHALL declare demand assumptions, normal and peak
-  capacity, saturation thresholds, scale limits, resource budgets, and service
-  objectives using the common schema.
-- Scale-out SHALL preserve authorization, ordering, idempotency, data consistency,
-  and auditability. Overload SHALL degrade optional work before protected or
-  interactive work and SHALL never bypass security controls.
-- Resource and energy consumption SHALL be observable and included in lifecycle
-  and capacity decisions.
+Inherits [baseline capacity controls](../architecture/Cross-Cutting-Architecture-Requirements.md#capacity-and-overload).
 
 ## Failure, recovery, and compatibility
 
-- Required lifecycle behaviour includes independent component lifecycle, compatibility windows, failure-domain isolation, disaster recovery, and observable control planes.
-- Dependencies SHALL have timeouts, bounded retries with jitter, circuit breakers,
-  health reporting, and documented degraded modes. Security and authorization
-  failures SHALL fail closed.
-- Stateful implementations SHALL meet manifest-declared RPO and RTO values and
-  prove backup restoration before production. Stateless components SHALL be
-  replaceable from source, configuration, and signed artifacts.
-- Releases SHALL support rollback and a compatibility window covering the current
-  major contract version and one prior major version unless an ADR documents a
-  safer domain-specific migration.
+Inherits [baseline reliability controls](../architecture/Cross-Cutting-Architecture-Requirements.md#reliability-and-compatibility); local extensions remain normative.
 
 ## Observability, testing, and operational readiness
 
-- Implementations SHALL publish health, readiness, structured logs, metrics,
-  traces, security events, usage, latency, error, and saturation signals through
-  OpenTelemetry-compatible boundaries without exposing protected data.
-- Required tests include unit, schema, contract, authorization, privacy, failure,
-  upgrade, rollback, accessibility where user-facing, performance, and
-  institution-standalone conformance tests.
-- A release requires a named owner, runbook, threat model, dependency lock,
-  license inventory, SBOM, vulnerability and secret scans, signed provenance,
-  recovery evidence, and passing acceptance tests.
+Inherits [baseline evidence controls](../architecture/Cross-Cutting-Architecture-Requirements.md#observability-and-evidence).
 
 ## Standards and implementation strategy
 
-- Adopted boundary and strategy: open protocols and replaceable implementations selected through adopt, extend, compatible fork, then build.
-- Implementations SHALL follow **adopt → extend → compatible fork → build**.
-  Building a new primitive requires an ADR demonstrating that mature alternatives
-  fail the requirements and that long-term maintenance is funded.
-- Product selection is replaceable behind the contract. Product-specific APIs
-  SHALL remain inside adapters and SHALL NOT leak into portable clients or domain
-  contracts.
+Follows adopt, extend, fork, then build ([ADR-0001](../architecture/architecture-decision-records/ADR-0001-standards-first-buy-borrow-build.md)).
 
 ## Settled architecture constraints
 
-- System boundaries use versioned standard interfaces and keep implementations replaceable.
-- Institution-specific control-plane composition must not create proprietary data-plane protocols.
-- Any exception follows the adopt → extend → compatible fork → build hierarchy and requires an ADR with evidence.
+The accepted constraints are the ADRs listed below and the precedence rules in [Architecture Authority and Precedence](../architecture/Architecture-Authority-and-Precedence.md).
 
 ## Decision traceability
 
@@ -164,24 +136,7 @@ only when it satisfies this document, the linked ADRs, and the common
 
 ## Acceptance criteria
 
-The specification is satisfied when an implementation evidence package proves:
-
-1. versioned schemas and examples validate;
-2. contract and compatibility tests pass;
-3. identity and least-privilege authorization tests pass;
-4. threat, privacy, accessibility, and license reviews are recorded as applicable;
-5. capacity limits, degraded modes, and failure recovery behave as declared;
-6. observability and audit evidence identify success, failure, and saturation;
-7. backup, restore, upgrade, and rollback are demonstrated where applicable;
-8. a standalone institution deployment passes the common conformance suite;
-9. no mandatory proprietary service or undocumented cross-domain dependency exists.
-
-## Decision status
-
-There are no unresolved architecture choices in this specification. Institution
-values are supplied through the governed deployment-manifest schema, and
-implementation evidence is collected at the implementation authorization and
-production release gates. Changes follow ADR-based change control.
+Inherits [baseline acceptance gates](../architecture/Cross-Cutting-Architecture-Requirements.md#observability-and-evidence); every local requirement MUST also pass.
 
 ## References
 
@@ -191,3 +146,4 @@ production release gates. Changes follow ADR-based change control.
 - [ADR-0001: Standards First](../architecture/architecture-decision-records/ADR-0001-standards-first-buy-borrow-build.md)
 - [ADR-0012: Post Secondary Digital Commons](../architecture/architecture-decision-records/ADR-0012-post-secondary-digital-commons.md)
 - [ADR-0017: OpenTofu Default](../architecture/architecture-decision-records/ADR-0017-opentofu-default.md)
+

@@ -1,193 +1,263 @@
 # Commons Compute Fabric Architecture
 
-> Status: Normative specification; implementation gated
-> Domain: campus-compute-fabric
-> Owner: PSDC Campus Compute Fabric Working Group; accountable maintainer RedjiJB until delegation
-> Last reviewed: 2026-09-11
+> Standard: PSDC-DOC-001
+> Document type: architecture-specification
+> Status: Normative
+> Owner: PSDC Campus Compute Fabric Working Group
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-25
+> Governing decisions: ADR-0010, ADR-0013, ADR-0026, ADR-0028, ADR-0029
 
-## Purpose and outcome
+## Purpose and measurable outcomes
 
-This specification defines **Commons Compute Fabric Architecture** as part of the Post Secondary Digital
-Commons. Its required outcome is institution-controlled heterogeneous campus compute with explicit capability, trust, scheduling, and preemption contracts. An implementation conforms
-only when it satisfies this document, the linked ADRs, and the common
-[Specification Completeness Standard](../architecture/Specification-Completeness-Standard.md).
+The Commons Compute Fabric turns institution-controlled servers, clusters, labs and approved
+federated providers into one policy-governed capacity market without pretending they are one
+uniform scheduler. It must select the right backend, find the best eligible provider and
+network/data path, issue a bounded lease, execute, verify and account for the outcome.
 
-## Scope
+Success means independent institutional operation, deterministic authorization and
+classification, traceable market decisions, correct backend-native execution, safe
+preemption/failure, common receipts and no public-network dependency for normal operation.
 
-- **In scope:** behaviour, interfaces, dependencies, data, security, deployment
-  boundaries, capacity, failure handling, observability, validation, and lifecycle
-  requirements for Commons Compute Fabric Architecture.
-- **Out of scope:** institution-specific hostnames, credentials, physical capacity,
-  named operators, and legal approvals. Those values belong in signed institution
-  deployment manifests and cannot redefine the common contract.
-- **Authority:** the owning domain may make compatible implementation choices.
-  Contract-breaking or cross-domain changes require an ADR and migration plan.
+## Scope and boundaries
 
-## Normative requirements
+The fabric owns provider/capability registry, workload API, classification, resolver,
+market/offer, lease, worker protocol, adapter contracts, evidence, metering and federation
+scheduling. It does not own institutional identity, data authorization, storage keys,
+Kubernetes/OpenStack/Slurm internals, official records or application business logic.
 
-- The Commons Compute Fabric Architecture capability SHALL provide institution-controlled heterogeneous campus compute with explicit capability, trust, scheduling, and preemption contracts.
-- The capability SHALL have a versioned configuration schema, explicit safe
-  defaults, validation before activation, and a reversible change procedure.
-- User-visible and administrative behaviour SHALL be accessible, explainable,
-  auditable, and bounded by institution policy and user authority.
-- An implementation SHALL expose only the minimum capability required by its
-  callers and SHALL reject unknown, unauthorized, malformed, expired, or
-  unsupported requests with stable machine-readable errors.
-- Institution deployments SHALL be independently operable and SHALL remain
-  compatible with the common contract and conformance suite.
+Every backend is replaceable. No backend may read another backend's private database or
+become an authority merely because it executed the work.
 
-## Interfaces, APIs, events, and contracts
+## Out of scope
 
-- Required interoperability boundary: versioned node capability, enrollment, job, lifecycle, artifact, accounting, and result schemas.
-- HTTP interfaces SHALL use OpenAPI 3.1, explicit request and response schemas,
-  documented error codes, pagination for collections, and bounded timeouts.
-- Asynchronous interfaces SHALL use versioned schemas and CloudEvents envelopes;
-  delivery semantics, ordering, replay, deduplication, and dead-letter behaviour
-  SHALL be declared per event.
-- Mutations SHALL be idempotent or accept an idempotency key. Long-running work
-  SHALL expose status, cancellation, expiry, and result retrieval.
-- Consumers SHALL depend on contracts rather than another service's database,
-  internal queue, filesystem, or implementation-specific API.
+Institution directory operation, data-content authorization, storage key custody, backend
+internal scheduling algorithms and application business logic remain with their owners.
 
-## Dependencies and ownership boundaries
+## Architecture
 
-- This domain owns its schemas, policy enforcement points, migrations, service
-  metadata, and compatibility tests.
-- Identity, authorization, secrets, telemetry, object storage, notifications,
-  and gateway functions SHALL be consumed through their owning common contracts.
-- Mandatory runtime dependencies SHALL be open-source and self-hostable. An
-  external or proprietary service MAY be an optional adapter with a tested local
-  replacement and SHALL NOT be required for standalone institutional operation.
-- Circular synchronous dependencies are prohibited. Cross-domain workflows SHALL
-  define a coordinating owner and compensating behaviour.
+    clients / applications / research portals
+                       |
+                Workload API
+                       |
+          identity + policy + data admission
+                       |
+          classifier and workload graph builder
+                       |
+        provider/capability/network/storage views
+                       |
+       policy-gated reverse auction and resolver
+                       |
+         lease + credit + path + storage reservation
+                       |
+     +---------+----------+---------+--------------+
+     |         |          |         |              |
+ Kubernetes OpenStack   Slurm   task fabric   service market
+     |         |          |         |              |
+     +---------+----------+---------+--------------+
+                       |
+      native telemetry -> evidence -> common receipt
+                       |
+     operational reconciliation -> ledger commitment
 
-## Data, state, residency, and retention
+## Component responsibilities
 
-- Governed information includes node attestations, hardware capabilities, job metadata, immutable artifacts, utilization records, and bounded diagnostic logs.
-- Every data class SHALL declare an authoritative owner, purpose, classification,
-  residency, retention, export, correction, archival, and deletion rule in the
-  institution manifest before production activation.
-- Services SHALL minimize copied data, preserve provenance, encrypt protected
-  state and backups, and prevent telemetry from becoming an undeclared secondary
-  record system.
-- Cache and derived data SHALL be rebuildable or explicitly protected by backup
-  and recovery objectives. Deletion SHALL propagate to indexes, caches,
-  derivatives, replicas, and backups according to the declared retention policy.
+| Component | Responsibility |
+|---|---|
+| Workload API | validate versioned manifests, idempotency, status, cancellation and result references |
+| Policy/admission | authenticate and authorize requester, data, action, provider scope and budget |
+| Classifier | choose execution archetype, criticality and allowed backends |
+| Provider registry | provider identity, ownership, trust, production/federation status |
+| Capability registry | signed fresh resource, runtime, accelerator, topology and availability claims |
+| Market service | eligible provider solicitation, sealed offers, clearing and explainable decision |
+| Resolver | compose backend, provider, network and storage plan under hard constraints |
+| Lease service | atomically reserve resource, path, storage and credit; expiry/revocation |
+| Worker/cell controller | outbound sessions, task dispatch, sandbox, checkpoint, drain and evidence |
+| Backend adapters | map PSDC lease to Kubernetes/OpenStack/Slurm/task/service APIs and reconcile |
+| Meter/evidence service | native measurements, verification, common IRUs, receipts and disputes |
+| Federation scheduler | exchange approved capability/offers/contracts without merging authority |
 
-## Security, privacy, safety, and compliance
+## Dependencies, adapters, runtimes and ownership
 
-- Domain controls SHALL include mutual authentication, signed enrollment, sandboxed workloads, trust tiers, least-privilege worker identities, and rapid revocation.
-- Authentication SHALL use the institution-approved identity issuer;
-  authorization SHALL be deny-by-default, least-privilege, policy-driven, and
-  enforced at every trust boundary.
-- Secrets SHALL use institution-controlled secret storage, short-lived credentials
-  where possible, documented rotation, and immediate revocation procedures.
-- Threat modelling SHALL cover misuse, compromised identities, malicious inputs,
-  dependency compromise, data exfiltration, denial of service, and unsafe
-  automation. High-impact actions require explicit confirmation and audit.
-- Logs, traces, diagnostics, and model context SHALL exclude protected content
-  unless explicitly required, minimized, access-controlled, and retained by policy.
+Identity/policy, network, storage, key and economic services are mandatory control-plane
+dependencies. Backend adapters own translation and reconciliation; Kubernetes, OpenStack,
+Slurm and worker runtimes own execution only after a valid lease.
 
-## Deployment, environments, and configuration
+## Scheduler hierarchy and conflict resolution
 
-- The common repository SHALL contain portable schemas, reference configuration,
-  conformance tests, and reusable OpenTofu, Helm, Kubernetes, or container assets.
-- Each institution fork SHALL contain only branding, adapters, policy overlays,
-  release configuration, and signed site values. Secrets SHALL never be committed.
-- Development SHALL use synthetic data. Staging SHALL exercise production-like
-  identity, policy, backup, upgrade, and failure behaviour without production data.
-- Production changes SHALL use reviewed GitOps promotion, immutable versioned
-  artifacts, health gates, rollback, and recorded provenance.
+The apparent Kubernetes/HTCondor/Slurm/Golem/Akash conflict is resolved by separating three
+questions:
 
-## Capacity, scaling, cost, and sustainability
+1. **What kind of work is this?** The classifier chooses service, VM, MPI/HPC, independent
+   task, opportunistic batch or hybrid graph.
+2. **Which eligible provider should host it?** The PSDC market uses Akash-like reverse
+   offers, data/network locality, risk and total evaluated cost.
+3. **How is it placed inside that provider?** Kubernetes, Nova Placement, Slurm or the task
+   engine performs its specialized local scheduling.
 
-- Capacity SHALL be controlled by quotas, concurrency limits, bounded queues,
-  admission control, backpressure, and per-tenant fairness.
-- The institution manifest SHALL declare demand assumptions, normal and peak
-  capacity, saturation thresholds, scale limits, resource budgets, and service
-  objectives using the common schema.
-- Scale-out SHALL preserve authorization, ordering, idempotency, data consistency,
-  and auditability. Overload SHALL degrade optional work before protected or
-  interactive work and SHALL never bypass security controls.
-- Resource and energy consumption SHALL be observable and included in lifecycle
-  and capacity decisions.
+HTCondor is an interoperability route for existing high-throughput estates. Slurm is not
+replaced by Golem for MPI. Kubernetes is not replaced by Akash; the Akash-derived layer can
+select among eligible Kubernetes providers and issue a service lease.
 
-## Failure, recovery, and compatibility
+## Workload-to-backend map
 
-- Required lifecycle behaviour includes interactive-user priority, drain and preemption, thermal and power limits, checkpoint recovery, and failure-domain-aware scheduling.
-- Dependencies SHALL have timeouts, bounded retries with jitter, circuit breakers,
-  health reporting, and documented degraded modes. Security and authorization
-  failures SHALL fail closed.
-- Stateful implementations SHALL meet manifest-declared RPO and RTO values and
-  prove backup restoration before production. Stateless components SHALL be
-  replaceable from source, configuration, and signed artifacts.
-- Releases SHALL support rollback and a compatibility window covering the current
-  major contract version and one prior major version unless an ADR documents a
-  safer domain-specific migration.
+| Workload | Backend |
+|---|---|
+| opportunistic desktop/lab batch | PSDC/Golem-derived task workers |
+| independent task graph | Golem-derived task fabric |
+| loosely coupled parameter sweep | Golem-derived tasks |
+| tightly coupled MPI/HPC | Slurm |
+| long-running container service | Kubernetes |
+| VM workload | OpenStack |
+| mixed pipeline | PSDC workload graph with separately authorized stages |
 
-## Observability, testing, and operational readiness
+## Tokenized resource model
 
-- Implementations SHALL publish health, readiness, structured logs, metrics,
-  traces, security events, usage, latency, error, and saturation signals through
-  OpenTelemetry-compatible boundaries without exposing protected data.
-- Required tests include unit, schema, contract, authorization, privacy, failure,
-  upgrade, rollback, accessibility where user-facing, performance, and
-  institution-standalone conformance tests.
-- A release requires a named owner, runbook, threat model, dependency lock,
-  license inventory, SBOM, vulnerability and secret scans, signed provenance,
-  recovery evidence, and passing acceptance tests.
+Every admitted operation creates signed, non-transferable records:
 
-## Standards and implementation strategy
+- capability assertion;
+- provider offer;
+- credit reservation;
+- compute lease;
+- network reservation;
+- storage placement token;
+- usage/evidence receipt;
+- periodic settlement commitment.
 
-- Adopted boundary and strategy: OCI artifacts, S3-compatible objects, OpenTelemetry, and runtime adapters behind Commons-owned contracts.
-- Implementations SHALL follow **adopt → extend → compatible fork → build**.
-  Building a new primitive requires an ADR demonstrating that mature alternatives
-  fail the requirements and that long-term maintenance is funded.
-- Product selection is replaceable behind the contract. Product-specific APIs
-  SHALL remain inside adapters and SHALL NOT leak into portable clients or domain
-  contracts.
+These records make capacity, provider choice, location, obligation and cost transparent.
+They are not public cryptocurrency, ownership shares, identity credentials or data access
+keys. Data remains encrypted in the storage fabric; a token carries only references and
+commitments.
 
-## Settled architecture constraints
+## Institutional Resource Units
 
-- Commons Compute Fabric owns campus-specific enrollment, topology, trust, idle detection, scheduling, preemption, accounting, and integration.
-- Execution engines remain plugins behind versioned job, capability, lifecycle, and result contracts.
-- Any exception follows the adopt → extend → compatible fork → build hierarchy and requires an ADR with evidence.
+Common units include CPU-core-seconds, memory-GiB-seconds, GPU-profile-seconds,
+accelerator-memory-GiB-seconds, local/storage-GiB-time, I/O operations, governed egress,
+network bandwidth reservation and energy where measured. Backend-specific values are
+attached for audit rather than flattened away. Institution rate cards translate units into
+quota/showback/settlement credits.
 
-## Decision traceability
+## Compute-cell and lab operation
 
-- ADR-0001: Standards-First / Buy-Borrow-Build
-- ADR-0005: Standard Platform Primitives
-- ADR-0012: Tenant-Neutral Post-Secondary Digital Commons
-- ADR-0013: Institution-First Federation Locality
-- ADR-0016: Accepted Project Defaults
-- ADR-0017: OpenTofu Default Infrastructure-as-Code Toolchain
+A lab cell aggregates machines through a gateway. Workers enroll/attest, open outbound mTLS
+sessions, advertise fresh capabilities, execute only suitable sandboxed work, yield to
+interactive users, checkpoint/drain and return signed evidence. The gateway prevents
+unsolicited inbound access and hides individual desktops from federation. Lab capacity is
+cheap and useful but volatile; it cannot host primary critical services or uncontrolled
+protected data.
 
-## Acceptance criteria
+## Interfaces and events
 
-The specification is satisfied when an implementation evidence package proves:
+The fabric publishes OpenAPI schemas for workloads, providers, capabilities, offers,
+decisions, leases, status, cancellation, receipts and disputes. CloudEvents/AsyncAPI cover
+lifecycle notifications. Backend adapter APIs include reserve, launch, observe, checkpoint,
+cancel, collect, release and reconcile. Mutations are idempotent. Current and previous major
+contract versions are supported during migration.
 
-1. versioned schemas and examples validate;
-2. contract and compatibility tests pass;
-3. identity and least-privilege authorization tests pass;
-4. threat, privacy, accessibility, and license reviews are recorded as applicable;
-5. capacity limits, degraded modes, and failure recovery behave as declared;
-6. observability and audit evidence identify success, failure, and saturation;
-7. backup, restore, upgrade, and rollback are demonstrated where applicable;
-8. a standalone institution deployment passes the common conformance suite;
-9. no mandatory proprietary service or undocumented cross-domain dependency exists.
+## State and consistency
 
-## Decision status
+PostgreSQL owns current requests, offers, decisions, leases, reservations and reconciliation.
+NATS JetStream distributes events; Valkey may cache expiring views. Backends remain
+authoritative for their native execution state and reconcile through adapters. A
+Cosmos-derived ledger records batched commitments/settlement, not heartbeats or queues.
+Storage owns artifact bytes; compute stores only references and execution evidence.
 
-There are no unresolved architecture choices in this specification. Institution
-values are supplied through the governed deployment-manifest schema, and
-implementation evidence is collected at the implementation authorization and
-production release gates. Changes follow ADR-based change control.
+## Security and privacy
+
+Provider and worker identities are separate from users. Workloads use immutable artifacts,
+short-lived credentials, default-deny network policy and isolation matched to trust/data:
+container, gVisor, Kata or dedicated VM/host. Protected input keys are operation-scoped.
+Economic/telemetry records use project/workload references and exclude content. Public and
+federated providers require explicit scope and cannot be silent fallbacks.
+
+## Production and critical services
+
+Critical services may participate in dynamic placement only inside a certified pool with
+reserved capacity, independent failure domains, tested HA/restore, controlled networks,
+keys, patching, on-call and stable fallback. The market can optimize safe alternatives but
+cannot reduce replicas, widen trust, cross residency, use a lab/public provider or evict an
+accepted service when the market/ledger is unavailable.
+
+## Capacity and fairness
+
+Reserved safety/critical floors are removed before discretionary supply is auctioned.
+Dominant Resource Fairness shares remaining multi-resource capacity between projects, with
+published priority/subsidy policies. Admission controls fragmentation and headroom.
+Preemption targets the lowest eligible priority, respects checkpoint/grace and produces
+receipts/refunds.
+
+## Dependency and failure matrix
+
+| Dependency/failure | Required response |
+|---|---|
+| identity/policy unavailable | fail closed for new leases; accepted leases follow policy |
+| registry stale | exclude stale provider/capability |
+| market/resolver down | stop new dynamic placements; backends continue accepted leases |
+| operational DB down | fail over; no unsafe new state; reconcile idempotently |
+| ledger down | queue settlement; do not interrupt execution |
+| storage/key unavailable | no new protected execution; do not copy plaintext workaround |
+| network path unavailable | select next fully eligible plan or remain queued |
+| worker/provider loss | checkpoint/retry/fail by class and charge verified usage only |
+| backend control-plane loss | use backend runbook and reconcile; do not invent success |
+| federation isolated | institution continues locally; bounded offers/exchanges expire |
+
+## Observability and operations
+
+Measure API/scheduler latency, eligible-set size, bid spread, provider concentration,
+utilization, queue age, estimate accuracy, data movement, network cost, starts/completions,
+preemption, checkpoint/retry, failed leases, receipts, reconciliation variance, credit
+holds, energy and overrides. Decision traces explain gates, algorithms, weights and
+outcomes. Alerts name workload owner and infrastructure owner.
+
+## Alternatives and trade-offs
+
+One scheduler is operationally simpler but cannot preserve specialized VM, MPI, service and
+task semantics. Sending every operation through public decentralized networks violates
+sovereignty. Static placement is predictable but wastes supply. PSDC uses a common
+authority/economic envelope plus specialized backends and constrained dynamic markets.
+
+## Implementation sequence, migration and rollback
+
+1. implement schemas, registry, classifier and replay simulator;
+2. integrate one internal Kubernetes or task backend with shadow receipts;
+3. add lease/credit reservation and worker/cell control;
+4. add OpenStack and Slurm adapters with conformance fixtures;
+5. add storage/network placement and internal reverse offers;
+6. certify production pools, then approved federation;
+7. add ledger commitments after operational reconciliation is stable.
+
+Rollback stops new market clears, preserves accepted leases/evidence, returns to the last
+accepted static/backend policy and reconciles outstanding usage. It never changes data
+classification or deletes liabilities.
+
+## Testing and evidence
+
+The conformance suite covers classification, each backend adapter, market failure, receipt
+reconciliation, independence from public networks and protected-data leakage.
+
+## Binary acceptance criteria
+
+These testing and evidence gates are pass/fail and produce retained conformance artifacts.
+
+- **CCF-ARCH-ACC-001:** every workload row selects the expected backend and rejects at least
+  one superficially attractive but unsuitable backend;
+- **CCF-ARCH-ACC-002:** a single trace covers identity/policy, classification, rejected
+  providers, bids, score, lease, backend execution, measurement and settlement;
+- **CCF-ARCH-ACC-003:** equivalent workload semantics produce common receipts across
+  Kubernetes, OpenStack, Slurm and one derived task/service backend;
+- **CCF-ARCH-ACC-004:** public networks disabled and federation disconnected still permit
+  complete local admission, execution, storage and accounting;
+- **CCF-ARCH-ACC-005:** loss of market, ledger and one provider produces documented degraded
+  behavior without stopping an accepted critical service or duplicating work;
+- **CCF-ARCH-ACC-006:** no token, receipt or ledger transaction contains protected content
+  or usable secret/key material.
 
 ## References
 
-- [Specification Completeness Standard](../architecture/Specification-Completeness-Standard.md)
-- [Technology Defaults and Alternatives](../vision/13-Technology-Defaults-and-Alternatives.md)
-- [Human Choices and Decisions Register](../governance/Human-Choices-and-Decisions-Register.md)
-- [ADR-0001: Standards First](../architecture/architecture-decision-records/ADR-0001-standards-first-buy-borrow-build.md)
-- [ADR-0012: Post Secondary Digital Commons](../architecture/architecture-decision-records/ADR-0012-post-secondary-digital-commons.md)
-- [ADR-0017: OpenTofu Default](../architecture/architecture-decision-records/ADR-0017-opentofu-default.md)
+- [Workload Classification](Workload-Classification.md)
+- [Scheduling Algorithm](Scheduling-Algorithm.md)
+- [Worker Agent Specification](Worker-Agent-Specification.md)
+- [Network Architecture](../network/Network-Architecture.md)
+- [Storage Architecture](../storage/Storage-Architecture.md)
+- [Production Boundary](../deployment/Production.md)
+- [Ledger and Operational Database Architecture](../economics/Ledger-and-Operational-Database-Architecture.md)

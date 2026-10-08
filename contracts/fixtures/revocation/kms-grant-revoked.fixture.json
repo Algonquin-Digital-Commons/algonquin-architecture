@@ -1,0 +1,26 @@
+{
+  "fixtureVersion": "1.0",
+  "fixtureId": "revocation.security.kms-grant",
+  "category": "revocation",
+  "schemaId": "urn:psdc:contracts:security:kms-operation-grant:1",
+  "description": "Revoked operation grant that must fail before KMS use.",
+  "expected": { "schemaValid": true, "semanticOutcome": "revoked", "statusPath": "/status", "expectedStatus": "revoked", "reasonPath": "/revocation/reason/code", "expectedReasonCode": "LEASE_REVOKED" },
+  "instance": {
+    "contractVersion": "1.0",
+    "grantId": "80808080-8080-4080-8080-808080808080",
+    "issuerInstitutionId": "institution.example",
+    "subjectId": "workload.revoked",
+    "keyRef": { "kind": "kek", "id": "kek.storage.project-vs01", "version": "3" },
+    "operations": ["unwrap"],
+    "purpose": "Decrypt one lease-bound object.",
+    "context": { "institutionId": "institution.example", "dataClassification": "confidential", "resourceRefs": [{ "kind": "object", "id": "88888888-8888-4888-8888-888888888888" }] },
+    "notBefore": "2026-09-27T14:00:00Z",
+    "expiresAt": "2026-09-27T14:20:00Z",
+    "maxUses": 1,
+    "status": "revoked",
+    "policyDecision": { "decisionId": "81818181-8181-4181-8181-818181818181", "policyId": "policy.kms.operation", "policyVersion": "1.0.0", "outcome": "allow" },
+    "approvals": [{ "approverId": "service.storage-authority", "role": "storage_authority", "approvedAt": "2026-09-27T14:00:00Z" }],
+    "revocation": { "revokedAt": "2026-09-27T14:05:00Z", "reason": { "code": "LEASE_REVOKED", "message": "Owning workload lease was revoked.", "retryable": false } },
+    "signature": { "algorithm": "Ed25519", "keyId": "did:web:institution.example#kms-authority-1", "canonicalization": "RFC8785", "signedAt": "2026-09-27T14:05:00Z", "value": "cmV2b2tlZC1ncmFudC1zaWduYXR1cmU" }
+  }
+}

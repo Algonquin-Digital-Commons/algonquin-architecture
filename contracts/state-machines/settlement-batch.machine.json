@@ -1,0 +1,11 @@
+{
+  "machineVersion": "1.0", "machineId": "economics.settlement-batch.v1", "contractSchemaId": "urn:psdc:contracts:economics:settlement-batch:1", "statePointer": "/properties/status/enum",
+  "initialStates": ["built"], "terminalStates": ["finalized", "disputed", "rejected"], "states": ["built", "submitted", "finalized", "disputed", "rejected"],
+  "transitions": [
+    { "from": "built", "to": "submitted", "action": "batch.submit", "authorizationAction": "economics.batch.submit", "idempotent": true, "guardCodes": ["BALANCED_DELTAS", "EVIDENCE_AVAILABLE", "ROOTS_VERIFIED"] },
+    { "from": "built", "to": "rejected", "action": "batch.reject", "authorizationAction": "economics.batch.reject", "idempotent": true, "reasonRequired": true },
+    { "from": "submitted", "to": "finalized", "action": "batch.finalize", "authorizationAction": "economics.batch.finalize", "idempotent": true, "guardCodes": ["LEDGER_COMMITMENT_FINAL"] },
+    { "from": "submitted", "to": "disputed", "action": "batch.dispute", "authorizationAction": "economics.dispute.open", "idempotent": true, "reasonRequired": true },
+    { "from": "submitted", "to": "rejected", "action": "batch.reject", "authorizationAction": "economics.batch.reject", "idempotent": true, "reasonRequired": true }
+  ]
+}

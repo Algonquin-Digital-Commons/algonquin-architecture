@@ -1,5 +1,14 @@
 # Decision Traceability Matrix
 
+
+> Standard: PSDC-DOC-001
+> Document type: architecture-map
+> Status: Normative
+> Owner: Algonquin Institution Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-25
+> Governing decisions: Applicable ADRs and repository governance
+
 | Decision | Primary documents | Platform-wide effect |
 |---|---|---|
 | ADR-0001 Standards-first | Vision principles, build/adopt/fork, open-source strategy | Every new primitive and protocol |
@@ -25,11 +34,44 @@
 | ADR-0021 Institution-branded client access | Web, desktop, mobile, manifest, signing, OIDC, distribution and pairing | Institution portal/account/endpoints; neutral shared code; no upstream-vendor or global Commons account |
 | ADR-0022 Polyrepo ecosystem | Git boundaries, releases, ownership, clients, deployment overlays and developer workspace | Independent repositories per bounded product; Happy-style package workspaces only within one cohesive product |
 | ADR-0023 Institution fork model | GitHub organizations, white-labelling, upstream synchronization and institution release ownership | Repository-by-repository thin forks; institution `origin`, Commons `upstream`, deployment-manifest configuration |
-| ADR-0024 Permissive license and contribution policy | Licensing, patents, notices, commercial use and upstream contribution | Apache-2.0 default; upstream-first governance and separate participant agreements, not a non-OSI license condition |
+| ADR-0024 Permissive license and contribution policy | Historical licensing decision | Superseded by ADR-0030; remains relevant to artifacts not lawfully migrated |
 | ADR-0025 Independent web client repository | `psdc-web`, institutional web forks, client discovery, Web BFF, browser security and releases | Browser/PWA ownership is independent from the AI service repository and follows the same thin-fork model as desktop and mobile |
+| ADR-0026 Sovereign derived fabric | Compute, storage and ledger framework composition | PSDC authority and contracts govern bounded upstream-derived mechanisms; public networks are explicit adapters |
+| ADR-0027 Portable identity | Institutional identity, W3C DIDs, VCs, wallets and transfer | Portable claims accompany but never replace local authentication and authorization |
+| ADR-0028 Six-tier storage | Object manifests, placement, custody, repair, federation and public archive | Protected content remains encrypted/off-ledger; Tier 4 is governed federation and Tier 5 intentional public permanence |
+| ADR-0029 Unified resource metering | Compute, storage and network leases, receipts and institutional credits | One non-transferable accountable resource model across backends |
+| ADR-0030 Network copyleft and commercial contribution | PSDC service/client/contract license boundaries and participant agreements | AGPL target for services, open interoperability contracts, and mandatory upstream offers for recognized participants |
+| ADR-0031 Off-chain operations and on-chain settlement | PostgreSQL, evidence storage, batch builder, Cosmos-derived ledger and reconciliation | Fast mutable local operation with deterministic federated settlement; the ledger is not the scheduler database |
+| ADR-0032 Data-plane gateway boundary and two-axis roadmap | Client access to backends; ordering of common implementation waves versus institution phases | Clients reach storage, inference and workers only through the institution gateway; waves and phases are separate axes with an accepted mapping |
+| ADR-0033 Dual-lane adaptive AI sessions | AI sessions, model routing, context packages, caches, capacity, privacy and minimal clients | Fast interaction and asynchronous deliberation cooperate through versioned model-independent context; drafts stay local by default |
+| ADR-0034 Governed agent skills and workspace knowledge plane | Obsidian workspace, repository catalog, generated dashboards and common agent skills | The polyrepo remains authoritative; generated views are derived; third-party skills are pinned, reviewed and PSDC-bounded before import |
 
 ## Required use
 
 Every architecture document identifies applicable ADRs. A design that conflicts
 with an accepted ADR either changes to comply or proposes a superseding ADR with a
 migration and compatibility plan.
+
+## Purpose and mapped scope
+
+This map records the context, scope, and relationships represented by **Decision-Traceability-Matrix**. It is a cross-repository navigation and ownership record, not a replacement for an owning contract.
+
+## Scope and exclusions
+
+The map covers only the named systems, documents, capabilities, and edges. It excludes secrets, private implementation details, undocumented vendor commitments, and requirements owned by a different specification.
+
+## Ownership boundaries
+
+The owning repository remains authoritative for each capability and contract. This map may summarize and link but MUST NOT redefine an institution policy, product boundary, or signed deployment value.
+
+## Dependency and relationship semantics
+
+A relationship means a declared contract, event, protocol, deployment dependency, or navigation edge; it does not imply shared databases or filesystem access. Producers and consumers MUST use the referenced versioned interface.
+
+## Source of truth and references
+
+Authoritative sources are the owning contracts, accepted ADRs, and deployment profiles linked by this map. References MUST identify the source document and version where applicable.
+
+## Validation and staleness
+
+Maintainers MUST validate links, versions, ownership, and contradictions whenever a boundary or contract changes. A stale edge is corrected, superseded, or marked historical with an owner and expiry before dependent release.

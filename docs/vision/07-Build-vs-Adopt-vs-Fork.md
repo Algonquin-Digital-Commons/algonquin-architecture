@@ -1,9 +1,14 @@
 # 07 Build vs Adopt vs Fork
 
-> Status: Accepted sourcing policy
-> Domain: vision
+
+> Standard: PSDC-DOC-001
+> Document type: governance-standard
+> Status: Accepted
 > Owner: Platform architecture and open-source governance
+> Accountable maintainer: RedjiJB until delegation
 > Last reviewed: 2026-09-10
+> Governing decisions: Applicable ADRs and repository governance
+> Domain: vision
 
 ## Purpose
 
@@ -101,7 +106,12 @@ Before choosing extend, fork, or build, record:
 - Implementation evidence gate: each implementation records its exact upstream, release,
   license, patch budget, owner, evidence and exit path.
 
+## Required controls, maturity, definition of done, and change control
+
+**VISION-0BVAVF-001:** GOV-SOURCE-001: Teams MUST evaluate adopt, extend, compatible fork, and new build in that order against requirements, license, security, accessibility, interoperability, maintenance, and exit cost. A fork requires provenance, patch budget, upstream strategy, and replacement trigger; a build requires evidence that eligible alternatives fail. Maturity requires enforced decision templates and gates. Definition of done is an accepted evidence-backed record. Material exceptions require an ADR and scheduled reassessment.
+
 ## References
 
 - [Open-Source-Only Technology Policy](11-Open-Source-Only-Policy.md)
 - [Full Technology Stack and Open-Source Alternatives](14-Full-Technology-Stack-and-Open-Source-Alternatives.md)
+

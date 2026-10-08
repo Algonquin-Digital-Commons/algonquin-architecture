@@ -1,6 +1,14 @@
 # GitHub Repository Governance
 
-> Status: Active governance policy
+
+> Standard: PSDC-DOC-001
+> Document type: policy-standard
+> Status: Active
+> Owner: Algonquin Institution Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+
 > Effective: 2026-09-11
 > Applies to: `Post-Secondary-Digital-Commons` and `Algonquin-Digital-Commons`
 
@@ -115,3 +123,32 @@ Before calling repository governance production-ready:
   audit without providing a synchronization benefit.
 - Treating settings as documentation only permits GitHub configuration drift;
   the future governance check must compare live API state with the manifest.
+
+## Scope
+
+The scope covers the systems, people, data, interfaces, and lifecycle named by this policy. Local values may tighten these rules but MUST NOT weaken shared safety, privacy, or audit requirements.
+
+## Normative rules
+
+The requirements in this document are normative. Owners MUST implement them, SHOULD document justified risk trade-offs, and MUST NOT treat an example as an exemption.
+
+## Enforcement
+
+The owning maintainer enforces this policy through review, automated checks, release gates, operator runbooks, and periodic evidence review. A critical violation blocks promotion until corrected or explicitly excepted.
+
+## Exceptions
+
+An exception requires affected scope, rationale, threat/risk assessment, compensating controls, accountable approver, expiry date, and rollback or remediation plan. Exceptions MUST be narrow and time-bounded.
+
+## Audit evidence
+
+Audit evidence includes implementation links, test results, configuration or provenance records, incidents, approvals, and exception history. Evidence MUST be reproducible by an independent maintainer.
+
+## Acceptance and review
+
+Acceptance requires the documented controls, tests, operator ownership, and evidence to be complete. The owner reviews this policy on material architecture change and at least once per release cycle.
+## Stable conformance requirement
+
+- **GOV-GRG-001:** The **GitHub Repository Governance** owner MUST record enforcement evidence, exceptions, expiry, and review outcomes for this policy.
+
+

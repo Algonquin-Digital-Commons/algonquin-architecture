@@ -1,6 +1,14 @@
 # ADR-0005: Standard Platform Primitives
 
+
+> Standard: PSDC-DOC-001
+> Document type: adr
 > Status: Accepted
+> Owner: Algonquin Institution Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+
 > Scope: Data, infrastructure, APIs, events, telemetry, security, and artifacts
 
 ## Decision
@@ -26,3 +34,16 @@ security, operational, licensing, and institutional review.
 
 No `AlgonquinDB`, proprietary container format, custom tracing protocol, or novel
 storage transport is created without an exception ADR satisfying ADR-0001.
+
+## Alternatives
+
+Considered alternatives include retaining the prior approach, adopting a mature open implementation, and building a local adapter. The selected decision is preferred under the stated requirements, constraints, sovereignty, and maintenance capacity; a new option requires a superseding ADR.
+
+## Migration and rollback
+
+Migration MUST identify data/configuration transitions, compatibility windows, verification evidence, owner, and rollback trigger. Rollback restores the last known-good contract and implementation without losing audit evidence.
+
+## Context
+
+This decision responds to the Algonquin fork's need for interoperable, supportable
+platform primitives while retaining institution sovereignty and Commons compatibility.

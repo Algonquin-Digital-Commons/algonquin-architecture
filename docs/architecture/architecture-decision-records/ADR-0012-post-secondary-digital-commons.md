@@ -1,6 +1,14 @@
 # ADR-0012: Build a Tenant-Neutral Post-Secondary Digital Commons
 
+
+> Standard: PSDC-DOC-001
+> Document type: adr
 > Status: Accepted
+> Owner: Algonquin Institution Maintainers
+> Accountable maintainer: RedjiJB until delegation
+> Last reviewed: 2026-09-11
+> Governing decisions: Applicable ADRs and repository governance
+
 > Date: 2026-09-10
 > Scope: Entire ecosystem
 > Decision owner: Project founder
@@ -44,3 +52,11 @@ remains the validation gate for tenant neutrality.
 - Shared repositories use neutral `psdc-*` names. Algonquin naming is confined to
   `algonquin-psdc-deployment` and Algonquin-operated release channels.
 - Not all fabrics federate the same data or trust level.
+
+## Alternatives
+
+Considered alternatives include retaining the prior approach, adopting a mature open implementation, and building a local adapter. The selected decision is preferred under the stated requirements, constraints, sovereignty, and maintenance capacity; a new option requires a superseding ADR.
+
+## Migration and rollback
+
+Migration MUST identify data/configuration transitions, compatibility windows, verification evidence, owner, and rollback trigger. Rollback restores the last known-good contract and implementation without losing audit evidence.

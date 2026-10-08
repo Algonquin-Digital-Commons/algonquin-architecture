@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:psdc:contracts:economics:ledger-commitment:1",
+  "title": "PSDC Ledger Commitment",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["contractVersion", "commitmentId", "batchId", "batchRoot", "chainId", "module", "status", "submittedAt", "proposerId", "validatorSetDigest", "evidenceDigest", "signature"],
+  "properties": {
+    "contractVersion": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/contractVersion" },
+    "commitmentId": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/uuid" },
+    "batchId": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/uuid" },
+    "batchRoot": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/sha256" },
+    "chainId": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/boundedId" },
+    "module": { "const": "psdc.settlement.v1" },
+    "height": { "type": "integer", "minimum": 1 },
+    "transactionHash": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/sha256" },
+    "status": { "enum": ["submitted", "finalized", "rejected", "superseded"] },
+    "submittedAt": { "type": "string", "format": "date-time" },
+    "finalizedAt": { "type": "string", "format": "date-time" },
+    "proposerId": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/boundedId" },
+    "validatorSetDigest": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/sha256" },
+    "evidenceDigest": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/sha256" },
+    "correctionOfCommitmentId": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/uuid" },
+    "reason": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/reason" },
+    "signature": { "$ref": "urn:psdc:contracts:common:definitions:1#/$defs/signature" }
+  },
+  "allOf": [
+    { "if": { "properties": { "status": { "const": "finalized" } }, "required": ["status"] }, "then": { "required": ["height", "transactionHash", "finalizedAt"] } },
+    { "if": { "properties": { "status": { "enum": ["rejected", "superseded"] } }, "required": ["status"] }, "then": { "required": ["reason"] } },
+    { "if": { "properties": { "status": { "const": "superseded" } }, "required": ["status"] }, "then": { "required": ["correctionOfCommitmentId"] } }
+  ]
+}

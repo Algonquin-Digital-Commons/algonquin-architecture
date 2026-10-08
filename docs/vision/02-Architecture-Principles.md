@@ -1,9 +1,14 @@
 # 02 Architecture Principles
 
-> Status: Normative architecture principles
-> Domain: vision
+
+> Standard: PSDC-DOC-001
+> Document type: governance-standard
+> Status: Normative
 > Owner: Platform architecture
+> Accountable maintainer: RedjiJB until delegation
 > Last reviewed: 2026-09-10
+> Governing decisions: Applicable ADRs and repository governance
+> Domain: vision
 
 ## Purpose
 
@@ -134,7 +139,12 @@ never silently become a core dependency.
 - Implementation evidence gate: add exact releases, measured thresholds, named owners,
   institutional approvals and evidence at each implementation gate.
 
+## Required controls, maturity, definition of done, and change control
+
+**VISION-0AP-001:** GOV-PRINC-001: Every implementation-authorizing specification MUST demonstrate institutional sovereignty, open replaceable contracts, least privilege, explicit data ownership, standalone operation, bounded failure, observability, reversibility, and evidence. This record is mature when every principle maps to an accepted ADR or testable standard. Definition of done is a contradiction-free traceability audit. A changed principle requires a superseding ADR, compatibility and migration analysis, and synchronized common and institution records.
+
 ## References
 
 - [Technology Defaults and Alternatives](13-Technology-Defaults-and-Alternatives.md)
 - [Post-Secondary Digital Commons Architecture](constitutional/Post-Secondary-Digital-Commons-Architecture.md)
+

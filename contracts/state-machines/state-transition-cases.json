@@ -1,0 +1,33 @@
+{
+  "caseVersion": "1.0",
+  "cases": [
+    { "caseId": "provider.approve.pending", "machineId": "compute.provider.v1", "kind": "positive", "from": "pending", "action": "provider.approve", "to": "active", "expectedAllowed": true },
+    { "caseId": "provider.terminal-reopen", "machineId": "compute.provider.v1", "kind": "negative", "from": "revoked", "action": "provider.restore", "to": "active", "expectedAllowed": false, "expectedReasonCode": "TERMINAL_STATE" },
+    { "caseId": "capability.drain.available", "machineId": "compute.capability.v1", "kind": "positive", "from": "available", "action": "capability.drain", "to": "draining", "expectedAllowed": true },
+    { "caseId": "capability.terminal-reopen", "machineId": "compute.capability.v1", "kind": "negative", "from": "revoked", "action": "capability.restore", "to": "available", "expectedAllowed": false, "expectedReasonCode": "TERMINAL_STATE" },
+    { "caseId": "offer.accept.submitted", "machineId": "compute.offer.v1", "kind": "positive", "from": "submitted", "action": "offer.accept", "to": "accepted", "expectedAllowed": true },
+    { "caseId": "offer.accept.expired", "machineId": "compute.offer.v1", "kind": "negative", "from": "expired", "action": "offer.accept", "to": "accepted", "expectedAllowed": false, "expectedReasonCode": "TERMINAL_STATE" },
+    { "caseId": "lease.activate.issued", "machineId": "compute.lease.v1", "kind": "positive", "from": "issued", "action": "lease.activate", "to": "active", "expectedAllowed": true },
+    { "caseId": "lease.activate.replay", "machineId": "compute.lease.v1", "kind": "replay", "from": "issued", "action": "lease.activate", "to": "active", "expectedAllowed": true, "expectedReplayResult": "same_result" },
+    { "caseId": "lease.renew.expired", "machineId": "compute.lease.v1", "kind": "negative", "from": "expired", "action": "lease.renew", "to": "active", "expectedAllowed": false, "expectedReasonCode": "TERMINAL_STATE" },
+    { "caseId": "receipt.dispute.measured", "machineId": "compute.usage-receipt.v1", "kind": "positive", "from": "measured", "action": "receipt.dispute", "to": "disputed", "expectedAllowed": true },
+    { "caseId": "receipt.restore.voided", "machineId": "compute.usage-receipt.v1", "kind": "negative", "from": "voided", "action": "receipt.reject-dispute", "to": "measured", "expectedAllowed": false, "expectedReasonCode": "TERMINAL_STATE" },
+    { "caseId": "storage.activate.issued", "machineId": "storage.placement.v1", "kind": "positive", "from": "issued", "action": "placement.activate", "to": "active", "expectedAllowed": true },
+    { "caseId": "storage.repair.failed", "machineId": "storage.placement.v1", "kind": "negative", "from": "failed", "action": "placement.begin-repair", "to": "repairing", "expectedAllowed": false, "expectedReasonCode": "TERMINAL_STATE" },
+    { "caseId": "path.degrade.available", "machineId": "network.path.v1", "kind": "positive", "from": "available", "action": "path.degrade", "to": "degraded", "expectedAllowed": true },
+    { "caseId": "path.restore.revoked", "machineId": "network.path.v1", "kind": "negative", "from": "revoked", "action": "path.restore", "to": "available", "expectedAllowed": false, "expectedReasonCode": "TERMINAL_STATE" },
+    { "caseId": "reservation.activate.issued", "machineId": "network.reservation.v1", "kind": "positive", "from": "issued", "action": "reservation.activate", "to": "active", "expectedAllowed": true },
+    { "caseId": "reservation.activate.expired", "machineId": "network.reservation.v1", "kind": "negative", "from": "expired", "action": "reservation.activate", "to": "active", "expectedAllowed": false, "expectedReasonCode": "TERMINAL_STATE" },
+    { "caseId": "kms.revoke.active", "machineId": "security.kms-operation-grant.v1", "kind": "positive", "from": "active", "action": "grant.revoke", "to": "revoked", "expectedAllowed": true },
+    { "caseId": "kms.restore.revoked", "machineId": "security.kms-operation-grant.v1", "kind": "negative", "from": "revoked", "action": "grant.restore", "to": "active", "expectedAllowed": false, "expectedReasonCode": "TERMINAL_STATE" },
+    { "caseId": "envelope.rotate.active", "machineId": "security.key-envelope.v1", "kind": "positive", "from": "active", "action": "envelope.rotate", "to": "rotated", "expectedAllowed": true },
+    { "caseId": "envelope.restore.revoked", "machineId": "security.key-envelope.v1", "kind": "negative", "from": "revoked", "action": "envelope.restore", "to": "active", "expectedAllowed": false, "expectedReasonCode": "TERMINAL_STATE" },
+    { "caseId": "batch.submit.built", "machineId": "economics.settlement-batch.v1", "kind": "positive", "from": "built", "action": "batch.submit", "to": "submitted", "expectedAllowed": true },
+    { "caseId": "batch.submit.replay", "machineId": "economics.settlement-batch.v1", "kind": "replay", "from": "built", "action": "batch.submit", "to": "submitted", "expectedAllowed": true, "expectedReplayResult": "same_result" },
+    { "caseId": "batch.submit.finalized", "machineId": "economics.settlement-batch.v1", "kind": "negative", "from": "finalized", "action": "batch.submit", "to": "submitted", "expectedAllowed": false, "expectedReasonCode": "TERMINAL_STATE" },
+    { "caseId": "commitment.finalize.submitted", "machineId": "economics.ledger-commitment.v1", "kind": "positive", "from": "submitted", "action": "commitment.finalize", "to": "finalized", "expectedAllowed": true },
+    { "caseId": "commitment.resubmit.finalized", "machineId": "economics.ledger-commitment.v1", "kind": "negative", "from": "finalized", "action": "commitment.submit", "to": "submitted", "expectedAllowed": false, "expectedReasonCode": "TERMINAL_STATE" },
+    { "caseId": "dispute.review.open", "machineId": "economics.dispute.v1", "kind": "positive", "from": "open", "action": "dispute.begin-review", "to": "under_review", "expectedAllowed": true },
+    { "caseId": "dispute.reopen.rejected", "machineId": "economics.dispute.v1", "kind": "negative", "from": "rejected", "action": "dispute.begin-review", "to": "under_review", "expectedAllowed": false, "expectedReasonCode": "TERMINAL_STATE" }
+  ]
+}
